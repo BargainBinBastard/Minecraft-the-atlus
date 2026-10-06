@@ -48,19 +48,27 @@ public final class AltusCommands {
     }
 
     private static int dump(CommandSourceStack src) {
-        MinecraftServer server = src.getServer();
+        Path file = writeReport(src.getServer());
+        if (file == null) {
+            src.sendFailure(Component.literal("Could not write the history; see the server log."));
+            return 0;
+        }
+        src.sendSuccess(() -> Component.literal("Wrote the full history to " + file.toAbsolutePath()), false);
+        return 1;
+    }
+
+    /** Writes the full report to {@code <world>/altus/history.txt}. Returns the path, or null on failure. */
+    public static Path writeReport(MinecraftServer server) {
         History h = WorldHistory.get(server);
         Path dir = server.getWorldPath(LevelResource.ROOT).resolve("altus");
         Path file = dir.resolve("history.txt");
         try {
             Files.createDirectories(dir);
             Files.writeString(file, HistoryReport.render(h), StandardCharsets.UTF_8);
+            return file;
         } catch (IOException e) {
             AltusMod.LOGGER.error("Could not write the Altus history", e);
-            src.sendFailure(Component.literal("Could not write the history: " + e.getMessage()));
-            return 0;
+            return null;
         }
-        src.sendSuccess(() -> Component.literal("Wrote the full history to " + file.toAbsolutePath()), false);
-        return 1;
     }
 }

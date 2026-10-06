@@ -38,6 +38,11 @@ public class AltusMod {
         History h = WorldHistory.get(event.getServer());
         LOGGER.info("The Altus: generated the history of this world in {} ms: {} gods, {} events, {} groups, {} secrets.",
                 (System.nanoTime() - start) / 1_000_000, h.gods.size(), h.events.size(), h.groups.size(), h.secrets.size());
+        if (Boolean.getBoolean("altus.smokeTest")) {
+            boolean ok = AltusCommands.writeReport(event.getServer()) != null;
+            LOGGER.info(ok ? "ALTUS SMOKE TEST PASSED" : "ALTUS SMOKE TEST FAILED: could not write the report");
+            event.getServer().halt(false);
+        }
     }
 
     private static void onServerStopped(ServerStoppedEvent event) {

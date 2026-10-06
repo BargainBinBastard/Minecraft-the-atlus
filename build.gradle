@@ -65,6 +65,15 @@ neoForge {
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
+        // Starts a dedicated server with -Daltus.smokeTest=true. The mod generates the world's
+        // history, writes the report, and shuts the server down. Used by CI to prove the mod loads.
+        smokeServer {
+            server()
+            gameDirectory = project.file('run-smoke')
+            programArgument '--nogui'
+            systemProperty 'altus.smokeTest', 'true'
+        }
+
         data {
             data()
 
