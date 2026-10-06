@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Altus history simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#ebe7f1;--panel:#f8f6fb;--ink:#231d33;--muted:#625a75;--line:#d3cce0;--candle:#93620c;--verdigris:#2f7a70;--lilac:#6c55a8;--blood:#a8302b;
+--page:#fbf8ef;--page-ink:#2a2219;--page-line:#e2d8c2;--con-bg:#1d1929;--con-fg:#ddd6ea;--con-dim:#857c99;
+--t-event:#9cc3e6;--t-war:#f0937a;--t-lie:#d3a6f7;--t-grudge:#efc35e;--t-ally:#8fd3a5;--t-death:#ff6b6b;--t-birth:#f5e6a8;
+--serif:"Spectral",Georgia,"Times New Roman",serif;--mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16131f;--panel:#1f1b2b;--ink:#ece6f5;--muted:#a49cb8;--line:#352f47;--candle:#e8b04a;--verdigris:#6fb8ad;--lilac:#b9a6e0;--blood:#ff7a73;--page:#2a2433;--page-ink:#efe6d6;--page-line:#40384e;--con-bg:#0f0d16}}
+:root[data-theme="dark"]{--bg:#16131f;--panel:#1f1b2b;--ink:#ece6f5;--muted:#a49cb8;--line:#352f47;--candle:#e8b04a;--verdigris:#6fb8ad;--lilac:#b9a6e0;--blood:#ff7a73;--page:#2a2433;--page-ink:#efe6d6;--page-line:#40384e;--con-bg:#0f0d16}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.55}
+.wrap{max-width:1000px;margin:0 auto;padding:20px 16px 48px}
+h1{font-weight:600;font-size:clamp(1.7rem,5vw,2.6rem);line-height:1.1;margin:8px 0 4px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 18px;max-width:64ch}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+.controls label{font-size:.95rem;color:var(--muted)}
+input[type=text]{font-family:var(--mono);font-size:.95rem;padding:9px 11px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);width:min(220px,100%)}
+button{font-family:var(--serif);font-size:1rem;padding:8px 14px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+button.primary{background:var(--lilac);border-color:var(--lilac);color:var(--bg);font-weight:600}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--candle);outline-offset:2px}
+.toggle{display:inline-flex;gap:6px;align-items:center;font-size:.95rem;color:var(--muted)}
+.stats{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--muted);font-size:.95rem;margin:0 0 22px}.stats b{color:var(--ink);font-weight:600}
+section{margin:30px 0}h2{font-size:1.35rem;font-weight:600;margin:0 0 10px}
+details>summary{cursor:pointer;font-size:1.35rem;font-weight:600;margin-bottom:10px}
+.note{color:var(--muted);font-size:.95rem;margin:0 0 12px;max-width:68ch}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--lilac);border-radius:4px;padding:12px 14px}
+.card.dead{border-left-color:var(--blood);opacity:.85}.card.secretg{border-left-color:var(--candle)}.card.gone{opacity:.65}
+.card h3{margin:0;font-size:1.15rem}.card .title{font-style:italic;color:var(--muted);margin:0 0 6px}
+.card .meta{font-size:.9rem;color:var(--muted);margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin:3px 0}
+.chip{font-family:var(--mono);font-size:.72rem;padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+.chip.like{color:var(--verdigris);border-color:currentColor}.chip.dis{color:var(--blood);border-color:currentColor}.chip.tr{color:var(--lilac);border-color:currentColor}
+.lbl{font-size:.85rem;color:var(--muted);margin-top:6px}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.filters button{font-size:.88rem;padding:5px 10px}.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.console{background:var(--con-bg);color:var(--con-fg);border-radius:6px;padding:12px 0;font-family:var(--mono);font-size:.76rem;line-height:1.55;overflow-x:auto;max-height:72vh;overflow-y:auto}
+.ln{display:grid;grid-template-columns:4.2em 7.6em 1fr;gap:0 8px;padding:0 14px;white-space:pre-wrap;word-break:break-word}
+.ln .yr{color:var(--con-dim)}.ln .tg{font-weight:600}
+.ln.i1 .tx{padding-left:1.2em}.ln.i2 .tx{padding-left:2.6em}
+.ln.event .tg{color:var(--t-event)}.ln.war .tg{color:var(--t-war)}.ln.birth .tg,.ln.birth .tx{color:var(--t-birth)}
+.ln.lie .tg,.ln.lie .tx{color:var(--t-lie)}.ln.grudge .tg,.ln.grudge .tx{color:var(--t-grudge)}
+.ln.ally .tg{color:var(--t-ally)}.ln.death .tg,.ln.death .tx{color:var(--t-death)}.ln.meta .tx,.ln.meta .tg{color:var(--con-dim)}.ln.head .tx{font-weight:600}
+@media (max-width:560px){.ln{grid-template-columns:3.6em 1fr}.ln .tg,.ln .tx{grid-column:2}.ln .tg:empty{display:none}}
+.console[data-filter]:not([data-filter="all"]) .ln{display:none}
+.console[data-filter="births"] .ln[data-cat="births"],.console[data-filter="conflict"] .ln[data-cat="conflict"],.console[data-filter="groups"] .ln[data-cat="groups"],.console[data-filter="secrets"] .ln[data-cat="secrets"],.console[data-filter="motive"] .ln[data-cat="motive"]{display:grid}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.list{margin:0;padding-left:1.1em}.list li{margin:5px 0}
+.badge{font-family:var(--mono);font-size:.7rem;padding:1px 5px;border-radius:3px;border:1px solid currentColor;margin-left:4px}
+.b-hidden{color:var(--candle)}.b-exposed{color:var(--blood)}
+.hidetext{display:none}body.show-dev .hidetext{display:inline}body.show-dev .hidenote{display:none}
+.frags{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.frag{background:var(--page);color:var(--page-ink);border:1px solid var(--page-line);border-radius:2px 10px 10px 2px;padding:16px 18px 14px;box-shadow:inset 6px 0 0 var(--page-line)}
+.frag.sec{box-shadow:inset 6px 0 0 var(--candle)}
+.frag .fh{display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-bottom:8px}
+.frag .text{font-size:1.08rem;line-height:1.65;margin:0}.frag .att{font-style:italic;margin:8px 0 0;color:var(--muted);font-size:.98rem}.frag .tell{margin:6px 0 0}
+.ritual{margin-top:12px;padding-top:10px;border-top:1px dashed var(--page-line);font-size:.95rem}.ritual strong{color:var(--candle)}.ritual ul{margin:4px 0 0;padding-left:1.1em}
+.dev{display:none;margin-top:10px;padding:8px 10px;border-radius:4px;font-family:var(--mono);font-size:.72rem;line-height:1.5;background:var(--con-bg);color:var(--con-fg)}
+body.show-dev .dev{display:block}.dev .t{color:var(--t-ally)}.dev .f{color:var(--t-death)}.dev .m{color:var(--t-lie)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Altus history simulator</h1>
+<p class="sub">Proof of concept, second pass. Gods are born from glory, from other gods, from corpses, or from nowhere. Every choice is a contest between motivations: grudges, friendships, traits, group loyalty, and secrets. Groups vote or follow leaders, members refuse or comply, and secrets are kept until someone digs them out.</p>
+<div class="controls">
+<label for="seed">Seed</label><input id="seed" type="text" value="altus-296" autocomplete="off" spellcheck="false">
+<button class="primary" id="run">Generate</button><button id="rand">Random seed</button>
+<label class="toggle"><input type="checkbox" id="devt"> Show hidden truth</label>
+</div>
+<div class="stats" id="stats"></div>
+<section><details id="pantheonBox"><summary id="pantheonSum">Pantheon</summary><div class="cards" id="gods"></div></details></section>
+<section><details id="groupBox"><summary id="groupSum">Groups</summary><div class="cards" id="groups"></div></details></section>
+<section>
+<h2>History log</h2>
+<p class="note">Each action shows the motivation that drove it in brackets. “Restrained” lines are motivations that lost a contest.</p>
+<div class="filters" id="filters">
+<button data-f="all" aria-pressed="true">All</button><button data-f="births" aria-pressed="false">Births</button><button data-f="conflict" aria-pressed="false">Conflict</button><button data-f="groups" aria-pressed="false">Groups</button><button data-f="secrets" aria-pressed="false">Secrets and lies</button><button data-f="motive" aria-pressed="false">Motive contests</button>
+</div>
+<div class="console" id="log" data-filter="all" role="log" aria-label="History log"></div>
+</section>
+<section class="two">
+<div><h2>Secrets</h2><p class="note">Hidden secrets show their text only with “Show hidden truth” on.</p><ul class="list" id="secrets"></ul></div>
+<div><h2>Altus regions</h2><ul class="list" id="regions"></ul><h2 style="margin-top:22px">Open tensions</h2><ul class="list" id="tensions"></ul></div>
+</section>
+<section>
+<h2>Lore fragments</h2>
+<p class="note">As they would read once written into a Tome. Gold-edged pages are secrets. Turn on “Show hidden truth” to see which accounts are lies, why, and whether attached rituals would misfire.</p>
+<div class="frags" id="frags"></div>
+</section>
+</div>
+<script>
+/*SIM*/
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function render(seed){
+  const S=simulate(seed),F=genFragments(S,seed),G=S.gods,n=id=>G[id].name;
+  const hidS=S.secrets.filter(s=>!s.exposed).length;
+  document.getElementById('stats').innerHTML=`<span><b>${G.length}</b> gods (${G.filter(g=>g.alive).length} alive)</span><span><b>${S.events.length}</b> events</span><span><b>${S.groups.length}</b> groups</span><span><b>${S.secrets.length}</b> secrets, ${hidS} still kept</span><span><b>${S.lies.length}</b> lies</span><span>deicides: <b>${S.deicides.length?S.deicides.map(d=>esc(n(d.targets[0]))+' in '+Y(d.year)).join(', '):'none'}</b></span>`;
+  document.getElementById('pantheonSum').textContent=`Pantheon (${G.length} gods)`;
+  document.getElementById('gods').innerHTML=G.map(g=>{
+    const o=g.origin==='gods'?`God-from-god, made by ${n(g.creator)}`:g.origin==='corpse'?`God-from-corpse, risen from ${n(g.sourceCorpse)}`:cap(ORIGIN_LABEL[g.origin]);
+    return `<article class="card${g.alive?'':' dead'}"><h3>${esc(g.name)}${g.alive?'':' ✝'}</h3><p class="title">${esc(g.title)}</p>
+    <div class="meta">${esc(o)}, born ${Y(g.born)}. Power ${g.startPower} to ${g.power}.${g.alive?'':` Slain in ${Y(g.deathYear)} by ${esc(S.names(g.killers))}.`}</div>
+    <div class="chips">${Object.entries(g.traits).map(([t,v])=>`<span class="chip tr" title="${esc(TRAITS_DEF[t]||'')}">${t} ${v}</span>`).join('')}</div>
+    <div class="lbl">Likes</div><div class="chips">${g.likes.map(l=>`<span class="chip like">${esc(lbl(l))}</span>`).join('')}</div>
+    <div class="lbl">Dislikes</div><div class="chips">${g.dislikes.map(l=>`<span class="chip dis">${esc(lbl(l))}</span>`).join('')}</div></article>`;}).join('');
+  document.getElementById('groupSum').textContent=`Groups (${S.groups.length})`;
+  document.getElementById('groups').innerHTML=S.groups.length?S.groups.map(gr=>`<article class="card${gr.secret?' secretg':''}${gr.dissolved?' gone':''}"><h3>${esc(gr.name)}</h3>
+    <p class="title">Sworn ${esc(principlePhrase(gr.principle,S))}</p>
+    <div class="meta">${gr.secret?'Secret':'Public'}. ${gr.leader!=null&&!gr.dissolved?'Led by '+esc(n(gr.leader)):'Decides by vote'}. Founded ${Y(gr.founded)}${gr.parent!=null?`, splintered from ${esc(S.groups[gr.parent].name)}`:''}.${gr.hall?' Has a hall in the Altus.':''}${gr.dissolved?` Dissolved ${Y(gr.dissolvedYear)}: ${esc(gr.dissolvedWhy)}.`:''}</div>
+    ${gr.dissolved?'':`<div class="lbl">Members and loyalty</div><div class="chips">${gr.members.map(m=>`<span class="chip tr">${esc(n(m))} ${gr.loyalty[m]}</span>`).join('')}</div>`}</article>`).join(''):'<p class="note">No groups formed in this world.</p>';
+  let top='misc';
+  document.getElementById('log').innerHTML=S.log.map(l=>{if(!l.indent)top=l.cat||'misc';const cat=l.indent?top:(l.cat||'misc');
+    return `<div class="ln ${l.cls||''} i${Math.min(l.indent,2)}" data-cat="${cat}"><span class="yr">${l.indent?'':Y(l.year)}</span><span class="tg">${esc(l.tag||'')}</span><span class="tx">${esc(l.text)}</span></div>`;}).join('');
+  document.getElementById('secrets').innerHTML=S.secrets.length?S.secrets.map(s=>`<li><strong>${s.id}</strong> ${s.kind.toLowerCase().replace('_',' ')}${s.exposed?`<span class="badge b-exposed">exposed by ${esc(n(s.exposer))}</span>`:'<span class="badge b-hidden">kept</span>'}<br>${s.exposed?esc(s.text):`<span class="hidetext">${esc(s.text)}</span><span class="hidenote">Kept by ${s.keepers.size} god${s.keepers.size>1?'s':''}.</span>`}</li>`).join(''):'<li>No secrets in this world.</li>';
+  document.getElementById('regions').innerHTML=S.regions.map(r=>`<li><strong>${esc(r.name)}</strong>: ${esc(r.status)}</li>`).join('');
+  document.getElementById('tensions').innerHTML=S.tensions.length?S.tensions.map(t=>`<li>${esc(t)}</li>`).join(''):'<li>None. This world is unusually calm.</li>';
+  document.getElementById('frags').innerHTML=F.map(f=>{
+    if(f.secret){const s=f.secret;return `<article class="frag sec"><div class="fh"><span>fragment ${f.no}</span><span>secret</span></div><p class="text">${esc(f.text)}</p><p class="att">${esc(f.att)}</p><div class="dev">${s.id} ${s.kind}, ${s.exposed?'already exposed':'still kept'}; source: ${f.src}<br>keepers: ${esc(S.names([...s.keepers]))}</div></article>`;}
+    const lie=f.lie;
+    const dev=`<div class="dev">event ${f.ev.id} (${f.ev.type}), reveals ${f.reveals}<br>${lie?`<span class="f">FALSE</span>: ${lie.id}, motive <span class="m">${lie.motive}</span>, distortion ${lie.distortion}${lie.coordinated!=null?', coordinated by '+esc(S.groups[lie.coordinated].name):''}${lie.exposed?', already disproven':''}<br>can be caught: ${esc(lie.contra)}`:'<span class="t">TRUE</span>'}${f.ritual?`<br>ritual: ${f.ritual.misfire?'<span class="f">misfires, offerings follow the lie</span>':'<span class="t">works</span>'}`:''}</div>`;
+    const rit=f.ritual?`<div class="ritual"><strong>Ritual attached (tier ${f.ritual.tier})</strong>: ${esc(f.ritual.effect)}<ul>${f.ritual.offerings.map(o=>`<li>1 ${esc(o.item)}, for ${esc(o.god)}</li>`).join('')}</ul></div>`:'';
+    return `<article class="frag"><div class="fh"><span>fragment ${f.no}</span><span>reveals ${f.reveals.toLowerCase()}</span></div><p class="text">${esc(f.text)}</p>${f.tell?`<p class="text tell">${esc(f.tell)}</p>`:''}<p class="att">${esc(f.att)}</p>${rit}${dev}</article>`;}).join('');
+}
+const seedEl=document.getElementById('seed');
+const go=()=>render(seedEl.value.trim()||'altus');
+document.getElementById('run').addEventListener('click',go);
+seedEl.addEventListener('keydown',e=>{if(e.key==='Enter')go();});
+document.getElementById('rand').addEventListener('click',()=>{const w=["moth","lantern","winter","edge","grail","knock","forge","heart"];seedEl.value=w[Math.floor(Math.random()*w.length)]+'-'+Math.floor(Math.random()*9000+1000);go();});
+document.getElementById('devt').addEventListener('change',e=>document.body.classList.toggle('show-dev',e.target.checked));
+document.getElementById('filters').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#filters button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));document.getElementById('log').dataset.filter=b.dataset.f;});
+go();
+</script>
+</body>
+</html>
