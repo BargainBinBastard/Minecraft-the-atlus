@@ -2,8 +2,12 @@ name: Build
 
 on:
   push:
+    branches-ignore: [ci-logs]
   pull_request:
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -25,7 +29,9 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build and test
-        run: ./gradlew build --stacktrace
+        run: |
+          set -o pipefail
+          ./gradlew build --stacktrace 2>&1 | tee build.log
 
       - name: Upload mod jar
         if: success()
@@ -35,10 +41,19 @@ jobs:
           path: build/libs/*.jar
           if-no-files-found: error
 
-      - name: Upload test reports
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-reports
-          path: build/reports/tests/
-          if-no-files-found: ignore
+      # Publish the build log and test results to the ci-logs branch so they can be read
+      # through the GitHub API without downloading the full Actions logs.
+      - name: Publish build log
+        if: always() && github.event_name == 'push'
+        run: |
+          mkdir -p /tmp/ci-logs
+          cp build.log /tmp/ci-logs/build.log 2>/dev/null || echo "no build log" > /tmp/ci-logs/build.log
+          if [ -d build/test-results/test ]; then cp -r build/test-results/test /tmp/ci-logs/test-results; fi
+          echo "${{ github.sha }} ${{ job.status }}" > /tmp/ci-logs/STATUS
+          cd /tmp/ci-logs
+          git init -q
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A
+          git commit -q -m "CI log for ${{ github.sha }}"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:ci-logs
