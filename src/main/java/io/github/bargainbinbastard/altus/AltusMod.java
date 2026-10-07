@@ -22,6 +22,8 @@ import io.github.bargainbinbastard.altus.history.Item;
 import io.github.bargainbinbastard.altus.lore.AltusCommands;
 import io.github.bargainbinbastard.altus.lore.WorldHistory;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.Connection;
@@ -35,7 +37,11 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BedPart;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -141,8 +147,66 @@ public class AltusMod {
         boolean closed = !Dreams.session(p).active;
         LOGGER.info("SMOKE: dream round trip: began={} inAltus={} emptied={} active={} | home={} restored={} altusItemsGone={} closed={}",
                 began, inAltus, emptied, active, home, restored, altusItemsGone, closed);
+        boolean roundTrip = began && inAltus && emptied && active && home && restored && altusItemsGone && closed;
+        boolean death = smokeDeath(p);
+        boolean sleep = smokeSleep(server, p);
         server.getPlayerList().remove(p);
-        return began && inAltus && emptied && active && home && restored && altusItemsGone && closed;
+        return roundTrip && death && sleep;
+    }
+
+    /** Dying in the Altus should wake the player, alive, with their belongings. */
+    private static boolean smokeDeath(ServerPlayer p) {
+        boolean began = Dreams.begin(p, -1, 200, p.getX(), p.getY(), p.getZ(), Component.literal("smoke"));
+        p.hurt(p.damageSources().fellOutOfWorld(), 1000f);
+        boolean alive = p.isAlive() && p.getHealth() > 0;
+        boolean home = !AltusDimension.isAltus(p.level());
+        boolean restored = p.getInventory().countItem(Items.DIAMOND) == 3;
+        boolean closed = !Dreams.session(p).active;
+        LOGGER.info("SMOKE: death in the Altus: began={} alive={} home={} restored={} closed={}", began, alive, home, restored, closed);
+        return began && alive && home && restored && closed;
+    }
+
+    /** Builds a bedroom of one god's liked blocks at night, puts the player to bed, and checks they dream. */
+    private static boolean smokeSleep(MinecraftServer server, ServerPlayer p) {
+        History h = WorldHistory.get(server);
+        ServerLevel ow = server.overworld();
+        ow.setDayTime(13000);
+        BlockPos spawn = ow.getSharedSpawnPos();
+        int bx = spawn.getX() + 20, bz = spawn.getZ() + 20;
+        ow.getChunk(SectionPos.blockToSectionCoord(bx), SectionPos.blockToSectionCoord(bz));
+        BlockPos foot = new BlockPos(bx, ow.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, bx, bz), bz);
+        BlockPos head = foot.north();
+        ow.setBlockAndUpdate(foot, Blocks.RED_BED.defaultBlockState().setValue(BedBlock.FACING, Direction.NORTH).setValue(BedBlock.PART, BedPart.FOOT));
+        ow.setBlockAndUpdate(head, Blocks.RED_BED.defaultBlockState().setValue(BedBlock.FACING, Direction.NORTH).setValue(BedBlock.PART, BedPart.HEAD));
+
+        History.God god = null;
+        for (History.God g : h.gods) if (g.alive) { god = g; break; }
+        int row = 0;
+        Map<String, Integer> planned = new java.util.HashMap<>();
+        for (Item l : god.likes) {
+            if (!l.cat.equals("block")) continue;
+            Optional<HolderSet.Named<Block>> set = BuiltInRegistries.BLOCK.getTag(SleepScan.TAGS.get(l.id));
+            if (set.isEmpty() || set.get().size() == 0) continue;
+            Block b = set.get().get(0).value();
+            for (int i = 0; i < 10; i++) ow.setBlockAndUpdate(foot.offset(i - 5, 3, 2 + row), b.defaultBlockState());
+            planned.put(l.id, 10);
+            row++;
+        }
+        FocusPicker.Focus expected = FocusPicker.pick(h, planned, 4);
+
+        p.teleportTo(ow, foot.getX() + 0.5, foot.getY(), foot.getZ() + 1.5, 0, 0);
+        var result = p.startSleepInBed(head);
+        boolean slept = p.isSleeping();
+        boolean began = Dreams.tryBeginFromSleep(p);
+        boolean inAltus = AltusDimension.isAltus(p.level());
+        int focus = Dreams.session(p).focusGod;
+        boolean ok = slept && began && inAltus && (expected.kind != FocusPicker.Kind.GOD || focus == expected.god);
+        LOGGER.info("SMOKE: sleeping into the Altus: problem={} slept={} began={} inAltus={} focus={} expected={} {}",
+                result.left().map(Object::toString).orElse("none"), slept, began, inAltus, focus, expected.kind, expected.god);
+        if (Dreams.session(p).active) Dreams.end(p, "command");
+        boolean twice = !Dreams.tryBeginFromSleep(p);
+        LOGGER.info("SMOKE: a second dream the same night is refused: {}", twice);
+        return ok && twice;
     }
 
     /** Places a god's liked block near spawn and checks the bed scan counts it and picks a focus. */
