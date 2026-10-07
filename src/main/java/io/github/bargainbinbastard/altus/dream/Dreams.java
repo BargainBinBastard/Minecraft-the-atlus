@@ -10,6 +10,7 @@ import io.github.bargainbinbastard.altus.history.FocusPicker;
 import io.github.bargainbinbastard.altus.history.History;
 import io.github.bargainbinbastard.altus.history.Item;
 import io.github.bargainbinbastard.altus.history.Text;
+import io.github.bargainbinbastard.altus.lore.Memories;
 import io.github.bargainbinbastard.altus.lore.WorldHistory;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -105,6 +106,7 @@ public final class Dreams {
         s.active = false;
         s.ticksLeft = 0;
         sp.teleportTo(home, x, y, z, sp.getYRot(), sp.getXRot());
+        Memories.onWake(sp);
         String msg;
         switch (reason) {
             case "death": msg = "You wake with a start."; break;

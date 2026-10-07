@@ -1,5 +1,6 @@
 package io.github.bargainbinbastard.altus;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,8 +20,16 @@ import io.github.bargainbinbastard.altus.dream.SleepScan;
 import io.github.bargainbinbastard.altus.history.FocusPicker;
 import io.github.bargainbinbastard.altus.history.History;
 import io.github.bargainbinbastard.altus.history.Item;
+import io.github.bargainbinbastard.altus.history.Lore;
 import io.github.bargainbinbastard.altus.lore.AltusCommands;
+import io.github.bargainbinbastard.altus.lore.AltusWorld;
+import io.github.bargainbinbastard.altus.lore.HeldMemories;
+import io.github.bargainbinbastard.altus.lore.Memories;
+import io.github.bargainbinbastard.altus.lore.TomeContents;
+import io.github.bargainbinbastard.altus.lore.TomeService;
 import io.github.bargainbinbastard.altus.lore.WorldHistory;
+import io.github.bargainbinbastard.altus.net.AltusNetwork;
+import io.github.bargainbinbastard.altus.registry.AltusRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
@@ -29,6 +38,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -60,7 +70,9 @@ public class AltusMod {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public AltusMod(IEventBus modEventBus, ModContainer modContainer) {
+        AltusRegistry.register(modEventBus);
         AltusAttachments.TYPES.register(modEventBus);
+        modEventBus.addListener(AltusNetwork::register);
         modContainer.registerConfig(ModConfig.Type.SERVER, AltusConfig.SPEC);
         DreamEvents.register();
         NeoForge.EVENT_BUS.addListener(AltusMod::onRegisterCommands);
@@ -78,6 +90,7 @@ public class AltusMod {
         History h = WorldHistory.get(server);
         LOGGER.info("The Altus: generated the history of this world in {} ms: {} gods, {} events, {} groups, {} secrets.",
                 (System.nanoTime() - start) / 1_000_000, h.gods.size(), h.events.size(), h.groups.size(), h.secrets.size());
+        AltusWorld.prepare(server);
         if (Boolean.getBoolean("altus.smokeTest")) smokeTest(server, h);
     }
 
@@ -150,8 +163,56 @@ public class AltusMod {
         boolean roundTrip = began && inAltus && emptied && active && home && restored && altusItemsGone && closed;
         boolean death = smokeDeath(p);
         boolean sleep = smokeSleep(server, p);
+        boolean memories = smokeMemories(server, p);
         server.getPlayerList().remove(p);
-        return roundTrip && death && sleep;
+        return roundTrip && death && sleep && memories;
+    }
+
+    /** Reads the four inscriptions in a dream, wakes, writes one memory in a Tome, edits it away, and lets the rest fade. */
+    private static boolean smokeMemories(MinecraftServer server, ServerPlayer p) {
+        History h = WorldHistory.get(server);
+        ServerLevel altus = AltusDimension.get(server);
+        boolean carved = true;
+        for (int i = 0; i < AltusWorld.INSCRIPTIONS.length; i++)
+            carved &= altus.getBlockState(AltusWorld.INSCRIPTIONS[i]).is(AltusRegistry.INSCRIPTION.get());
+        boolean recipe = server.getRecipeManager().byKey(ResourceLocation.fromNamespaceAndPath(MODID, "tome")).isPresent();
+        int god = Lore.woodsFallbackGod(h);
+        if (god < 0) {
+            LOGGER.warn("SMOKE: memories SKIPPED: every god is dead or hidden in this world");
+            return carved && recipe;
+        }
+        Memories.held(p).list.clear();
+        Memories.knowledge(p).written.clear();
+        Dreams.begin(p, god, 200, p.getX(), p.getY(), p.getZ(), Component.literal("smoke"));
+        p.hasChangedDimension();
+        for (int f = 0; f < 4; f++) Memories.readInscription(p, f);
+        long pending = Memories.held(p).list.stream().filter(HeldMemories.Memory::pending).count();
+        Dreams.end(p, "command");
+        long now = Memories.now(p);
+        long readable = Memories.held(p).list.stream().filter(m -> !m.pending() && m.expire > now).count();
+        boolean effect = p.hasEffect(AltusRegistry.FADING_MEMORY);
+
+        p.getInventory().selected = 0;
+        p.getInventory().setItem(0, new ItemStack(AltusRegistry.TOME.get()));
+        String id = Memories.held(p).list.get(0).id;
+        int target = TomeService.write(p, 0, 0, id, List.of(""));
+        TomeContents c = TomeService.contents(p.getInventory().getItem(0));
+        boolean written = target == 0 && c.pages().get(0).contains(Lore.render(h, id).text) && c.records().size() == 1
+                && Memories.knowledge(p).written.contains(id) && Memories.held(p).find(id) == null
+                && Memories.knowledge(p).understandingOf(god) == 1;
+        boolean known = Memories.gain(p, Lore.render(h, id)) == Memories.Gain.ALREADY_KNOWN;
+
+        TomeService.save(p, 0, List.of("I tore that page out."));
+        boolean reconciled = TomeService.contents(p.getInventory().getItem(0)).records().isEmpty();
+
+        for (HeldMemories.Memory m : Memories.held(p).list) m.expire = Memories.now(p) - 1;
+        Memories.tick(p);
+        boolean faded = Memories.held(p).list.isEmpty() && !p.hasEffect(AltusRegistry.FADING_MEMORY);
+
+        LOGGER.info("SMOKE: memories: carved={} recipe={} pending={} readable={} effect={} written={} known={} reconciled={} faded={}",
+                carved, recipe, pending, readable, effect, written, known, reconciled, faded);
+        LOGGER.info("SMOKE: the Tome's first entry read: {}", c.pages().get(0).replace("\n", " | "));
+        return carved && recipe && pending == 4 && readable == 4 && effect && written && known && reconciled && faded;
     }
 
     /** Dying in the Altus should wake the player, alive, with their belongings. */

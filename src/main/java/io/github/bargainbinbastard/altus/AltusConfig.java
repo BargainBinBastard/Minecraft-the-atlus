@@ -10,6 +10,7 @@ public final class AltusConfig {
     public static final ModConfigSpec.IntValue DREAM_SECONDS;
     public static final ModConfigSpec.IntValue SCAN_RADIUS;
     public static final ModConfigSpec.IntValue SCAN_THRESHOLD;
+    public static final ModConfigSpec.IntValue FADE_MINUTES;
 
     static {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
@@ -20,6 +21,10 @@ public final class AltusConfig {
                 .defineInRange("scanRadius", 8, 2, 16);
         SCAN_THRESHOLD = b.comment("The score a god needs before a sleeper dreams at all. Liked blocks add one, disliked blocks subtract one.")
                 .defineInRange("scanThreshold", 4, 1, 1000);
+        b.pop();
+        b.push("memories");
+        FADE_MINUTES = b.comment("How many minutes a memory lasts after waking before it fades, unless written in a Tome.")
+                .defineInRange("fadeMinutes", 45, 1, 1440);
         b.pop();
         SPEC = b.build();
     }

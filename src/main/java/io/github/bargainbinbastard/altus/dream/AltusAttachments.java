@@ -3,6 +3,8 @@ package io.github.bargainbinbastard.altus.dream;
 import java.util.function.Supplier;
 
 import io.github.bargainbinbastard.altus.AltusMod;
+import io.github.bargainbinbastard.altus.lore.HeldMemories;
+import io.github.bargainbinbastard.altus.lore.Knowledge;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -16,4 +18,10 @@ public final class AltusAttachments {
 
     public static final Supplier<AttachmentType<AltusSession>> SESSION =
             TYPES.register("session", () -> AttachmentType.serializable(AltusSession::new).copyOnDeath().build());
+
+    public static final Supplier<AttachmentType<HeldMemories>> HELD =
+            TYPES.register("held", () -> AttachmentType.serializable(HeldMemories::new).copyOnDeath().build());
+
+    public static final Supplier<AttachmentType<Knowledge>> KNOWLEDGE =
+            TYPES.register("knowledge", () -> AttachmentType.serializable(Knowledge::new).copyOnDeath().build());
 }

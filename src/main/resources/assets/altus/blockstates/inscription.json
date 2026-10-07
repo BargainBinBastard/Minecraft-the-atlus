@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facet=0": { "model": "altus:block/inscription" },
+    "facet=1": { "model": "altus:block/inscription", "y": 90 },
+    "facet=2": { "model": "altus:block/inscription", "y": 180 },
+    "facet=3": { "model": "altus:block/inscription", "y": 270 }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["FFF", "FBF", "FFF"],
+  "key": {
+    "F": { "item": "minecraft:rotten_flesh" },
+    "B": { "item": "minecraft:writable_book" }
+  },
+  "result": { "id": "altus:tome", "count": 1 }
+}

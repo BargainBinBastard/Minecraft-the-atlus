@@ -1,5 +1,6 @@
 package io.github.bargainbinbastard.altus.dream;
 
+import io.github.bargainbinbastard.altus.lore.Memories;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -21,6 +22,7 @@ public final class DreamEvents {
 
     private static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer sp)) return;
+        if (sp.tickCount % 20 == 0) Memories.tick(sp);
         AltusSession s = Dreams.session(sp);
         if (s.active) {
             Dreams.tickDream(sp, s);
@@ -51,6 +53,8 @@ public final class DreamEvents {
     /** Repairs anything a crash or a disconnect left half-finished. */
     private static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer sp)) return;
+        Memories.sync(sp);
+        Memories.updateEffect(sp);
         AltusSession s = Dreams.session(sp);
         boolean inAltus = AltusDimension.isAltus(sp.level());
         if (s.active && !inAltus) {
