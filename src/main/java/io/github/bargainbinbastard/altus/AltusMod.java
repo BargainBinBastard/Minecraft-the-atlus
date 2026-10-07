@@ -157,6 +157,9 @@ public class AltusMod {
     /** Dying in the Altus should wake the player, alive, with their belongings. */
     private static boolean smokeDeath(ServerPlayer p) {
         boolean began = Dreams.begin(p, -1, 200, p.getX(), p.getY(), p.getZ(), Component.literal("smoke"));
+        // A real client confirms it has loaded the new dimension, which ends the arrival
+        // invulnerability. The mock player has no client, so confirm on its behalf.
+        p.hasChangedDimension();
         p.hurt(p.damageSources().fellOutOfWorld(), 1000f);
         boolean alive = p.isAlive() && p.getHealth() > 0;
         boolean home = !AltusDimension.isAltus(p.level());
@@ -171,6 +174,7 @@ public class AltusMod {
         History h = WorldHistory.get(server);
         ServerLevel ow = server.overworld();
         ow.setDayTime(13000);
+        ow.updateSkyBrightness();
         BlockPos spawn = ow.getSharedSpawnPos();
         int bx = spawn.getX() + 20, bz = spawn.getZ() + 20;
         ow.getChunk(SectionPos.blockToSectionCoord(bx), SectionPos.blockToSectionCoord(bz));
