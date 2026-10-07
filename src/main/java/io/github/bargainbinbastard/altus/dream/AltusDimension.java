@@ -2,6 +2,7 @@ package io.github.bargainbinbastard.altus.dream;
 
 import io.github.bargainbinbastard.altus.AltusMod;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -30,6 +31,8 @@ public final class AltusDimension {
     public static BlockPos clearing(ServerLevel altus, RandomSource random) {
         int x = random.nextInt(17) - 8;
         int z = random.nextInt(17) - 8;
+        // Level#getHeight reports the world floor for chunks that aren't loaded, so load it first.
+        altus.getChunk(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
         int y = altus.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
         return new BlockPos(x, y, z);
     }
