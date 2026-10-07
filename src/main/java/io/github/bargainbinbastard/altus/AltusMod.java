@@ -2,14 +2,17 @@ package io.github.bargainbinbastard.altus;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
 
 import io.github.bargainbinbastard.altus.dream.AltusAttachments;
 import io.github.bargainbinbastard.altus.dream.AltusDimension;
 import io.github.bargainbinbastard.altus.dream.DreamEvents;
+import io.github.bargainbinbastard.altus.dream.Dreams;
 import io.github.bargainbinbastard.altus.dream.SleepScan;
 import io.github.bargainbinbastard.altus.history.FocusPicker;
 import io.github.bargainbinbastard.altus.history.History;
@@ -19,16 +22,21 @@ import io.github.bargainbinbastard.altus.lore.WorldHistory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
@@ -84,6 +92,7 @@ public class AltusMod {
                 }
             }
             ok &= smokeScan(server, h);
+            ok &= smokeDream(server);
             ok &= AltusCommands.writeReport(server) != null;
         } catch (Exception e) {
             LOGGER.error("SMOKE: exception", e);
@@ -91,6 +100,27 @@ public class AltusMod {
         }
         LOGGER.info(ok ? "ALTUS SMOKE TEST PASSED" : "ALTUS SMOKE TEST FAILED");
         server.halt(false);
+    }
+
+    /** Sends a fake player through a whole dream and checks its inventory is stashed and returned. */
+    private static boolean smokeDream(MinecraftServer server) {
+        ServerLevel ow = server.overworld();
+        FakePlayer fp = FakePlayerFactory.get(ow, new GameProfile(UUID.fromString("6c1f0a52-3f7e-4f0e-9d7c-a1b2c3d4e5f6"), "AltusSmoke"));
+        BlockPos spawn = ow.getSharedSpawnPos();
+        fp.moveTo(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5, 0, 0);
+        fp.getInventory().clearContent();
+        fp.getInventory().add(new ItemStack(Items.DIAMOND, 3));
+        boolean began = Dreams.begin(fp, -1, 200, fp.getX(), fp.getY(), fp.getZ(), Component.literal("smoke"));
+        boolean inAltus = AltusDimension.isAltus(fp.level());
+        boolean emptied = fp.getInventory().isEmpty();
+        boolean active = Dreams.session(fp).active;
+        Dreams.end(fp, "command");
+        boolean home = !AltusDimension.isAltus(fp.level());
+        boolean restored = fp.getInventory().countItem(Items.DIAMOND) == 3;
+        boolean closed = !Dreams.session(fp).active;
+        LOGGER.info("SMOKE: dream round trip: began={} inAltus={} emptied={} active={} | home={} restored={} closed={}",
+                began, inAltus, emptied, active, home, restored, closed);
+        return began && inAltus && emptied && active && home && restored && closed;
     }
 
     /** Places a god's liked block near spawn and checks the bed scan counts it and picks a focus. */
