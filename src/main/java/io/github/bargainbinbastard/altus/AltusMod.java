@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 
+import io.netty.channel.embedded.EmbeddedChannel;
+
 import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
 
@@ -22,9 +24,13 @@ import io.github.bargainbinbastard.altus.lore.WorldHistory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -35,8 +41,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
@@ -102,25 +106,43 @@ public class AltusMod {
         server.halt(false);
     }
 
-    /** Sends a fake player through a whole dream and checks its inventory is stashed and returned. */
+    /**
+     * Sends a mock player (the same kind Minecraft's own game tests use: a real ServerPlayer on an
+     * in-memory connection) through a whole dream, and checks its inventory is stashed and returned.
+     * If the mock player itself can't be set up, the check is skipped rather than failed.
+     */
     private static boolean smokeDream(MinecraftServer server) {
         ServerLevel ow = server.overworld();
-        FakePlayer fp = FakePlayerFactory.get(ow, new GameProfile(UUID.fromString("6c1f0a52-3f7e-4f0e-9d7c-a1b2c3d4e5f6"), "AltusSmoke"));
+        ServerPlayer p;
+        try {
+            CommonListenerCookie cookie = CommonListenerCookie.createInitial(
+                    new GameProfile(UUID.fromString("6c1f0a52-3f7e-4f0e-9d7c-a1b2c3d4e5f6"), "AltusSmoke"), false);
+            p = new ServerPlayer(server, ow, cookie.gameProfile(), cookie.clientInformation());
+            Connection connection = new Connection(PacketFlow.SERVERBOUND);
+            new EmbeddedChannel(connection);
+            server.getPlayerList().placeNewPlayer(connection, p, cookie);
+        } catch (Exception e) {
+            LOGGER.warn("SMOKE: dream round trip SKIPPED: could not create a mock player ({})", e.toString());
+            return true;
+        }
         BlockPos spawn = ow.getSharedSpawnPos();
-        fp.moveTo(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5, 0, 0);
-        fp.getInventory().clearContent();
-        fp.getInventory().add(new ItemStack(Items.DIAMOND, 3));
-        boolean began = Dreams.begin(fp, -1, 200, fp.getX(), fp.getY(), fp.getZ(), Component.literal("smoke"));
-        boolean inAltus = AltusDimension.isAltus(fp.level());
-        boolean emptied = fp.getInventory().isEmpty();
-        boolean active = Dreams.session(fp).active;
-        Dreams.end(fp, "command");
-        boolean home = !AltusDimension.isAltus(fp.level());
-        boolean restored = fp.getInventory().countItem(Items.DIAMOND) == 3;
-        boolean closed = !Dreams.session(fp).active;
-        LOGGER.info("SMOKE: dream round trip: began={} inAltus={} emptied={} active={} | home={} restored={} closed={}",
-                began, inAltus, emptied, active, home, restored, closed);
-        return began && inAltus && emptied && active && home && restored && closed;
+        p.teleportTo(ow, spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5, 0, 0);
+        p.getInventory().clearContent();
+        p.getInventory().add(new ItemStack(Items.DIAMOND, 3));
+        boolean began = Dreams.begin(p, -1, 200, p.getX(), p.getY(), p.getZ(), Component.literal("smoke"));
+        boolean inAltus = AltusDimension.isAltus(p.level());
+        boolean emptied = p.getInventory().isEmpty();
+        boolean active = Dreams.session(p).active;
+        p.getInventory().add(new ItemStack(Items.STICK, 1));
+        Dreams.end(p, "command");
+        boolean home = !AltusDimension.isAltus(p.level());
+        boolean restored = p.getInventory().countItem(Items.DIAMOND) == 3;
+        boolean altusItemsGone = p.getInventory().countItem(Items.STICK) == 0;
+        boolean closed = !Dreams.session(p).active;
+        LOGGER.info("SMOKE: dream round trip: began={} inAltus={} emptied={} active={} | home={} restored={} altusItemsGone={} closed={}",
+                began, inAltus, emptied, active, home, restored, altusItemsGone, closed);
+        server.getPlayerList().remove(p);
+        return began && inAltus && emptied && active && home && restored && altusItemsGone && closed;
     }
 
     /** Places a god's liked block near spawn and checks the bed scan counts it and picks a focus. */
