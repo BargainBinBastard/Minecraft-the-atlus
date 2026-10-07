@@ -1,0 +1,48 @@
+{
+  "values": [
+    {
+      "id": "minecraft:prismarine",
+      "required": false
+    },
+    {
+      "id": "minecraft:prismarine_bricks",
+      "required": false
+    },
+    {
+      "id": "minecraft:dark_prismarine",
+      "required": false
+    },
+    {
+      "id": "minecraft:prismarine_stairs",
+      "required": false
+    },
+    {
+      "id": "minecraft:prismarine_slab",
+      "required": false
+    },
+    {
+      "id": "minecraft:prismarine_wall",
+      "required": false
+    },
+    {
+      "id": "minecraft:prismarine_brick_stairs",
+      "required": false
+    },
+    {
+      "id": "minecraft:prismarine_brick_slab",
+      "required": false
+    },
+    {
+      "id": "minecraft:dark_prismarine_stairs",
+      "required": false
+    },
+    {
+      "id": "minecraft:dark_prismarine_slab",
+      "required": false
+    },
+    {
+      "id": "minecraft:sea_lantern",
+      "required": false
+    }
+  ]
+}

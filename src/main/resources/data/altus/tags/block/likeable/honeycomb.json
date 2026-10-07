@@ -1,0 +1,20 @@
+{
+  "values": [
+    {
+      "id": "minecraft:honeycomb_block",
+      "required": false
+    },
+    {
+      "id": "minecraft:honey_block",
+      "required": false
+    },
+    {
+      "id": "minecraft:beehive",
+      "required": false
+    },
+    {
+      "id": "minecraft:bee_nest",
+      "required": false
+    }
+  ]
+}

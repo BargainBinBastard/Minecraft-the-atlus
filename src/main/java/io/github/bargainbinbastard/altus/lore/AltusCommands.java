@@ -6,10 +6,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
+import io.github.bargainbinbastard.altus.AltusConfig;
 import io.github.bargainbinbastard.altus.AltusMod;
+import io.github.bargainbinbastard.altus.dream.AltusSession;
+import io.github.bargainbinbastard.altus.dream.Dreams;
+import io.github.bargainbinbastard.altus.dream.SleepScan;
+import io.github.bargainbinbastard.altus.history.FocusPicker;
 import io.github.bargainbinbastard.altus.history.History;
 import io.github.bargainbinbastard.altus.history.HistoryReport;
 import io.github.bargainbinbastard.altus.history.Text;
@@ -17,6 +25,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.storage.LevelResource;
 
 /**
@@ -30,7 +39,62 @@ public final class AltusCommands {
         dispatcher.register(Commands.literal("altus")
                 .requires(src -> src.hasPermission(2))
                 .then(Commands.literal("history").executes(ctx -> summary(ctx.getSource())))
-                .then(Commands.literal("dump").executes(ctx -> dump(ctx.getSource()))));
+                .then(Commands.literal("dump").executes(ctx -> dump(ctx.getSource())))
+                .then(Commands.literal("dream")
+                        .executes(ctx -> dream(ctx.getSource(), AltusConfig.DREAM_SECONDS.get()))
+                        .then(Commands.argument("seconds", IntegerArgumentType.integer(10, 7200))
+                                .executes(ctx -> dream(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "seconds")))))
+                .then(Commands.literal("wake").executes(ctx -> wake(ctx.getSource())))
+                .then(Commands.literal("scan").executes(ctx -> scan(ctx.getSource()))));
+    }
+
+    /** Enters the Altus at once, as if asleep here. The blocks around you still pick the focus god. */
+    private static int dream(CommandSourceStack src, int seconds) throws CommandSyntaxException {
+        ServerPlayer sp = src.getPlayerOrException();
+        if (Dreams.session(sp).active) {
+            src.sendFailure(Component.literal("You are already dreaming."));
+            return 0;
+        }
+        History h = WorldHistory.get(src.getServer());
+        Map<String, Integer> counts = SleepScan.count(sp.level(), sp.blockPosition(), AltusConfig.SCAN_RADIUS.get());
+        FocusPicker.Focus focus = FocusPicker.pick(h, counts, AltusConfig.SCAN_THRESHOLD.get());
+        boolean ok = Dreams.begin(sp, focus.kind == FocusPicker.Kind.GOD ? focus.god : -1, seconds * 20, sp.getX(), sp.getY(), sp.getZ(),
+                Dreams.intro(h, focus, counts));
+        if (!ok) src.sendFailure(Component.literal("Could not enter the Altus; see the server log."));
+        return ok ? 1 : 0;
+    }
+
+    private static int wake(CommandSourceStack src) throws CommandSyntaxException {
+        ServerPlayer sp = src.getPlayerOrException();
+        AltusSession s = Dreams.session(sp);
+        if (!s.active) {
+            src.sendFailure(Component.literal("You are not dreaming."));
+            return 0;
+        }
+        Dreams.end(sp, "command");
+        return 1;
+    }
+
+    /** Shows how the blocks around you score for each god, and who a sleeper here would dream toward. */
+    private static int scan(CommandSourceStack src) throws CommandSyntaxException {
+        ServerPlayer sp = src.getPlayerOrException();
+        History h = WorldHistory.get(src.getServer());
+        Map<String, Integer> counts = SleepScan.count(sp.level(), sp.blockPosition(), AltusConfig.SCAN_RADIUS.get());
+        FocusPicker.Focus f = FocusPicker.pick(h, counts, AltusConfig.SCAN_THRESHOLD.get());
+        List<String> lines = new ArrayList<>();
+        lines.add("Blocks counted: " + (counts.isEmpty() ? "none" : counts.toString()));
+        f.scores.entrySet().stream()
+                .sorted((a, b) -> Integer.compare(b.getValue(), a.getValue()))
+                .limit(4)
+                .forEach(e -> lines.add("  " + Text.cap(h.name(e.getKey())) + ": " + e.getValue()));
+        String verdict = switch (f.kind) {
+            case NONE -> "Ordinary sleep: no god reaches " + AltusConfig.SCAN_THRESHOLD.get() + ".";
+            case TIE -> "A tie: the sleeper dreams of the Woods with no focus.";
+            case GOD -> "The sleeper dreams toward " + h.name(f.god) + ".";
+        };
+        lines.add(verdict);
+        for (String l : lines) src.sendSuccess(() -> Component.literal(l), false);
+        return 1;
     }
 
     private static int summary(CommandSourceStack src) {

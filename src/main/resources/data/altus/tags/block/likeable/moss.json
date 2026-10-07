@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "minecraft:moss_block",
+      "required": false
+    },
+    {
+      "id": "minecraft:moss_carpet",
+      "required": false
+    }
+  ]
+}

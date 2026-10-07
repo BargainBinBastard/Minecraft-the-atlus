@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "#minecraft:candles",
+      "required": false
+    },
+    {
+      "id": "#minecraft:candle_cakes",
+      "required": false
+    }
+  ]
+}
