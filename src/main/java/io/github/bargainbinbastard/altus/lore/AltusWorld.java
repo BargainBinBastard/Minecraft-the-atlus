@@ -162,7 +162,7 @@ public final class AltusWorld {
     }
 
     /** A Warden Stone at the outer corner of a mountain site's platform. */
-    static BlockPos siteWarden(Sites.Site s) {
+    public static BlockPos siteWarden(Sites.Site s) {
         int[] o = outward(s), q = perp(o);
         return new BlockPos(s.x + 3 * o[0] + 3 * q[0], Terrain.height(s.x, s.z) + 1, s.z + 3 * o[1] + 3 * q[1]);
     }
