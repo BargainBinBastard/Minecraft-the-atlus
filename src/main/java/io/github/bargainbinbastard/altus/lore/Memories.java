@@ -104,7 +104,10 @@ public final class Memories {
     /** Runs every second for each player: lets old memories fade. */
     public static void tick(ServerPlayer sp) {
         HeldMemories h = held(sp);
-        if (h.list.isEmpty()) return;
+        if (h.list.isEmpty()) {
+            if (sp.hasEffect(AltusRegistry.FADING_MEMORY)) sp.removeEffect(AltusRegistry.FADING_MEMORY);
+            return;
+        }
         long now = now(sp);
         List<String> faded = new ArrayList<>();
         h.list.removeIf(m -> {

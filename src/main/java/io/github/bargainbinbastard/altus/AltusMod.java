@@ -205,9 +205,14 @@ public class AltusMod {
         TomeService.save(p, 0, List.of("I tore that page out."));
         boolean reconciled = TomeService.contents(p.getInventory().getItem(0)).records().isEmpty();
 
+        int before = Memories.held(p).list.size();
         for (HeldMemories.Memory m : Memories.held(p).list) m.expire = Memories.now(p) - 1;
         Memories.tick(p);
-        boolean faded = Memories.held(p).list.isEmpty() && !p.hasEffect(AltusRegistry.FADING_MEMORY);
+        int after = Memories.held(p).list.size();
+        boolean effectAfter = p.hasEffect(AltusRegistry.FADING_MEMORY);
+        LOGGER.info("SMOKE: fading: held before={} after={} effect still present={} ({})", before, after, effectAfter,
+                p.getEffect(AltusRegistry.FADING_MEMORY));
+        boolean faded = after == 0 && !effectAfter;
 
         LOGGER.info("SMOKE: memories: carved={} recipe={} pending={} readable={} effect={} written={} known={} reconciled={} faded={}",
                 carved, recipe, pending, readable, effect, written, known, reconciled, faded);
