@@ -39,6 +39,22 @@ jobs:
           timeout 900 ./gradlew runSmokeServer --stacktrace 2>&1 | tee smoke.log || true
           grep -q "ALTUS SMOKE TEST PASSED" smoke.log
 
+      - name: Dump Minecraft API signatures (development aid)
+        if: always()
+        run: |
+          JAR=""
+          for j in $(find build/moddev ~/.gradle/caches -name "*.jar" 2>/dev/null | grep -iE "neoforge|minecraft" | head -200); do
+            if unzip -l "$j" 2>/dev/null | grep -q "net/minecraft/world/level/chunk/ChunkGenerator.class"; then JAR="$j"; break; fi
+          done
+          echo "jar: $JAR" > api.txt
+          if [ -n "$JAR" ] && [ -f api-classes.txt ]; then
+            while read -r c; do
+              [ -z "$c" ] && continue
+              echo "=== $c" >> api.txt
+              javap -cp "$JAR" "$c" >> api.txt 2>&1 || true
+            done < api-classes.txt
+          fi
+
       - name: Upload mod jar
         if: success()
         uses: actions/upload-artifact@v4
@@ -55,6 +71,7 @@ jobs:
           mkdir -p /tmp/ci-logs
           cp build.log /tmp/ci-logs/build.log 2>/dev/null || echo "no build log" > /tmp/ci-logs/build.log
           if [ -f smoke.log ]; then tail -n 400 smoke.log > /tmp/ci-logs/smoke.log; fi
+          if [ -f api.txt ]; then cp api.txt /tmp/ci-logs/api.txt; fi
           if [ -f run-smoke/world/altus/history.txt ]; then cp run-smoke/world/altus/history.txt /tmp/ci-logs/smoke-history.txt; fi
           if [ -d run-smoke/crash-reports ]; then cp -r run-smoke/crash-reports /tmp/ci-logs/crash-reports; fi
           if [ -d build/test-results/test ]; then cp -r build/test-results/test /tmp/ci-logs/test-results; fi
