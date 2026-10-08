@@ -35,7 +35,7 @@ jobs:
 
       - name: Smoke test on a dedicated server
         run: |
-          mkdir -p run-smoke && echo "eula=true" > run-smoke/eula.txt
+          mkdir -p run-smoke && echo "eula=true" > run-smoke/eula.txt && printf "level-seed=14\n" > run-smoke/server.properties
           timeout 900 ./gradlew runSmokeServer --stacktrace 2>&1 | tee smoke.log || true
           grep -q "ALTUS SMOKE TEST PASSED" smoke.log
 
