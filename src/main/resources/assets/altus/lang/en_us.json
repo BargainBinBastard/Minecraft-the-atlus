@@ -1,5 +1,7 @@
 {
   "block.altus.inscription": "Inscription",
+  "block.altus.altus_door": "Door of the Altus",
+  "block.altus.reliquary": "Reliquary",
   "item.altus.tome": "Tome",
   "effect.altus.fading_memory": "Fading Memory"
 }

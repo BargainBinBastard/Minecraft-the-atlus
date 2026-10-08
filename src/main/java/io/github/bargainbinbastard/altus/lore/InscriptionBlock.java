@@ -38,7 +38,11 @@ public class InscriptionBlock extends Block {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        if (!level.isClientSide && player instanceof ServerPlayer sp) Memories.readInscription(sp, state.getValue(FACET));
+        if (!level.isClientSide && player instanceof ServerPlayer sp) {
+            String mural = AltusWorld.muralAt(pos);
+            if (mural != null) Memories.take(sp, mural, "mural");
+            else Memories.readInscription(sp, state.getValue(FACET));
+        }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 }

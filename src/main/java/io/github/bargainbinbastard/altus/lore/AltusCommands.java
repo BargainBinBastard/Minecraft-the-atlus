@@ -45,7 +45,40 @@ public final class AltusCommands {
                         .then(Commands.argument("seconds", IntegerArgumentType.integer(10, 7200))
                                 .executes(ctx -> dream(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "seconds")))))
                 .then(Commands.literal("wake").executes(ctx -> wake(ctx.getSource())))
-                .then(Commands.literal("scan").executes(ctx -> scan(ctx.getSource()))));
+                .then(Commands.literal("scan").executes(ctx -> scan(ctx.getSource())))
+                .then(Commands.literal("sites").executes(ctx -> sites(ctx.getSource())))
+                .then(Commands.literal("visit").then(Commands.argument("god", IntegerArgumentType.integer(0, 1000))
+                        .executes(ctx -> visit(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "god"))))));
+    }
+
+    /** Lists the Mountain's door sites and who holds each. */
+    private static int sites(CommandSourceStack src) {
+        History h = WorldHistory.get(src.getServer());
+        io.github.bargainbinbastard.altus.history.Sites sites = WorldHistory.sites(src.getServer());
+        for (io.github.bargainbinbastard.altus.history.Sites.Site s : sites.all) {
+            String who = s.occupant < 0 ? "empty" : "#" + s.occupant + " " + h.name(s.occupant)
+                    + (h.god(s.occupant).alive ? ", power " + h.god(s.occupant).power : " (dead: a ruin)");
+            net.minecraft.core.BlockPos d = AltusWorld.doorBase(s);
+            String line = Text.cap(s.label) + ": " + who + "  [" + d.getX() + " " + d.getY() + " " + d.getZ() + "]";
+            src.sendSuccess(() -> Component.literal(line), false);
+        }
+        return 1;
+    }
+
+    /** While dreaming, jumps to a god's door. */
+    private static int visit(CommandSourceStack src, int god) throws CommandSyntaxException {
+        ServerPlayer sp = src.getPlayerOrException();
+        if (!Dreams.session(sp).active) {
+            src.sendFailure(Component.literal("You must be dreaming first: /altus dream"));
+            return 0;
+        }
+        net.minecraft.core.BlockPos a = AltusWorld.siteArrivalOf(god);
+        if (a == null) {
+            src.sendFailure(Component.literal("That god has no door."));
+            return 0;
+        }
+        sp.teleportTo(sp.serverLevel(), a.getX() + 0.5, a.getY(), a.getZ() + 0.5, sp.getYRot(), 0f);
+        return 1;
     }
 
     /** Enters the Altus at once, as if asleep here. The blocks around you still pick the focus god. */
@@ -104,7 +137,7 @@ public final class AltusCommands {
         lines.add("The Altus: " + h.gods.size() + " gods (" + alive + " alive), " + h.events.size() + " events, "
                 + h.groups.size() + " groups, " + h.secrets.size() + " secrets, " + h.lies.size() + " lies.");
         for (History.God g : h.gods)
-            lines.add("  " + Text.cap(g.name) + (g.alive ? ", power " + g.power : ", slain in " + Text.year(g.deathYear)));
+            lines.add("  #" + g.id + " " + Text.cap(g.name) + (g.alive ? ", power " + g.power : ", slain in " + Text.year(g.deathYear)));
         if (!h.deicides.isEmpty()) lines.add("Deicides: " + h.deicides.size());
         lines.add("Use /altus dump for the full history.");
         for (String l : lines) src.sendSuccess(() -> Component.literal(l), false);

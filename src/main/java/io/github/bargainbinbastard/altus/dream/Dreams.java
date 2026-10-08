@@ -10,6 +10,7 @@ import io.github.bargainbinbastard.altus.history.FocusPicker;
 import io.github.bargainbinbastard.altus.history.History;
 import io.github.bargainbinbastard.altus.history.Item;
 import io.github.bargainbinbastard.altus.history.Text;
+import io.github.bargainbinbastard.altus.lore.AltusWorld;
 import io.github.bargainbinbastard.altus.lore.Memories;
 import io.github.bargainbinbastard.altus.lore.WorldHistory;
 import net.minecraft.ChatFormatting;
@@ -73,7 +74,7 @@ public final class Dreams {
         s.focusGod = focusGod;
         s.stash = sp.getInventory().save(new ListTag());
         sp.getInventory().clearContent();
-        BlockPos spot = AltusDimension.clearing(altus, sp.getRandom());
+        BlockPos spot = AltusWorld.arrival(sp, focusGod, altus);
         sp.teleportTo(altus, spot.getX() + 0.5, spot.getY(), spot.getZ() + 0.5, sp.getYRot(), sp.getXRot());
         sp.displayClientMessage(intro, false);
         AltusMod.LOGGER.info("{} entered the Altus (focus god {}, {} s)", sp.getGameProfile().getName(), focusGod, ticks / 20);

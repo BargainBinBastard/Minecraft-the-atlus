@@ -11,8 +11,10 @@ import io.github.bargainbinbastard.altus.history.History.Secret;
  * Lore a player can carry and write down. Each piece is a "testimony" with a stable id, so it can
  * be stored on a player or in a Tome and rendered again later from the world's history.
  *
- * <p>Ids so far: {@code W:<facet>:<godId>}, the Woods inscriptions, with facet LIKES, DISLIKES,
- * NATURE or ORIGIN.
+ * <p>Ids: {@code W:<facet>:<god>} Woods inscriptions (level 1); {@code OP:<god>:<other>} opinions,
+ * {@code GR:<grudge>} grudges and {@code GP:<group>:<god>} groups (level 2, sanctum murals);
+ * {@code EV:<event>:<teller>:<reveals>} a god's account of an event and {@code LOC:<god>} where a
+ * god's door stands (level 3, sanctum reliquaries).
  */
 public final class Lore {
     private Lore() {}
@@ -59,31 +61,46 @@ public final class Lore {
         return -1;
     }
 
-    /** Renders a testimony, or returns null if the id doesn't make sense for this world. */
+    /** Renders a testimony without door locations. */
     public static Testimony render(History h, String id) {
+        return render(h, null, id);
+    }
+
+    /** Renders a testimony, or returns null if the id doesn't make sense for this world. */
+    public static Testimony render(History h, Sites sites, String id) {
         String[] p = id.split(":");
-        if (p.length != 3 || !p[0].equals("W")) return null;
-        int god;
         try {
-            god = Integer.parseInt(p[2]);
+            switch (p[0]) {
+                case "W": return p.length == 3 ? woods(h, id, p[1], Integer.parseInt(p[2])) : null;
+                case "OP": return p.length == 3 ? opinion(h, id, Integer.parseInt(p[1]), Integer.parseInt(p[2])) : null;
+                case "GR": return p.length == 2 ? grudge(h, id, p[1]) : null;
+                case "GP": return p.length == 3 ? group(h, id, Integer.parseInt(p[1]), Integer.parseInt(p[2])) : null;
+                case "EV": return p.length == 4 ? event(h, id, p[1], Integer.parseInt(p[2]), p[3]) : null;
+                case "LOC": return p.length == 2 && sites != null ? location(h, sites, id, Integer.parseInt(p[1])) : null;
+                default: return null;
+            }
         } catch (NumberFormatException e) {
             return null;
         }
-        if (god < 0 || god >= h.gods.size()) return null;
+    }
+
+    private static boolean validGod(History h, int god) {
+        return god >= 0 && god < h.gods.size();
+    }
+
+    private static Testimony woods(History h, String id, String facet, int god) {
+        if (!validGod(h, god)) return null;
         God g = h.god(god);
         String carved = "Carved in stone, in the Woods of the Altus.";
-        switch (p[1]) {
+        switch (facet) {
             case "LIKES":
-                return new Testimony(id, 1, god, "The Loves of " + g.name,
-                        Text.cap(g.name) + " delights in " + phrases(g.likes) + ".", carved);
+                return new Testimony(id, 1, god, "The Loves of " + g.name, Text.cap(g.name) + " delights in " + phrases(g.likes) + ".", carved);
             case "DISLIKES":
-                return new Testimony(id, 1, god, "The Hatreds of " + g.name,
-                        Text.cap(g.name) + " cannot abide " + phrases(g.dislikes) + ".", carved);
+                return new Testimony(id, 1, god, "The Hatreds of " + g.name, Text.cap(g.name) + " cannot abide " + phrases(g.dislikes) + ".", carved);
             case "NATURE": {
                 List<String> ts = new ArrayList<>();
                 for (String t : g.traits.keySet()) ts.add(Content.TRAIT_ADJ.getOrDefault(t, t));
-                return new Testimony(id, 1, god, "The Nature of " + g.name,
-                        Text.cap(g.name) + " is said to be " + Text.listPhrase(ts) + ".", carved);
+                return new Testimony(id, 1, god, "The Nature of " + g.name, Text.cap(g.name) + " is said to be " + Text.listPhrase(ts) + ".", carved);
             }
             case "ORIGIN": {
                 HistoryEvent birth = birthOf(h, god);
@@ -93,6 +110,65 @@ public final class Lore {
             default:
                 return null;
         }
+    }
+
+    private static String painted(History h, int god) {
+        return "Painted on the walls of " + Text.poss(h.name(god)) + " sanctum.";
+    }
+
+    private static Testimony opinion(History h, String id, int a, int b) {
+        if (!validGod(h, a) || !validGod(h, b) || a == b) return null;
+        long o = Math.round(h.getOp(a, b));
+        String A = Text.cap(h.name(a)), B = h.name(b);
+        String text;
+        if (o >= 5) text = A + " holds " + B + " dear.";
+        else if (o >= 3) text = A + " thinks well of " + B + ".";
+        else if (o <= -5) text = A + " despises " + B + ".";
+        else if (o <= -3) text = A + " distrusts " + B + ".";
+        else text = A + " feels little either way about " + B + ".";
+        return new Testimony(id, 2, a, "What " + h.name(a) + " Thinks of " + B, text, painted(h, a));
+    }
+
+    private static Testimony grudge(History h, String id, String grudgeId) {
+        History.Grudge gd = null;
+        for (History.Grudge x : h.grudges) if (x.id.equals(grudgeId)) gd = x;
+        if (gd == null) return null;
+        String holder = h.name(gd.holder);
+        String target = gd.tt.equals("god") ? h.name(gd.target) : h.groups.get(gd.target).name;
+        String why = "";
+        if (gd.items != null && !gd.items.isEmpty())
+            why = ", for " + target + " likes " + phrases(gd.items) + ", which " + holder + " despises";
+        else if (gd.cause != null && h.event(gd.cause) != null)
+            why = ", born of the events of the " + Text.ord(h.event(gd.cause).year) + " year";
+        String adj = gd.sev >= 8 ? "bitter" : gd.sev >= 5 ? "deep" : "lingering";
+        return new Testimony(id, 2, gd.holder, "The Grudge of " + holder,
+                Text.cap(holder) + " holds a " + adj + " grudge against " + target + why + ".", painted(h, gd.holder));
+    }
+
+    private static Testimony group(History h, String id, int groupId, int god) {
+        if (groupId < 0 || groupId >= h.groups.size() || !validGod(h, god)) return null;
+        History.Group q = h.groups.get(groupId);
+        String ldr = q.leader != null && q.members.contains(q.leader) ? Text.cap(h.name(q.leader)) + " leads it." : "It has no leader.";
+        String text = Text.cap(q.name) + " is sworn " + Text.principlePhrase(q.principle, h) + ". " + ldr + " Its members are "
+                + h.names(q.members) + ".";
+        if (q.dissolved) text = Text.cap(q.name) + " was sworn " + Text.principlePhrase(q.principle, h) + ", and is no more.";
+        return new Testimony(id, 2, god, "On " + q.name, text, painted(h, god));
+    }
+
+    private static Testimony event(History h, String id, String eventId, int teller, String reveals) {
+        HistoryEvent e = h.event(eventId);
+        if (e == null || !validGod(h, teller)) return null;
+        History.Lie lie = h.storyOf(eventId, teller);
+        String att = h.god(teller).alive ? "So " + h.name(teller) + " tells it." : "So " + h.name(teller) + ", who is no more, once told it.";
+        return new Testimony(id, 3, teller, Text.eventTitle(e, h), Text.renderEvent(e, reveals, lie, h), Text.cap(att));
+    }
+
+    private static Testimony location(History h, Sites sites, String id, int god) {
+        if (!validGod(h, god)) return null;
+        Sites.Site s = sites.of(god);
+        if (s == null) return null;
+        return new Testimony(id, 3, god, "The Door of " + h.name(god),
+                "The door to " + Text.poss(h.name(god)) + " sanctum lies at " + s.label + ".", "Kept among the relics of the Mountain.");
     }
 
     private static String phrases(List<Item> items) {

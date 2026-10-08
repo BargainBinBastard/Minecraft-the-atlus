@@ -21,9 +21,12 @@ import io.github.bargainbinbastard.altus.history.FocusPicker;
 import io.github.bargainbinbastard.altus.history.History;
 import io.github.bargainbinbastard.altus.history.Item;
 import io.github.bargainbinbastard.altus.history.Lore;
+import io.github.bargainbinbastard.altus.history.Sites;
+import io.github.bargainbinbastard.altus.history.Terrain;
 import io.github.bargainbinbastard.altus.lore.AltusCommands;
 import io.github.bargainbinbastard.altus.lore.AltusWorld;
 import io.github.bargainbinbastard.altus.lore.HeldMemories;
+import io.github.bargainbinbastard.altus.lore.Knowledge;
 import io.github.bargainbinbastard.altus.lore.Memories;
 import io.github.bargainbinbastard.altus.lore.TomeContents;
 import io.github.bargainbinbastard.altus.lore.TomeService;
@@ -164,8 +167,80 @@ public class AltusMod {
         boolean death = smokeDeath(p);
         boolean sleep = smokeSleep(server, p);
         boolean memories = smokeMemories(server, p);
+        boolean stage = smokeStage(server, p);
         server.getPlayerList().remove(p);
-        return roundTrip && death && sleep && memories;
+        return roundTrip && death && sleep && memories && stage;
+    }
+
+    /** The Mountain stands, every door is built, and a sanctum is gated by knowledge from door to reliquary. */
+    private static boolean smokeStage(MinecraftServer server, ServerPlayer p) {
+        History h = WorldHistory.get(server);
+        Sites sites = WorldHistory.sites(server);
+        ServerLevel altus = AltusDimension.get(server);
+        altus.getChunk(0, 0);
+        int summit = altus.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, 0, 0);
+        boolean mountain = summit > 180;
+        int doors = 0, expected = 0;
+        Sites.Site site = null;
+        for (Sites.Site s : sites.all) {
+            if (s.occupant < 0 || !h.god(s.occupant).alive) continue;
+            expected++;
+            if (altus.getBlockState(AltusWorld.doorBase(s)).is(AltusRegistry.ALTUS_DOOR.get())) doors++;
+            if (site == null) site = s;
+        }
+        LOGGER.info("SMOKE: stage: summit height {} (terrain says {}); doors built {} of {}", summit, Terrain.height(0, 0) + 1, doors, expected);
+        if (site == null) return mountain && doors == expected;
+        int g = site.occupant;
+        Knowledge k = Memories.knowledge(p);
+        Memories.held(p).list.clear();
+        k.written.clear();
+        k.understanding.clear();
+        if (Dreams.session(p).active) Dreams.end(p, "command");
+        Dreams.begin(p, -1, 400, p.getX(), p.getY(), p.getZ(), Component.literal("smoke"));
+        p.hasChangedDimension();
+
+        BlockPos door = AltusWorld.doorBase(site);
+        BlockPos before = p.blockPosition();
+        AltusWorld.useDoor(p, door);
+        boolean shut = p.blockPosition().equals(before);
+        k.understanding.put(g, 1);
+        AltusWorld.useDoor(p, door);
+        boolean entered = p.blockPosition().closerThan(AltusWorld.sanctumArrivalOf(g), 2);
+
+        List<BlockPos> murals = AltusWorld.muralsOf(g);
+        String muralId = AltusWorld.muralAt(murals.get(0));
+        Memories.take(p, muralId, "mural");
+        boolean muralTaken = Memories.held(p).find(muralId) != null;
+        boolean built = altus.getBlockState(murals.get(0)).is(AltusRegistry.INSCRIPTION.get());
+
+        List<BlockPos> relics = AltusWorld.relicsOf(g);
+        boolean relicShut = true, relicOpened = true;
+        if (!relics.isEmpty()) {
+            built &= altus.getBlockState(relics.get(0)).is(AltusRegistry.RELIQUARY.get());
+            int n = Memories.held(p).list.size();
+            AltusWorld.useReliquary(p, relics.get(0));
+            relicShut = Memories.held(p).list.size() == n;
+            k.understanding.put(g, 2);
+            AltusWorld.useReliquary(p, relics.get(0));
+            relicOpened = Memories.held(p).list.size() == n + 1;
+        }
+        AltusWorld.useDoor(p, AltusWorld.sanctumArrivalOf(g).offset(0, 0, -3));
+        boolean out = p.blockPosition().closerThan(AltusWorld.siteArrivalOf(g), 2);
+        Dreams.end(p, "command");
+
+        k.written.add("LOC:" + g);
+        Dreams.begin(p, g, 200, p.getX(), p.getY(), p.getZ(), Component.literal("smoke"));
+        p.hasChangedDimension();
+        boolean arrivedAtDoor = p.blockPosition().closerThan(AltusWorld.siteArrivalOf(g), 2);
+        Dreams.end(p, "command");
+
+        LOGGER.info("SMOKE: sanctum of {} at {}: shut={} entered={} muralTaken={} built={} relics={} relicShut={} relicOpened={} out={} arrivedAtDoor={}",
+                h.name(g), site.id, shut, entered, muralTaken, built, relics.size(), relicShut, relicOpened, out, arrivedAtDoor);
+        for (HeldMemories.Memory m : Memories.held(p).list) {
+            Lore.Testimony t = Lore.render(h, sites, m.id);
+            LOGGER.info("SMOKE:   took [{}] {}: {}", m.id, t.title, t.text);
+        }
+        return mountain && doors == expected && shut && entered && muralTaken && built && relicShut && relicOpened && out && arrivedAtDoor;
     }
 
     /** Reads the four inscriptions in a dream, wakes, writes one memory in a Tome, edits it away, and lets the rest fade. */

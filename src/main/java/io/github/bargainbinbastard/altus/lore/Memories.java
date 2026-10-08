@@ -38,9 +38,27 @@ public final class Memories {
         return sp.server.overworld().getGameTime();
     }
 
-    /** How long a memory of a given level lasts after waking, in ticks. */
+    /** How long a memory lasts after waking, in ticks. Deeper memories are more slippery. */
     public static long fadeTicks(int level) {
-        return AltusConfig.FADE_MINUTES.get() * 60L * 20L;
+        double factor = Math.max(0.25, 1 - 0.22 * (level - 1));
+        return (long) (AltusConfig.FADE_MINUTES.get() * factor * 60 * 20);
+    }
+
+    /** Takes the lore from a sanctum's mural or reliquary. */
+    public static void take(ServerPlayer sp, String id, String source) {
+        History h = WorldHistory.get(sp.server);
+        Lore.Testimony t = Lore.render(h, WorldHistory.sites(sp.server), id);
+        if (t == null) {
+            say(sp, "There is nothing here you can make out.");
+            return;
+        }
+        switch (gain(sp, t)) {
+            case ADDED -> say(sp, source.equals("relic")
+                    ? "You lift something from the reliquary. Its meaning slips past you, but you will remember it when you wake."
+                    : "You study the painting. Its meaning slips past you, but you will remember it when you wake.");
+            case ALREADY_HELD -> say(sp, "You already carry this memory.");
+            case ALREADY_KNOWN -> say(sp, "You have already written this down.");
+        }
     }
 
     /** Picks up a memory. In the Altus it waits, unreadable, until the player wakes. */
@@ -92,10 +110,12 @@ public final class Memories {
                 titles.add(m.title);
             }
         if (!titles.isEmpty()) {
-            int minutes = AltusConfig.FADE_MINUTES.get();
+            long soonest = Long.MAX_VALUE;
+            for (HeldMemories.Memory m : h.list) if (!m.pending()) soonest = Math.min(soonest, m.expire - now);
+            long minutes = Math.max(1, soonest / 1200);
             sp.displayClientMessage(Component.literal("You wake remembering " + (titles.size() == 1 ? "something" : titles.size() + " things")
-                    + ": " + String.join("; ", titles) + ". The memories will fade within " + minutes
-                    + " minutes unless you write them in a Tome.").withStyle(ChatFormatting.LIGHT_PURPLE), false);
+                    + ": " + String.join("; ", titles) + ". Unless you write them in a Tome, the first will fade within " + minutes
+                    + " minutes.").withStyle(ChatFormatting.LIGHT_PURPLE), false);
             if (!hasTome(sp)) sp.displayClientMessage(Component.literal(TOME_HINT).withStyle(ChatFormatting.GRAY), false);
         }
         sync(sp);

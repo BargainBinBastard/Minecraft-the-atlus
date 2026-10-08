@@ -47,7 +47,7 @@ public final class TomeService {
         HeldMemories.Memory m = held.find(testimonyId);
         if (m == null || m.pending()) return -1;
         History h = WorldHistory.get(sp.server);
-        Lore.Testimony t = Lore.render(h, testimonyId);
+        Lore.Testimony t = Lore.render(h, WorldHistory.sites(sp.server), testimonyId);
         if (t == null) return -1;
 
         List<String> pages = new ArrayList<>(TomeContents.sanitize(clientPages));

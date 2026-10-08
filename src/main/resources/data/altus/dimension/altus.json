@@ -1,18 +1,10 @@
 {
   "type": "altus:altus",
   "generator": {
-    "type": "minecraft:flat",
-    "settings": {
-      "biome": "altus:woods",
-      "features": true,
-      "lakes": false,
-      "layers": [
-        { "block": "minecraft:bedrock", "height": 1 },
-        { "block": "minecraft:stone", "height": 59 },
-        { "block": "minecraft:dirt", "height": 3 },
-        { "block": "minecraft:grass_block", "height": 1 }
-      ],
-      "structure_overrides": []
+    "type": "altus:altus",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "altus:woods"
     }
   }
 }
