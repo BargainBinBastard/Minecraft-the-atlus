@@ -262,7 +262,9 @@ public class AltusMod {
             planned.put(l.id, 10);
             row++;
         }
-        FocusPicker.Focus expected = FocusPicker.pick(h, planned, 4);
+        // Natural blocks near the bed (snow, moss, mud...) count too, so expect whatever the scan really finds.
+        FocusPicker.Focus expected = FocusPicker.pick(h, SleepScan.count(ow, head, AltusConfig.SCAN_RADIUS.get()),
+                AltusConfig.SCAN_THRESHOLD.get());
 
         p.teleportTo(ow, foot.getX() + 0.5, foot.getY(), foot.getZ() + 1.5, 0, 0);
         var result = p.startSleepInBed(head);
@@ -270,7 +272,8 @@ public class AltusMod {
         boolean began = Dreams.tryBeginFromSleep(p);
         boolean inAltus = AltusDimension.isAltus(p.level());
         int focus = Dreams.session(p).focusGod;
-        boolean ok = slept && began && inAltus && (expected.kind != FocusPicker.Kind.GOD || focus == expected.god);
+        boolean ok = slept && began == expected.dreams() && inAltus == expected.dreams()
+                && (expected.kind != FocusPicker.Kind.GOD || focus == expected.god);
         LOGGER.info("SMOKE: sleeping into the Altus: problem={} slept={} began={} inAltus={} focus={} expected={} {}",
                 result.left().map(Object::toString).orElse("none"), slept, began, inAltus, focus, expected.kind, expected.god);
         if (Dreams.session(p).active) Dreams.end(p, "command");
