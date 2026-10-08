@@ -32,7 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public final class AltusWorld {
     private AltusWorld() {}
 
-    public static final int STAGE_VERSION = 2;
+    public static final int STAGE_VERSION = 3;
     public static final int GROUND_Y = Terrain.BASE + 1;
     public static final BlockPos CLEARING = new BlockPos(Terrain.CLEARING_X, GROUND_Y, Terrain.CLEARING_Z);
     /** Where the four Woods inscriptions stand, by facet. */
@@ -51,6 +51,7 @@ public final class AltusWorld {
     private static final Map<BlockPos, Integer> MURAL_KEEPER = new HashMap<>();
     private static final Map<Integer, BlockPos> SITE_ARRIVAL = new HashMap<>();
     private static final Map<Integer, BlockPos> SANCTUM_ARRIVAL = new HashMap<>();
+    private static final Map<BlockPos, Integer> WARDENS = new HashMap<>();
 
     // ---------------------------------------------------------------- geometry
 
@@ -125,9 +126,11 @@ public final class AltusWorld {
         MURAL_KEEPER.clear();
         SITE_ARRIVAL.clear();
         SANCTUM_ARRIVAL.clear();
+        WARDENS.clear();
         for (Sites.Site s : sites.all) {
-            if (s.occupant < 0 || !h.god(s.occupant).alive) continue;
+            if (s.occupant < 0) continue;
             int g = s.occupant;
+            if (s.region != Sites.Region.HOUSE) WARDENS.put(siteWarden(s), g);
             BlockPos d = doorBase(s);
             DOORS.put(d, new Door(DoorKind.ENTER, g));
             DOORS.put(d.above(), new Door(DoorKind.ENTER, g));
@@ -138,7 +141,9 @@ public final class AltusWorld {
             DOORS.put(o.offset(5, 1, 38), new Door(DoorKind.SEALED, g));
             DOORS.put(o.offset(5, 2, 38), new Door(DoorKind.SEALED, g));
             SANCTUM_ARRIVAL.put(g, o.offset(5, 1, 3));
-            Sanctum plan = Sanctum.plan(h, sites, g);
+            WARDENS.put(o.offset(8, 1, 7), g);
+            WARDENS.put(o.offset(1, 1, 26), g);
+            Sanctum plan = planFor(h, sites, g);
             for (int i = 0; i < plan.murals.size() && i < MURAL_SPOTS.length; i++) {
                 BlockPos p = o.offset(MURAL_SPOTS[i][0], MURAL_SPOTS[i][1], MURAL_SPOTS[i][2]);
                 MURALS.put(p, plan.murals.get(i));
@@ -150,6 +155,20 @@ public final class AltusWorld {
                 RELIC_KEEPER.put(p, g);
             }
         }
+    }
+
+    static Sanctum planFor(History h, Sites sites, int god) {
+        return h.god(god).alive ? Sanctum.plan(h, sites, god) : Sanctum.planRuin(h, sites, god);
+    }
+
+    /** A Warden Stone at the outer corner of a mountain site's platform. */
+    static BlockPos siteWarden(Sites.Site s) {
+        int[] o = outward(s), q = perp(o);
+        return new BlockPos(s.x + 3 * o[0] + 3 * q[0], Terrain.height(s.x, s.z) + 1, s.z + 3 * o[1] + 3 * q[1]);
+    }
+
+    public static Map<BlockPos, Integer> wardens() {
+        return WARDENS;
     }
 
     private static void set(ServerLevel l, BlockPos p, BlockState s) {
@@ -166,7 +185,7 @@ public final class AltusWorld {
         buildHouse(l);
         for (Sites.Site s : sites.all) buildSite(l, h, s);
         for (Sites.Site s : sites.all)
-            if (s.occupant >= 0 && h.god(s.occupant).alive) buildSanctum(l, h, sites, s.occupant);
+            if (s.occupant >= 0) buildSanctum(l, h, sites, s.occupant);
     }
 
     static void buildClearing(ServerLevel l) {
@@ -252,9 +271,9 @@ public final class AltusWorld {
             int x = d.getX(), z = d.getZ();
             for (int k = -1; k <= 1; k++)
                 for (int y = d.getY(); y <= d.getY() + 2; y++) set(l, x + k, y, z, accent);
-            set(l, x, d.getY(), z, living ? door() : wall);
-            set(l, x, d.getY() + 1, z, living ? door() : wall);
-            if (ruin) set(l, x, d.getY(), z + 1, Blocks.COBWEB.defaultBlockState());
+            set(l, x, d.getY(), z, living || ruin ? door() : wall);
+            set(l, x, d.getY() + 1, z, living || ruin ? door() : wall);
+            if (ruin) set(l, x + 1, d.getY(), z + 1, Blocks.COBWEB.defaultBlockState());
             return;
         }
 
@@ -277,16 +296,22 @@ public final class AltusWorld {
             }
         for (int k = -1; k <= 1; k++)
             for (int y = hgt + 1; y <= hgt + 3; y++) set(l, d.getX() + k * q[0], y, d.getZ() + k * q[1], accent);
-        set(l, d, living ? door() : wall);
-        set(l, d.above(), living ? door() : wall);
-        if (ruin) set(l, s.x + o[0], hgt + 1, s.z + o[1], Blocks.COBWEB.defaultBlockState());
+        set(l, d, living || ruin ? door() : wall);
+        set(l, d.above(), living || ruin ? door() : wall);
+        if (ruin) set(l, s.x + 2 * q[0], hgt + 1, s.z + 2 * q[1], Blocks.COBWEB.defaultBlockState());
+        if (living || ruin) set(l, siteWarden(s), warden());
     }
 
     private static BlockState door() {
         return AltusRegistry.ALTUS_DOOR.get().defaultBlockState();
     }
 
+    private static BlockState warden() {
+        return AltusRegistry.WARDEN_STONE.get().defaultBlockState();
+    }
+
     static void buildSanctum(ServerLevel l, History h, Sites sites, int god) {
+        boolean ruin = !h.god(god).alive;
         Palettes.Palette pal = Palettes.of(h.god(god));
         BlockPos o = pocketOrigin(god);
         BlockState air = Blocks.AIR.defaultBlockState();
@@ -315,11 +340,37 @@ public final class AltusWorld {
             set(l, o.offset(5, y, 0), door());
             set(l, o.offset(5, y, 38), door());
         }
-        Sanctum plan = Sanctum.plan(h, sites, god);
+        if (ruin) decay(l, o, god);
+        set(l, o.offset(8, 1, 7), warden());
+        set(l, o.offset(1, 1, 26), warden());
+        Sanctum plan = planFor(h, sites, god);
         for (int i = 0; i < plan.murals.size() && i < MURAL_SPOTS.length; i++)
             set(l, o.offset(MURAL_SPOTS[i][0], MURAL_SPOTS[i][1], MURAL_SPOTS[i][2]), AltusRegistry.INSCRIPTION.get().defaultBlockState());
         for (int i = 0; i < plan.reliquaries.size() && i < RELIC_SPOTS.length; i++)
             set(l, o.offset(RELIC_SPOTS[i][0], RELIC_SPOTS[i][1], RELIC_SPOTS[i][2]), AltusRegistry.RELIQUARY.get().defaultBlockState());
+    }
+
+    /** A dead god's sanctum crumbles: cracked and fallen walls, cobwebs, its lights mostly out. */
+    static void decay(ServerLevel l, BlockPos o, int god) {
+        java.util.Random r = new java.util.Random(31L * god + 7);
+        BlockState cracked = Blocks.CRACKED_STONE_BRICKS.defaultBlockState(), mossy = Blocks.MOSSY_COBBLESTONE.defaultBlockState();
+        for (int x = -2; x <= 12; x++)
+            for (int y = 0; y <= 6; y++)
+                for (int z = 0; z <= 38; z++) {
+                    BlockPos p = o.offset(x, y, z);
+                    BlockState st = l.getBlockState(p);
+                    if (st.isAir()) {
+                        if (y >= 1 && y <= 5 && r.nextInt(30) == 0) set(l, p, Blocks.COBWEB.defaultBlockState());
+                        continue;
+                    }
+                    if (st.is(AltusRegistry.ALTUS_DOOR.get())) continue;
+                    boolean shell = x == -2 || x == 12 || z == 0 || z == 38 || y == 6;
+                    int roll = r.nextInt(100);
+                    if (roll < 22) set(l, p, cracked);
+                    else if (roll < 32) set(l, p, mossy);
+                    else if (roll < 36 && !shell && y > 0) set(l, p, Blocks.AIR.defaultBlockState());
+                    else if (y == 6 && st.getLightEmission() > 0 && roll < 80) set(l, p, cracked);
+                }
     }
 
     // ---------------------------------------------------------------- interaction
@@ -376,7 +427,8 @@ public final class AltusWorld {
                 }
                 BlockPos a = SANCTUM_ARRIVAL.get(d.god());
                 sp.teleportTo(altus, a.getX() + 0.5, a.getY(), a.getZ() + 0.5, 0f, 0f);
-                sp.displayClientMessage(Component.literal("You step into the sanctum of " + h.name(d.god()) + ".")
+                String where = h.god(d.god()).alive ? "the sanctum of " : "what is left of the sanctum of ";
+                sp.displayClientMessage(Component.literal("You step into " + where + h.name(d.god()) + ".")
                         .withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC), true);
             }
             case EXIT -> {
@@ -394,11 +446,20 @@ public final class AltusWorld {
             say(sp, "The reliquary is empty.");
             return;
         }
-        if (Memories.knowledge(sp).understandingOf(keeper) < 2) {
-            say(sp, "The reliquary will not open. You do not know its keeper well enough.");
+        io.github.bargainbinbastard.altus.history.Lore.Testimony t =
+                io.github.bargainbinbastard.altus.history.Lore.render(WorldHistory.get(sp.server), WorldHistory.sites(sp.server), id);
+        int needed = t == null ? 2 : requiredUnderstanding(t.level);
+        if (Memories.knowledge(sp).understandingOf(keeper) < needed) {
+            say(sp, needed > 2 ? "The reliquary is sealed tight. You would need to know its keeper far better."
+                    : "The reliquary will not open. You do not know its keeper well enough.");
             return;
         }
         Memories.take(sp, id, "relic");
+    }
+
+    /** How much a player must have written about a god to open a reliquary holding lore of this level. */
+    public static int requiredUnderstanding(int level) {
+        return Math.max(2, level - 1);
     }
 
     private static void say(ServerPlayer sp, String msg) {

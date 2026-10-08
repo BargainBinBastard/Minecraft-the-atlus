@@ -159,8 +159,11 @@ public final class Lore {
         HistoryEvent e = h.event(eventId);
         if (e == null || !validGod(h, teller)) return null;
         History.Lie lie = h.storyOf(eventId, teller);
-        String att = h.god(teller).alive ? "So " + h.name(teller) + " tells it." : "So " + h.name(teller) + ", who is no more, once told it.";
-        return new Testimony(id, 3, teller, Text.eventTitle(e, h), Text.renderEvent(e, reveals, lie, h), Text.cap(att));
+        boolean ownDeath = e.type.equals("deicide") && e.targets.contains(teller);
+        String att = ownDeath ? "So the corpse of " + h.name(teller) + " remembers it."
+                : h.god(teller).alive ? "So " + h.name(teller) + " tells it." : "So " + h.name(teller) + ", who is no more, once told it.";
+        boolean secret = e.secretRef != null && h.secret(e.secretRef) != null && !h.secret(e.secretRef).exposed;
+        return new Testimony(id, secret ? 4 : 3, teller, Text.eventTitle(e, h), Text.renderEvent(e, reveals, lie, h), Text.cap(att));
     }
 
     private static Testimony location(History h, Sites sites, String id, int god) {

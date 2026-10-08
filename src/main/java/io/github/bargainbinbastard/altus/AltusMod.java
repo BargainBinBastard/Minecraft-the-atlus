@@ -25,6 +25,8 @@ import io.github.bargainbinbastard.altus.history.Sites;
 import io.github.bargainbinbastard.altus.history.Terrain;
 import io.github.bargainbinbastard.altus.lore.AltusCommands;
 import io.github.bargainbinbastard.altus.lore.AltusWorld;
+import io.github.bargainbinbastard.altus.lore.Altars;
+import io.github.bargainbinbastard.altus.lore.Guardians;
 import io.github.bargainbinbastard.altus.lore.HeldMemories;
 import io.github.bargainbinbastard.altus.lore.Knowledge;
 import io.github.bargainbinbastard.altus.lore.Memories;
@@ -168,8 +170,131 @@ public class AltusMod {
         boolean sleep = smokeSleep(server, p);
         boolean memories = smokeMemories(server, p);
         boolean stage = smokeStage(server, p);
+        boolean carried = smokeCarried(server, p);
+        boolean guardians = smokeGuardians(server, p);
+        boolean ruin = smokeRuin(server, p);
         server.getPlayerList().remove(p);
-        return roundTrip && death && sleep && memories && stage;
+        return roundTrip && death && sleep && memories && stage && carried && guardians && ruin;
+    }
+
+    /** One thing left on an altar goes into the dream, can't be lost there, and comes back as it was used. */
+    private static boolean smokeCarried(MinecraftServer server, ServerPlayer p) {
+        if (Dreams.session(p).active) Dreams.end(p, "command");
+        Altars.bound(p).stack = ItemStack.EMPTY;
+        p.getInventory().clearContent();
+        p.getInventory().setItem(0, new ItemStack(Items.DIAMOND, 3));
+        ItemStack sword = new ItemStack(Items.IRON_SWORD);
+        boolean bound = Altars.bind(p, sword) && sword.isEmpty();
+        Dreams.begin(p, -1, 300, p.getX(), p.getY(), p.getZ(), Component.literal("smoke"));
+        p.hasChangedDimension();
+        ItemStack inHand = p.getInventory().getItem(p.getInventory().selected);
+        boolean carriedIn = inHand.is(Items.IRON_SWORD) && Altars.isCarried(inHand) && Altars.bound(p).stack.isEmpty();
+        int others = 0;
+        for (int i = 0; i < p.getInventory().getContainerSize(); i++) if (!p.getInventory().getItem(i).isEmpty()) others++;
+        inHand.setDamageValue(5);
+        p.getInventory().setItem(5, new ItemStack(Items.DIRT));
+        Dreams.end(p, "command");
+        boolean back = false, dirt = false;
+        int diamonds = 0;
+        for (int i = 0; i < p.getInventory().getContainerSize(); i++) {
+            ItemStack it = p.getInventory().getItem(i);
+            if (it.is(Items.IRON_SWORD) && !Altars.isCarried(it) && it.getDamageValue() == 5) back = true;
+            if (it.is(Items.DIAMOND)) diamonds += it.getCount();
+            if (it.is(Items.DIRT)) dirt = true;
+        }
+        ItemStack stick = new ItemStack(Items.STICK);
+        Altars.bind(p, stick);
+        Altars.reclaim(p);
+        boolean reclaimed = Altars.bound(p).stack.isEmpty() && p.getInventory().contains(new ItemStack(Items.STICK));
+        LOGGER.info("SMOKE: carried item: bound={} carriedIn={} (only thing held: {}) back={} diamonds={} dreamDirtGone={} reclaimed={}",
+                bound, carriedIn, others == 1, back, diamonds, !dirt, reclaimed);
+        return bound && carriedIn && others == 1 && back && diamonds == 3 && !dirt && reclaimed;
+    }
+
+    /** A Warden Stone calls its god's guardians when a dreamer comes near, up to the god's limit. */
+    private static boolean smokeGuardians(MinecraftServer server, ServerPlayer p) {
+        History h = WorldHistory.get(server);
+        Sites sites = WorldHistory.sites(server);
+        ServerLevel altus = AltusDimension.get(server);
+        Sites.Site site = null;
+        for (Sites.Site s : sites.all)
+            if (s.occupant >= 0 && h.god(s.occupant).alive && s.region != Sites.Region.HOUSE) {
+                site = s;
+                break;
+            }
+        if (site == null) {
+            LOGGER.info("SMOKE: guardians: no living god holds a door on the slopes in this world");
+            return true;
+        }
+        History.God god = h.god(site.occupant);
+        BlockPos stone = AltusWorld.siteWarden(site);
+        if (Dreams.session(p).active) Dreams.end(p, "command");
+        Dreams.begin(p, -1, 300, p.getX(), p.getY(), p.getZ(), Component.literal("smoke"));
+        p.hasChangedDimension();
+        BlockPos at = AltusWorld.siteArrivalOf(site.occupant);
+        p.teleportTo(altus, at.getX() + 0.5, at.getY(), at.getZ() + 0.5, 0f, 0f);
+        boolean placed = altus.getBlockState(stone).is(AltusRegistry.WARDEN_STONE.get());
+        net.minecraft.world.phys.AABB box = new net.minecraft.world.phys.AABB(stone).inflate(Guardians.WAKE_RANGE + 4);
+        Guardians.tick(altus, h);
+        List<net.minecraft.world.entity.Mob> first = altus.getEntitiesOfClass(net.minecraft.world.entity.Mob.class, box, Guardians::isGuardian);
+        boolean called = first.size() == 1 && first.get(0).getType() == Guardians.typeFor(god);
+        for (int i = 0; i < 8; i++) Guardians.tick(altus, h);
+        List<net.minecraft.world.entity.Mob> all = altus.getEntitiesOfClass(net.minecraft.world.entity.Mob.class, box, Guardians::isGuardian);
+        boolean capped = all.size() == Guardians.capFor(god);
+        all.forEach(net.minecraft.world.entity.Entity::discard);
+        Dreams.end(p, "command");
+        LOGGER.info("SMOKE: guardians of {} (power {}) at {}: stone={} called={} ({}) capped={} ({} of {})", god.name, god.power, site.id,
+                placed, called, first.isEmpty() ? "none" : first.get(0).getType().getDescriptionId(), capped, all.size(), Guardians.capFor(god));
+        return placed && called && capped;
+    }
+
+    /** A dead god's door opens on its ruin, whose reliquaries ask for more knowledge the deeper their lore. */
+    private static boolean smokeRuin(MinecraftServer server, ServerPlayer p) {
+        History h = WorldHistory.get(server);
+        Sites sites = WorldHistory.sites(server);
+        Sites.Site site = null;
+        for (Sites.Site s : sites.all)
+            if (s.occupant >= 0 && !h.god(s.occupant).alive) {
+                site = s;
+                break;
+            }
+        if (site == null) {
+            LOGGER.info("SMOKE: ruin: no dead god holds a door in this world");
+            return true;
+        }
+        int g = site.occupant;
+        Knowledge k = Memories.knowledge(p);
+        k.understanding.clear();
+        k.written.clear();
+        Memories.held(p).list.clear();
+        k.understanding.put(g, 1);
+        if (Dreams.session(p).active) Dreams.end(p, "command");
+        Dreams.begin(p, -1, 300, p.getX(), p.getY(), p.getZ(), Component.literal("smoke"));
+        p.hasChangedDimension();
+        AltusWorld.useDoor(p, AltusWorld.doorBase(site));
+        boolean entered = p.blockPosition().closerThan(AltusWorld.sanctumArrivalOf(g), 2);
+        List<BlockPos> relics = AltusWorld.relicsOf(g);
+        boolean gated = true;
+        String took = "nothing";
+        if (!relics.isEmpty()) {
+            String id = null;
+            for (BlockPos r : relics) {
+                int n = Memories.held(p).list.size();
+                k.understanding.put(g, 1);
+                AltusWorld.useReliquary(p, r);
+                boolean shut = Memories.held(p).list.size() == n;
+                k.understanding.put(g, 6);
+                AltusWorld.useReliquary(p, r);
+                boolean opened = Memories.held(p).list.size() == n + 1;
+                gated &= shut && opened;
+            }
+            HeldMemories.Memory first = Memories.held(p).list.get(0);
+            Lore.Testimony t = Lore.render(h, sites, first.id);
+            took = "[level " + t.level + "] " + t.text + " (" + t.attribution + ")";
+        }
+        Dreams.end(p, "command");
+        LOGGER.info("SMOKE: ruin of {} at {}: entered={} relics={} gated={} first relic: {}", h.name(g), site.id, entered, relics.size(), gated, took);
+        return entered && gated;
     }
 
     /** The Mountain stands, every door is built, and a sanctum is gated by knowledge from door to reliquary. */

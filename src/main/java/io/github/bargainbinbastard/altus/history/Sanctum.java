@@ -99,6 +99,26 @@ public final class Sanctum {
         return new Sanctum(god, List.copyOf(murals), List.copyOf(relics));
     }
 
+    /**
+     * What remains of a dead god's sanctum. Its first reliquary is the corpse's own memory of its
+     * death, true even when the killing was kept secret, so it names the killers.
+     */
+    public static Sanctum planRuin(History h, Sites sites, int god) {
+        List<String> murals = new ArrayList<>(List.of(Lore.woodsId(3, god), Lore.woodsId(2, god), Lore.woodsId(0, god)));
+        List<String> relics = new ArrayList<>();
+        for (HistoryEvent e : h.events)
+            if (e.type.equals("deicide") && e.targets.contains(god)) {
+                relics.add("EV:" + e.id + ":" + god + ":WHO");
+                break;
+            }
+        Sanctum living = plan(h, sites, god);
+        for (String r : living.reliquaries) {
+            if (relics.size() >= 4) break;
+            if (!relics.contains(r)) relics.add(r);
+        }
+        return new Sanctum(god, List.copyOf(murals), List.copyOf(relics));
+    }
+
     private static boolean kin(God a, God b) {
         return (a.creator != null && a.creator == b.id) || (b.creator != null && b.creator == a.id)
                 || (a.sourceCorpse != null && a.sourceCorpse == b.id) || (b.sourceCorpse != null && b.sourceCorpse == a.id);

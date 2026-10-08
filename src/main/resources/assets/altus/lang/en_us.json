@@ -3,5 +3,7 @@
   "block.altus.altus_door": "Door of the Altus",
   "block.altus.reliquary": "Reliquary",
   "item.altus.tome": "Tome",
-  "effect.altus.fading_memory": "Fading Memory"
+  "effect.altus.fading_memory": "Fading Memory",
+  "block.altus.warden_stone": "Warden Stone",
+  "block.altus.altar": "Altar"
 }

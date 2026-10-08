@@ -10,7 +10,9 @@ import io.github.bargainbinbastard.altus.history.FocusPicker;
 import io.github.bargainbinbastard.altus.history.History;
 import io.github.bargainbinbastard.altus.history.Item;
 import io.github.bargainbinbastard.altus.history.Text;
+import io.github.bargainbinbastard.altus.lore.Altars;
 import io.github.bargainbinbastard.altus.lore.AltusWorld;
+import io.github.bargainbinbastard.altus.lore.BoundItem;
 import io.github.bargainbinbastard.altus.lore.Memories;
 import io.github.bargainbinbastard.altus.lore.WorldHistory;
 import net.minecraft.ChatFormatting;
@@ -23,6 +25,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 /** Falling into the Altus and waking from it. */
@@ -74,9 +77,20 @@ public final class Dreams {
         s.focusGod = focusGod;
         s.stash = sp.getInventory().save(new ListTag());
         sp.getInventory().clearContent();
+        BoundItem bound = Altars.bound(sp);
+        s.carrying = !bound.stack.isEmpty();
+        ItemStack carried = bound.stack.copy();
+        bound.stack = ItemStack.EMPTY;
+        if (s.carrying) {
+            Altars.mark(carried);
+            sp.getInventory().setItem(sp.getInventory().selected, carried);
+        }
         BlockPos spot = AltusWorld.arrival(sp, focusGod, altus);
         sp.teleportTo(altus, spot.getX() + 0.5, spot.getY(), spot.getZ() + 0.5, sp.getYRot(), sp.getXRot());
         sp.displayClientMessage(intro, false);
+        if (s.carrying)
+            sp.displayClientMessage(Component.literal("You carry the " + carried.getHoverName().getString() + " into the dream.")
+                    .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), false);
         AltusMod.LOGGER.info("{} entered the Altus (focus god {}, {} s)", sp.getGameProfile().getName(), focusGod, ticks / 20);
         return true;
     }
@@ -101,9 +115,24 @@ public final class Dreams {
             y = spawn.getY();
             z = spawn.getZ() + 0.5;
         }
+        ItemStack carriedBack = ItemStack.EMPTY;
+        for (int i = 0; i < sp.getInventory().getContainerSize(); i++) {
+            ItemStack it = sp.getInventory().getItem(i);
+            if (Altars.isCarried(it)) {
+                carriedBack = it.copy();
+                Altars.unmark(carriedBack);
+                break;
+            }
+        }
         sp.getInventory().clearContent();
         sp.getInventory().load(s.stash);
         s.stash = new ListTag();
+        if (!carriedBack.isEmpty()) {
+            if (!sp.getInventory().add(carriedBack)) sp.drop(carriedBack, false);
+        } else if (s.carrying)
+            sp.displayClientMessage(Component.literal("The thing you carried did not come back with you.")
+                    .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), false);
+        s.carrying = false;
         s.active = false;
         s.ticksLeft = 0;
         sp.teleportTo(home, x, y, z, sp.getYRot(), sp.getXRot());

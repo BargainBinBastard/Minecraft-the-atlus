@@ -4,12 +4,14 @@ import com.mojang.serialization.MapCodec;
 
 import io.github.bargainbinbastard.altus.AltusMod;
 import io.github.bargainbinbastard.altus.dream.AltusChunkGenerator;
+import io.github.bargainbinbastard.altus.lore.AltarBlock;
 import io.github.bargainbinbastard.altus.lore.AltusDoorBlock;
 import io.github.bargainbinbastard.altus.lore.FadingMemoryEffect;
 import io.github.bargainbinbastard.altus.lore.InscriptionBlock;
 import io.github.bargainbinbastard.altus.lore.ReliquaryBlock;
 import io.github.bargainbinbastard.altus.lore.TomeContents;
 import io.github.bargainbinbastard.altus.lore.TomeItem;
+import io.github.bargainbinbastard.altus.lore.WardenStoneBlock;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
@@ -57,6 +59,16 @@ public final class AltusRegistry {
                     .noLootTable().sound(SoundType.STONE).lightLevel(s -> 6)));
     public static final DeferredItem<BlockItem> RELIQUARY_ITEM = ITEMS.registerSimpleBlockItem("reliquary", RELIQUARY);
 
+    public static final DeferredBlock<WardenStoneBlock> WARDEN_STONE = BLOCKS.register("warden_stone",
+            () -> new WardenStoneBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DEEPSLATE).strength(-1.0F, 3600000.0F)
+                    .noLootTable().sound(SoundType.DEEPSLATE).lightLevel(s -> 3)));
+    public static final DeferredItem<BlockItem> WARDEN_STONE_ITEM = ITEMS.registerSimpleBlockItem("warden_stone", WARDEN_STONE);
+
+    public static final DeferredBlock<AltarBlock> ALTAR = BLOCKS.register("altar",
+            () -> new AltarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.0F, 6.0F)
+                    .requiresCorrectToolForDrops().sound(SoundType.STONE).lightLevel(s -> 7)));
+    public static final DeferredItem<BlockItem> ALTAR_ITEM = ITEMS.registerSimpleBlockItem("altar", ALTAR);
+
     public static final DeferredItem<TomeItem> TOME = ITEMS.register("tome", () -> new TomeItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredHolder<MobEffect, FadingMemoryEffect> FADING_MEMORY =
@@ -78,11 +90,15 @@ public final class AltusRegistry {
     }
 
     private static void creativeTabs(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) event.accept(TOME.get());
+        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(TOME.get());
+            event.accept(ALTAR_ITEM.get());
+        }
         if (event.getTabKey() == CreativeModeTabs.OP_BLOCKS) {
             event.accept(INSCRIPTION_ITEM.get());
             event.accept(ALTUS_DOOR_ITEM.get());
             event.accept(RELIQUARY_ITEM.get());
+            event.accept(WARDEN_STONE_ITEM.get());
         }
     }
 }

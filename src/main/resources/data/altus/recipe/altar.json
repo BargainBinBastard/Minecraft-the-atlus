@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [" C ", "SES", "SSS"],
+  "key": {
+    "C": { "item": "minecraft:candle" },
+    "E": { "item": "minecraft:ender_pearl" },
+    "S": { "item": "minecraft:stone_bricks" }
+  },
+  "result": { "id": "altus:altar", "count": 1 }
+}

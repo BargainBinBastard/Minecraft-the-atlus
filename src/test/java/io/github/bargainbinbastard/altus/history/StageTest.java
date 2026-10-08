@@ -47,6 +47,32 @@ class StageTest {
     }
 
     @Test
+    void everyRuinRendersAndItsCorpseNamesTheKillers() {
+        int checked = 0;
+        for (int i = 0; i < 150; i++) {
+            History h = HistorySimulator.simulate("ruin-" + i);
+            Sites sites = Sites.assign(h);
+            for (History.God g : h.gods) {
+                if (g.alive || sites.of(g.id) == null) continue;
+                Sanctum s = Sanctum.planRuin(h, sites, g.id);
+                for (String id : s.murals) assertNotNull(Lore.render(h, sites, id), id);
+                for (String id : s.reliquaries) {
+                    Lore.Testimony t = Lore.render(h, sites, id);
+                    assertNotNull(t, id);
+                    assertFalse(t.text.contains("null"), t.text);
+                }
+                if (!s.reliquaries.isEmpty() && s.reliquaries.get(0).startsWith("EV:")) {
+                    Lore.Testimony death = Lore.render(h, sites, s.reliquaries.get(0));
+                    assertFalse(death.text.contains("unseen hand"), "the corpse knows who killed it: " + death.text);
+                    assertTrue(death.attribution.contains("corpse"), death.attribution);
+                    checked++;
+                }
+            }
+        }
+        assertTrue(checked > 0, "some world should have a ruin with a remembered death");
+    }
+
+    @Test
     void everySanctumRendersCompletely() {
         for (int i = 0; i < 80; i++) {
             History h = HistorySimulator.simulate("sanctum-" + i);

@@ -1,0 +1,4 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": { "side": "altus:block/altar_side", "top": "altus:block/altar_top", "bottom": "minecraft:block/stone_bricks" }
+}

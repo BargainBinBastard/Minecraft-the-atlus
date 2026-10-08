@@ -20,6 +20,8 @@ public final class AltusSession implements INBTSerializable<CompoundTag> {
     public int focusGod = -1;
     /** The inventory held at the moment of falling asleep. */
     public ListTag stash = new ListTag();
+    /** Whether this dream began with a thing carried in from an altar. */
+    public boolean carrying;
     /** Overworld day number of the last dream, so a player dreams at most once a night. */
     public long lastDreamDay = -1;
 
@@ -38,6 +40,7 @@ public final class AltusSession implements INBTSerializable<CompoundTag> {
         t.putInt("focusGod", focusGod);
         t.put("stash", stash);
         t.putLong("lastDreamDay", lastDreamDay);
+        t.putBoolean("carrying", carrying);
         return t;
     }
 
@@ -52,5 +55,6 @@ public final class AltusSession implements INBTSerializable<CompoundTag> {
         focusGod = t.contains("focusGod") ? t.getInt("focusGod") : -1;
         stash = t.getList("stash", Tag.TAG_COMPOUND);
         lastDreamDay = t.contains("lastDreamDay") ? t.getLong("lastDreamDay") : -1;
+        carrying = t.getBoolean("carrying");
     }
 }
