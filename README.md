@@ -8,9 +8,9 @@ Altus to recover fragments of that history, and the gods take notice.
 
 ## Status
 
-**Slice 4: the Mountain.** Every world generates its history from its seed, players dream their
-way into the Altus, find lore in the Woods and write it in Tomes, and can now climb the Mountain to
-the gods' doors and enter their sanctums.
+**Slice 5: stakes.** Every world generates its history from its seed. Players dream their way into
+the Altus, find lore and write it in Tomes, climb the Mountain to the gods' doors and sanctums, and
+now face their guardians, can carry one thing into a dream, and can enter the ruins of dead gods.
 
 ### Dreaming
 
@@ -39,7 +39,8 @@ again by dreaming.
 
 To keep a memory, write it in a **Tome**: craft one from a book and quill surrounded by eight
 rotten flesh. Open the Tome, press **Write a memory**, and pick one; it is written onto the page
-with the day you wrote it. The pages are also yours to write on freely, and nothing marks an
+with the day you wrote it. Give each Tome a title in the box at the top; it becomes the Tome's
+name. The pages are also yours to write on freely, and nothing marks an
 entry as authentic, so you can lie in your Tome if you like. Behind the scenes, the game keeps a
 hidden record of each real entry (dropped if you edit the entry away) and of what you have
 learned. Those records are what the Altus's gates will check later.
@@ -61,6 +62,24 @@ the god's **sanctum**, built from its liked blocks:
   another god's door stands;
 - a sealed inner door, for later.
 
+A dead god's door opens onto what is left of its sanctum: cracked, overgrown and mostly dark. Its
+first reliquary holds the corpse's own memory of its death, which names its killers even if the
+killing was a secret. Lore that deep (level 4) needs three things written about its keeper.
+
+### Guardians and the Altar
+
+**Warden Stones** stand beside the doors on the slopes and in every sanctum's entry and archive.
+When a dreamer comes near, a stone calls up the god's guardians: the hostile creatures it likes
+(skeletons, spiders, drowned, endermen, phantoms or witches), or zombies if it likes none. Mightier
+gods are better guarded, up to four per stone. The House is safe. Dying in the Altus only wakes
+you.
+
+Since you arrive with nothing, you may want to bring a weapon. Craft an **Altar** (a candle on top,
+an ender pearl in the middle between two stone bricks, and three stone bricks along the bottom).
+Use it while holding something to leave one of it there; the next time you dream, it comes with
+you. It cannot be dropped in the Altus, and when you wake it returns to your inventory, worn by
+whatever you did with it. Use the Altar empty-handed to take it back without dreaming.
+
 Write down where a god's door is, and the next time you dream toward that god you wake at its door
 instead of the Clearing. Deeper memories fade faster: level 2 in about 35 minutes, level 3 in
 about 25.
@@ -69,7 +88,8 @@ about 25.
 world that already visited the Altus in an earlier version, delete the world's
 `dimensions/altus/altus` folder (or start a new world).
 
-The House's study, echoes, group halls and deeper lore come in the next slices.
+Echoes, the sealed inner sanctums, the House's vaults and study, and favor with the gods come in
+the next slices.
 
 ### Operator commands
 
@@ -115,7 +135,11 @@ You need JDK 21. Run `./gradlew build`; the jar lands in `build/libs/`.
   the Mountain stands at the height the terrain math predicts; every living god's door is built;
   a door refuses a stranger and admits someone who knows its god; a mural gives its lore; a
   reliquary refuses until you know its keeper well enough; the exit leads back to the door; and
-  knowing where a door is makes you wake there.
+  knowing where a door is makes you wake there; a Tome keeps its title, cleaned of formatting; an
+  item left on an altar goes into the dream alone, can't be lost there, and comes back worn, while
+  things picked up in the dream vanish; a Warden Stone calls its god's liked creature up to the
+  god's limit; and a ruin's reliquaries open only for those who know its keeper well enough. The
+  smoke world uses seed 14, which has a ruin whose corpse remembers a secret killing.
 - Publishes the build log, test results and the smoke-test history to the `ci-logs` branch.
 
 ## Layout
