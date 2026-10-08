@@ -32,6 +32,8 @@ public class TomeScreen extends Screen {
     private List<String> pages;
     private int page;
     private boolean picking;
+    /** Set after asking the server to write a memory, until it answers (or a couple of seconds pass). */
+    private int awaitingTicks;
     private int seenTomeVersion;
     private int seenHeldVersion;
     private MultiLineEditBox editor;
@@ -99,8 +101,13 @@ public class TomeScreen extends Screen {
     private void rebuildPicker() {
         for (Button b : pickButtons) removeWidget(b);
         pickButtons.clear();
-        editor.visible = !picking;
-        if (!picking) return;
+        // The text box ignores its visibility when clicked, so take it off the screen entirely while
+        // the memory list is showing; otherwise it swallows clicks meant for the list.
+        removeWidget(editor);
+        if (!picking) {
+            addRenderableWidget(editor);
+            return;
+        }
         int y = top + 20;
         for (HeldView v : writable()) {
             if (y > top + H - 50) break;
@@ -116,15 +123,18 @@ public class TomeScreen extends Screen {
     private void writeMemory(String id) {
         pages.set(page, editor.getValue());
         PacketDistributor.sendToServer(new TomeWritePayload(slot, page, id, new ArrayList<>(pages)));
+        awaitingTicks = 40;
         setPicking(false);
     }
 
     @Override
     public void tick() {
         super.tick();
+        if (awaitingTicks > 0) awaitingTicks--;
         int tv = ClientLore.tomeVersion.get();
         if (tv != seenTomeVersion) {
             seenTomeVersion = tv;
+            awaitingTicks = 0;
             TomeSyncPayload t = ClientLore.lastTome;
             if (t != null && t.slot() == slot) {
                 pages = new ArrayList<>(t.pages());
@@ -143,7 +153,8 @@ public class TomeScreen extends Screen {
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
         super.render(g, mouseX, mouseY, partialTick);
-        String head = picking ? "Which memory will you write down?" : "Page " + (page + 1) + " of " + pages.size();
+        String head = picking ? "Which memory will you write down?"
+                : awaitingTicks > 0 ? "Writing..." : "Page " + (page + 1) + " of " + pages.size();
         g.drawString(font, head, left, top + 3, 0xE0D8C0);
         if (picking && writable().isEmpty())
             g.drawString(font, "You hold no memories to write.", left, top + 24, 0xA0A0A0);
@@ -152,7 +163,8 @@ public class TomeScreen extends Screen {
     @Override
     public void removed() {
         if (editor != null && pages != null && page < pages.size()) pages.set(page, editor.getValue());
-        if (pages != null) PacketDistributor.sendToServer(new TomeSavePayload(slot, new ArrayList<>(pages)));
+        // If a write is still on its way back, the server already has the newer pages: don't overwrite them.
+        if (pages != null && awaitingTicks == 0) PacketDistributor.sendToServer(new TomeSavePayload(slot, new ArrayList<>(pages)));
         super.removed();
     }
 

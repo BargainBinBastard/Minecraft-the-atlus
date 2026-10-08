@@ -51,7 +51,7 @@ jobs:
             while read -r c; do
               [ -z "$c" ] && continue
               echo "=== $c" >> api.txt
-              javap -cp "$JAR" "$c" >> api.txt 2>&1 || true
+              javap -cp "$JAR" $c >> api.txt 2>&1 || true
             done < api-classes.txt
           fi
 

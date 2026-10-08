@@ -1,13 +1,2 @@
-net.minecraft.world.level.chunk.ChunkGenerator
-net.minecraft.world.level.levelgen.FlatLevelSource
-net.minecraft.world.level.NoiseColumn
-net.minecraft.world.level.chunk.ChunkAccess
-net.minecraft.world.level.saveddata.SavedData
-net.minecraft.world.level.saveddata.SavedData$Factory
-net.minecraft.world.level.storage.DimensionDataStorage
-net.minecraft.world.level.biome.FixedBiomeSource
-net.minecraft.world.level.levelgen.blending.Blender
-net.minecraft.world.level.block.entity.BlockEntityType$Builder
-net.minecraft.world.level.block.BaseEntityBlock
-net.minecraft.world.entity.Mob
-net.minecraft.world.entity.PathfinderMob
+-c net.minecraft.client.gui.components.MultiLineEditBox
+-c net.minecraft.client.gui.components.AbstractScrollWidget
