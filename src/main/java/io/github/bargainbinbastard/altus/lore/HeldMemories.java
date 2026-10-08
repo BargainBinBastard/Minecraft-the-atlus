@@ -11,7 +11,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 
 /**
  * Memories a player has picked up but not yet written down. A memory gathered in the Altus is
- * "pending" (expire = -1) until the player wakes; then it starts fading.
+ * pending until the player wakes; then it starts fading.
  */
 public final class HeldMemories implements INBTSerializable<CompoundTag> {
     public static final int CAP = 12;
@@ -20,18 +20,21 @@ public final class HeldMemories implements INBTSerializable<CompoundTag> {
         public final String id;
         public final String title;
         public final int level;
-        /** Overworld game time when it fades, or -1 while still dreaming. */
+        /** Gathered in a dream the player hasn't woken from yet: unreadable, and not fading. */
+        public boolean pending;
+        /** Overworld game time when it fades. Meaningless while pending. */
         public long expire;
 
-        public Memory(String id, String title, int level, long expire) {
+        public Memory(String id, String title, int level, boolean pending, long expire) {
             this.id = id;
             this.title = title;
             this.level = level;
+            this.pending = pending;
             this.expire = expire;
         }
 
         public boolean pending() {
-            return expire < 0;
+            return pending;
         }
     }
 
@@ -62,6 +65,7 @@ public final class HeldMemories implements INBTSerializable<CompoundTag> {
             t.putString("title", m.title);
             t.putInt("level", m.level);
             t.putLong("expire", m.expire);
+            t.putBoolean("pending", m.pending);
             l.add(t);
         }
         CompoundTag out = new CompoundTag();
@@ -75,7 +79,9 @@ public final class HeldMemories implements INBTSerializable<CompoundTag> {
         ListTag l = nbt.getList("memories", Tag.TAG_COMPOUND);
         for (int i = 0; i < l.size(); i++) {
             CompoundTag t = l.getCompound(i);
-            list.add(new Memory(t.getString("id"), t.getString("title"), t.getInt("level"), t.getLong("expire")));
+            long expire = t.getLong("expire");
+            boolean pending = t.contains("pending") ? t.getBoolean("pending") : expire < 0;
+            list.add(new Memory(t.getString("id"), t.getString("title"), t.getInt("level"), pending, expire));
         }
     }
 }

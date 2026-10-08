@@ -49,7 +49,7 @@ public final class Memories {
         HeldMemories h = held(sp);
         if (h.find(t.id) != null) return Gain.ALREADY_HELD;
         boolean dreaming = Dreams.session(sp).active;
-        h.add(new HeldMemories.Memory(t.id, t.title, t.level, dreaming ? -1 : now(sp) + fadeTicks(t.level)));
+        h.add(new HeldMemories.Memory(t.id, t.title, t.level, dreaming, dreaming ? 0 : now(sp) + fadeTicks(t.level)));
         sync(sp);
         if (!dreaming) updateEffect(sp);
         return Gain.ADDED;
@@ -87,6 +87,7 @@ public final class Memories {
         List<String> titles = new ArrayList<>();
         for (HeldMemories.Memory m : h.list)
             if (m.pending()) {
+                m.pending = false;
                 m.expire = now + fadeTicks(m.level);
                 titles.add(m.title);
             }
