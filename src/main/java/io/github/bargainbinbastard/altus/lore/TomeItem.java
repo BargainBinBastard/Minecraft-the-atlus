@@ -1,6 +1,8 @@
 package io.github.bargainbinbastard.altus.lore;
 
 import io.github.bargainbinbastard.altus.client.ClientHooks;
+import io.github.bargainbinbastard.altus.registry.AltusRegistry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -13,6 +15,14 @@ import net.minecraft.world.level.Level;
 public class TomeItem extends Item {
     public TomeItem(Properties props) {
         super(props);
+    }
+
+    /** A titled Tome shows its title as its name. An anvil rename still takes precedence. */
+    @Override
+    public Component getName(ItemStack stack) {
+        TomeContents c = stack.get(AltusRegistry.TOME_CONTENTS.get());
+        if (c != null && !c.title().isBlank()) return Component.literal(c.title());
+        return super.getName(stack);
     }
 
     @Override

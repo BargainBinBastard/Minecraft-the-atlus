@@ -32,11 +32,12 @@ public final class TomeService {
         return st.getOrDefault(AltusRegistry.TOME_CONTENTS.get(), TomeContents.EMPTY);
     }
 
-    public static void save(ServerPlayer sp, int slot, List<String> pages) {
+    public static void save(ServerPlayer sp, int slot, String title, List<String> pages) {
         ItemStack st = tomeAt(sp, slot);
         if (st == null) return;
         List<String> clean = TomeContents.sanitize(pages);
-        st.set(AltusRegistry.TOME_CONTENTS.get(), new TomeContents(clean, TomeContents.reconcile(contents(st).records(), clean)));
+        st.set(AltusRegistry.TOME_CONTENTS.get(),
+                new TomeContents(TomeContents.sanitizeTitle(title), clean, TomeContents.reconcile(contents(st).records(), clean)));
     }
 
     /** Writes a held memory into a Tome. Returns the page it landed on, or -1 if nothing was written. */
@@ -60,7 +61,8 @@ public final class TomeService {
             return -1;
         }
         records.add(new TomeRecord(UUID.randomUUID().toString(), testimonyId, sp.getUUID().toString(), entry));
-        st.set(AltusRegistry.TOME_CONTENTS.get(), new TomeContents(pages, records));
+        String title = contents(st).title();
+        st.set(AltusRegistry.TOME_CONTENTS.get(), new TomeContents(title, pages, records));
 
         held.remove(testimonyId);
         Knowledge k = Memories.knowledge(sp);
@@ -69,7 +71,7 @@ public final class TomeService {
         Memories.sync(sp);
         Memories.updateEffect(sp);
         if (sp.connection != null && sp.connection.hasChannel(TomeSyncPayload.TYPE))
-            PacketDistributor.sendToPlayer(sp, new TomeSyncPayload(slot, pages, target));
+            PacketDistributor.sendToPlayer(sp, new TomeSyncPayload(slot, title, pages, target));
         sp.displayClientMessage(Component.literal("You write it down: " + t.title + ".").withStyle(ChatFormatting.LIGHT_PURPLE), true);
         return target;
     }

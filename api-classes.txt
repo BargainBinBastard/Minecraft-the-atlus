@@ -1,2 +1,9 @@
--c net.minecraft.client.gui.components.MultiLineEditBox
--c net.minecraft.client.gui.components.AbstractScrollWidget
+net.neoforged.neoforge.event.EventHooks
+net.minecraft.world.entity.Mob
+net.minecraft.world.entity.EntityType
+net.minecraft.world.item.component.CustomData
+net.minecraft.world.item.ItemStack
+net.neoforged.neoforge.event.entity.item.ItemTossEvent
+net.minecraft.world.entity.MobSpawnType
+net.neoforged.neoforge.event.tick.LevelTickEvent$Post
+net.minecraft.world.level.block.BaseEntityBlock

@@ -12,6 +12,7 @@ import io.github.bargainbinbastard.altus.net.TomeWritePayload;
 import io.github.bargainbinbastard.altus.registry.AltusRegistry;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -30,6 +31,8 @@ public class TomeScreen extends Screen {
     private final InteractionHand hand;
     private int slot;
     private List<String> pages;
+    private String title;
+    private EditBox titleBox;
     private int page;
     private boolean picking;
     /** Set after asking the server to write a memory, until it answers (or a couple of seconds pass). */
@@ -54,13 +57,20 @@ public class TomeScreen extends Screen {
             TomeContents c = st.getOrDefault(AltusRegistry.TOME_CONTENTS.get(), TomeContents.EMPTY);
             pages = new ArrayList<>(c.pages());
             if (pages.isEmpty()) pages.add("");
+            title = c.title();
             page = 0;
             seenTomeVersion = ClientLore.tomeVersion.get();
             seenHeldVersion = ClientLore.heldVersion.get();
         }
         left = (width - W) / 2;
         top = (height - H) / 2;
-        editor = new MultiLineEditBox(font, left, top + 16, W, H - 48, Component.literal("Write here..."), Component.literal("Page"));
+        titleBox = new EditBox(font, left, top, W - 96, 16, Component.literal("Title"));
+        titleBox.setMaxLength(TomeContents.MAX_TITLE);
+        titleBox.setHint(Component.literal("Untitled Tome"));
+        titleBox.setValue(title == null ? "" : title);
+        titleBox.setResponder(v -> title = v);
+        addRenderableWidget(titleBox);
+        editor = new MultiLineEditBox(font, left, top + 20, W, H - 52, Component.literal("Write here..."), Component.literal("Page"));
         editor.setCharacterLimit(TomeContents.MAX_PAGE_CHARS);
         editor.setValue(pages.get(page));
         editor.setValueListener(v -> {
@@ -108,7 +118,7 @@ public class TomeScreen extends Screen {
             addRenderableWidget(editor);
             return;
         }
-        int y = top + 20;
+        int y = top + 34;
         for (HeldView v : writable()) {
             if (y > top + H - 50) break;
             int mins = (ClientLore.secondsLeft(v) + 59) / 60;
@@ -137,6 +147,8 @@ public class TomeScreen extends Screen {
             awaitingTicks = 0;
             TomeSyncPayload t = ClientLore.lastTome;
             if (t != null && t.slot() == slot) {
+                title = t.title();
+                if (titleBox != null) titleBox.setValue(title);
                 pages = new ArrayList<>(t.pages());
                 if (pages.isEmpty()) pages.add("");
                 page = Math.max(0, Math.min(t.page(), pages.size() - 1));
@@ -153,18 +165,18 @@ public class TomeScreen extends Screen {
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
         super.render(g, mouseX, mouseY, partialTick);
-        String head = picking ? "Which memory will you write down?"
-                : awaitingTicks > 0 ? "Writing..." : "Page " + (page + 1) + " of " + pages.size();
-        g.drawString(font, head, left, top + 3, 0xE0D8C0);
+        String head = picking ? "Pick a memory:" : awaitingTicks > 0 ? "Writing..." : "Page " + (page + 1) + " of " + pages.size();
+        g.drawString(font, head, left + W - 90, top + 4, 0xE0D8C0);
         if (picking && writable().isEmpty())
-            g.drawString(font, "You hold no memories to write.", left, top + 24, 0xA0A0A0);
+            g.drawString(font, "You hold no memories to write.", left, top + 36, 0xA0A0A0);
     }
 
     @Override
     public void removed() {
         if (editor != null && pages != null && page < pages.size()) pages.set(page, editor.getValue());
         // If a write is still on its way back, the server already has the newer pages: don't overwrite them.
-        if (pages != null && awaitingTicks == 0) PacketDistributor.sendToServer(new TomeSavePayload(slot, new ArrayList<>(pages)));
+        if (pages != null && awaitingTicks == 0)
+            PacketDistributor.sendToServer(new TomeSavePayload(slot, title == null ? "" : title, new ArrayList<>(pages)));
         super.removed();
     }
 

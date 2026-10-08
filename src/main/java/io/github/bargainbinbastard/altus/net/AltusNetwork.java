@@ -17,7 +17,7 @@ public final class AltusNetwork {
         r.playToClient(TomeSyncPayload.TYPE, TomeSyncPayload.STREAM_CODEC,
                 (p, ctx) -> ctx.enqueueWork(() -> ClientLore.acceptTome(p)));
         r.playToServer(TomeSavePayload.TYPE, TomeSavePayload.STREAM_CODEC, (p, ctx) -> ctx.enqueueWork(() -> {
-            if (ctx.player() instanceof ServerPlayer sp) TomeService.save(sp, p.slot(), p.pages());
+            if (ctx.player() instanceof ServerPlayer sp) TomeService.save(sp, p.slot(), p.title(), p.pages());
         }));
         r.playToServer(TomeWritePayload.TYPE, TomeWritePayload.STREAM_CODEC, (p, ctx) -> ctx.enqueueWork(() -> {
             if (ctx.player() instanceof ServerPlayer sp) TomeService.write(sp, p.slot(), p.page(), p.testimonyId(), p.pages());

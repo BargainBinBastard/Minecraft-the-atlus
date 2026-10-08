@@ -277,8 +277,12 @@ public class AltusMod {
                 && Memories.knowledge(p).understandingOf(god) == 1;
         boolean known = Memories.gain(p, Lore.render(h, id)) == Memories.Gain.ALREADY_KNOWN;
 
-        TomeService.save(p, 0, List.of("I tore that page out."));
+        TomeService.save(p, 0, "  Notes on \u00a7cthe Gods  ", List.of("I tore that page out."));
         boolean reconciled = TomeService.contents(p.getInventory().getItem(0)).records().isEmpty();
+        boolean titled = TomeService.contents(p.getInventory().getItem(0)).title().equals("Notes on cthe Gods")
+                && p.getInventory().getItem(0).getHoverName().getString().equals("Notes on cthe Gods");
+        LOGGER.info("SMOKE: Tome title: '{}' (shown as '{}')", TomeService.contents(p.getInventory().getItem(0)).title(),
+                p.getInventory().getItem(0).getHoverName().getString());
 
         int before = Memories.held(p).list.size();
         for (HeldMemories.Memory m : Memories.held(p).list) m.expire = Memories.now(p) - 1;
@@ -292,7 +296,7 @@ public class AltusMod {
         LOGGER.info("SMOKE: memories: carved={} recipe={} pending={} readable={} effect={} written={} known={} reconciled={} faded={}",
                 carved, recipe, pending, readable, effect, written, known, reconciled, faded);
         LOGGER.info("SMOKE: the Tome's first entry read: {}", c.pages().get(0).replace("\n", " | "));
-        return carved && recipe && pending == 4 && readable == 4 && effect && written && known && reconciled && faded;
+        return carved && recipe && pending == 4 && readable == 4 && effect && written && known && reconciled && titled && faded;
     }
 
     /** Dying in the Altus should wake the player, alive, with their belongings. */
