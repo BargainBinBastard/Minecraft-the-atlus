@@ -50,7 +50,7 @@ public final class Guardians {
     public static void tick(ServerLevel altus, History h) {
         for (Map.Entry<BlockPos, Integer> e : AltusWorld.wardens().entrySet()) {
             BlockPos stone = e.getKey();
-            if (!altus.isLoaded(stone) || !dreamerNear(altus, stone)) continue;
+            if (!altus.isLoaded(stone) || !dreamerNear(altus, stone, WAKE_RANGE)) continue;
             History.God g = h.god(e.getValue());
             List<Mob> near = altus.getEntitiesOfClass(Mob.class, new AABB(stone).inflate(WAKE_RANGE + 4), m -> m.getTags().contains(TAG));
             if (near.size() >= capFor(g)) continue;
@@ -58,9 +58,9 @@ public final class Guardians {
         }
     }
 
-    static boolean dreamerNear(ServerLevel l, BlockPos p) {
+    static boolean dreamerNear(ServerLevel l, BlockPos p, int range) {
         for (ServerPlayer sp : l.players())
-            if (!sp.isSpectator() && !sp.isCreative() && sp.blockPosition().closerThan(p, WAKE_RANGE)) return true;
+            if (!sp.isSpectator() && !sp.isCreative() && sp.blockPosition().closerThan(p, range)) return true;
         return false;
     }
 

@@ -14,7 +14,9 @@ import io.github.bargainbinbastard.altus.history.History.Secret;
  * <p>Ids: {@code W:<facet>:<god>} Woods inscriptions (level 1); {@code OP:<god>:<other>} opinions,
  * {@code GR:<grudge>} grudges and {@code GP:<group>:<god>} groups (level 2, sanctum murals);
  * {@code EV:<event>:<teller>:<reveals>} a god's account of an event and {@code LOC:<god>} where a
- * god's door stands (level 3, sanctum reliquaries).
+ * god's door stands (level 3, sanctum reliquaries); {@code SC:<secret>:<keeper>} kept secrets and
+ * {@code TR:<event>:<god>} the truth behind a god's lie (level 4 or 5, inner sanctums); and
+ * {@code CF:<event>:<god>} a liar's confession (level 4).
  */
 public final class Lore {
     private Lore() {}
@@ -77,6 +79,9 @@ public final class Lore {
                 case "GP": return p.length == 3 ? group(h, id, Integer.parseInt(p[1]), Integer.parseInt(p[2])) : null;
                 case "EV": return p.length == 4 ? event(h, id, p[1], Integer.parseInt(p[2]), p[3]) : null;
                 case "LOC": return p.length == 2 && sites != null ? location(h, sites, id, Integer.parseInt(p[1])) : null;
+                case "SC": return p.length == 3 ? secret(h, id, p[1], Integer.parseInt(p[2])) : null;
+                case "TR": return p.length == 3 ? truth(h, id, p[1], Integer.parseInt(p[2]), false) : null;
+                case "CF": return p.length == 3 ? truth(h, id, p[1], Integer.parseInt(p[2]), true) : null;
                 default: return null;
             }
         } catch (NumberFormatException e) {
@@ -164,6 +169,64 @@ public final class Lore {
                 : h.god(teller).alive ? "So " + h.name(teller) + " tells it." : "So " + h.name(teller) + ", who is no more, once told it.";
         boolean secret = e.secretRef != null && h.secret(e.secretRef) != null && !h.secret(e.secretRef).exposed;
         return new Testimony(id, secret ? 4 : 3, teller, Text.eventTitle(e, h), Text.renderEvent(e, reveals, lie, h), Text.cap(att));
+    }
+
+    /** A secret its keeper guards in its innermost chamber. The weightiest secrets are level 5. */
+    private static Testimony secret(History h, String id, String secretId, int keeper) {
+        History.Secret sc = h.secret(secretId);
+        if (sc == null || !validGod(h, keeper)) return null;
+        return new Testimony(id, sc.importance >= 8 ? 5 : 4, keeper, Fragments.SECRET_TITLE.getOrDefault(sc.kind, "A Hidden Truth"),
+                sc.text, "Kept in the innermost chamber of " + Text.poss(h.name(keeper)) + " sanctum.");
+    }
+
+    /**
+     * What really happened in an event a god lies about: kept in its inner sanctum ({@code TR}), or
+     * wrung from its echo when a dreamer confronts it with proof ({@code CF}).
+     */
+    private static Testimony truth(History h, String id, String eventId, int god, boolean confession) {
+        HistoryEvent e = h.event(eventId);
+        if (e == null || !validGod(h, god) || !Sanctum.lieShows(h, e, god)) return null;
+        String truth = Text.renderEvent(e, Sanctum.reveals(h, e, god), null, h);
+        if (confession)
+            return new Testimony(id, 4, god, "The Confession of " + h.name(god),
+                    "Confronted with the truth, " + h.name(god) + " admitted it: " + truth, "Wrung from the echo of " + h.name(god) + ".");
+        return new Testimony(id, 4, god, Text.eventTitle(e, h) + ", As It Was", truth,
+                "What " + h.name(god) + " knows, and does not tell.");
+    }
+
+    /**
+     * Whether a dreamer's writings catch a god in a lie: they have written the god's own (false)
+     * account of an event and something that contradicts it. Returns the event's id, or null.
+     */
+    public static String contradiction(History h, java.util.Set<String> written, int god) {
+        List<String> all = contradictions(h, written, god);
+        return all.isEmpty() ? null : all.get(0);
+    }
+
+    /** Every event about which a dreamer's writings catch the god lying, in a stable order. */
+    public static List<String> contradictions(History h, java.util.Set<String> written, int god) {
+        java.util.TreeSet<String> found = new java.util.TreeSet<>();
+        for (String w : written) {
+            String[] p = w.split(":");
+            if (p.length != 4 || !p[0].equals("EV") || !p[2].equals(Integer.toString(god))) continue;
+            String ev = p[1];
+            HistoryEvent e = h.event(ev);
+            if (e == null || !Sanctum.lieShows(h, e, god) || !p[3].equals(Sanctum.reveals(h, e, god))) continue;
+            if (written.contains("TR:" + ev + ":" + god) || written.contains("CF:" + ev + ":" + god)) {
+                found.add(ev);
+                continue;
+            }
+            for (String o : written) {
+                String[] q = o.split(":");
+                if (q.length == 4 && q[0].equals("EV") && q[1].equals(ev) && !q[2].equals(p[2])) {
+                    try {
+                        if (h.storyOf(ev, Integer.parseInt(q[2])) == null) found.add(ev);
+                    } catch (NumberFormatException ignored) {
+                    }
+                }
+            }
+        }
+        return new ArrayList<>(found);
     }
 
     private static Testimony location(History h, Sites sites, String id, int god) {

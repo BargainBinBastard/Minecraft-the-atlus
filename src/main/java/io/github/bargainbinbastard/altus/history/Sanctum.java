@@ -19,11 +19,60 @@ public final class Sanctum {
     public final int god;
     public final List<String> murals;
     public final List<String> reliquaries;
+    /** What the god's echo will say, in order. */
+    public final List<String> echo;
+    /** Behind the inner door: the god's kept secrets and the truth behind its lies. */
+    public final List<String> inner;
 
-    private Sanctum(int god, List<String> murals, List<String> reliquaries) {
+    private Sanctum(int god, List<String> murals, List<String> reliquaries, List<String> echo, List<String> inner) {
         this.god = god;
         this.murals = murals;
         this.reliquaries = reliquaries;
+        this.echo = echo;
+        this.inner = inner;
+    }
+
+    /** The echo's words: its account of its weightiest deed, motive and all, then its view of its bitterest enemy. */
+    static List<String> echoOf(History h, int god, List<HistoryEvent> deeds, List<String> taken) {
+        List<String> out = new ArrayList<>();
+        for (HistoryEvent e : deeds) {
+            List<String> rv = Fragments.REVEALS.getOrDefault(e.type, List.of("WHO"));
+            String reveal = rv.contains("WHY") ? "WHY" : rv.get(rv.size() - 1);
+            String id = "EV:" + e.id + ":" + god + ":" + reveal;
+            if (!taken.contains(id)) {
+                out.add(id);
+                break;
+            }
+        }
+        God worst = null;
+        double low = -2.5;
+        for (God o : h.gods) {
+            if (o.id == god || Lore.hidden(h, o.id)) continue;
+            double op = h.getOp(god, o.id);
+            if (op < low) {
+                low = op;
+                worst = o;
+            }
+        }
+        if (worst != null && !taken.contains("OP:" + god + ":" + worst.id)) out.add("OP:" + god + ":" + worst.id);
+        return List.copyOf(out);
+    }
+
+    /** The god's kept secrets, then the truth behind each lie it tells, weightiest first. */
+    static List<String> innerOf(History h, int god) {
+        List<String> out = new ArrayList<>();
+        List<History.Secret> kept = new ArrayList<>();
+        for (History.Secret sc : h.secrets) if (!sc.exposed && sc.keepers.contains(god)) kept.add(sc);
+        kept.sort((a, b) -> Integer.compare(b.importance, a.importance));
+        for (History.Secret sc : kept) if (out.size() < 3) out.add("SC:" + sc.id + ":" + god);
+        for (Lie l : h.lies) {
+            if (out.size() >= 5) break;
+            if ((l.teller == god || l.tellers.contains(god)) && h.event(l.eventId) != null) {
+                String id = "TR:" + l.eventId + ":" + god;
+                if (!out.contains(id) && lieShows(h, h.event(l.eventId), god)) out.add(id);
+            }
+        }
+        return List.copyOf(out);
     }
 
     private static final Set<String> TELLABLE = Set.of("offense", "strike", "kill_attempt", "deicide", "war_start",
@@ -96,7 +145,7 @@ public final class Sanctum {
             }
         }
         if (friend != null) relics.add("LOC:" + friend.id);
-        return new Sanctum(god, List.copyOf(murals), List.copyOf(relics));
+        return new Sanctum(god, List.copyOf(murals), List.copyOf(relics), echoOf(h, god, deeds, relics), innerOf(h, god));
     }
 
     /**
@@ -116,7 +165,7 @@ public final class Sanctum {
             if (relics.size() >= 4) break;
             if (!relics.contains(r)) relics.add(r);
         }
-        return new Sanctum(god, List.copyOf(murals), List.copyOf(relics));
+        return new Sanctum(god, List.copyOf(murals), List.copyOf(relics), living.echo, living.inner);
     }
 
     private static boolean kin(God a, God b) {
@@ -130,18 +179,29 @@ public final class Sanctum {
         return out;
     }
 
-    /** Which part of a deed the teller's account emphasizes. Follows the teller's lie if it has one. */
-    static String reveals(History h, HistoryEvent e, int teller) {
-        Lie lie = h.storyOf(e.id, teller);
+    private static final List<String> ALL_REVEALS = List.of("WHO", "WHY", "WHEN", "OUTCOME", "LOCATION");
+
+    /**
+     * Which part of a deed the teller's account emphasizes. If the teller lies about it, this is
+     * the part the lie distorts, so its account and the truth visibly disagree.
+     */
+    public static String reveals(History h, HistoryEvent e, int teller) {
         List<String> base = Fragments.REVEALS.getOrDefault(e.type, List.of("WHO"));
+        Lie lie = h.storyOf(e.id, teller);
         if (lie != null) {
-            switch (lie.distortion) {
-                case "CHANGE_CAUSE": if (base.contains("WHY")) return "WHY"; break;
-                case "SHIFT_DATE": return "WHEN";
-                case "FABRICATE_LOCATION": return "LOCATION";
-                default: break;
-            }
+            List<String> cands = new ArrayList<>(base);
+            for (String r : ALL_REVEALS) if (!cands.contains(r)) cands.add(r);
+            for (String r : cands)
+                if (!Text.renderEvent(e, r, lie, h).equals(Text.renderEvent(e, r, null, h))) return r;
         }
         return base.get(0);
+    }
+
+    /** Whether the teller's lie about an event shows in what it says. */
+    public static boolean lieShows(History h, HistoryEvent e, int teller) {
+        Lie lie = h.storyOf(e.id, teller);
+        if (lie == null) return false;
+        String r = reveals(h, e, teller);
+        return !Text.renderEvent(e, r, lie, h).equals(Text.renderEvent(e, r, null, h));
     }
 }

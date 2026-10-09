@@ -11,6 +11,7 @@ public final class AltusConfig {
     public static final ModConfigSpec.IntValue SCAN_RADIUS;
     public static final ModConfigSpec.IntValue SCAN_THRESHOLD;
     public static final ModConfigSpec.IntValue FADE_MINUTES;
+    public static final ModConfigSpec.BooleanValue CARRY_ARMOR;
 
     static {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
@@ -25,6 +26,10 @@ public final class AltusConfig {
         b.push("memories");
         FADE_MINUTES = b.comment("How many minutes a memory lasts after waking before it fades, unless written in a Tome.")
                 .defineInRange("fadeMinutes", 45, 1, 1440);
+        b.pop();
+        b.push("dreams");
+        CARRY_ARMOR = b.comment("Whether the armor a player is wearing comes with them into the Altus (besides the one thing left on an altar).")
+                .define("carryArmor", true);
         b.pop();
         SPEC = b.build();
     }

@@ -75,8 +75,23 @@ public final class Dreams {
         s.returnZ = rz;
         s.ticksLeft = ticks;
         s.focusGod = focusGod;
+        // Worn armor comes along (if the server allows it), so it is taken out of the stash.
+        ItemStack[] armor = new ItemStack[4];
+        boolean wearing = false;
+        for (int i = 0; i < 4; i++) {
+            armor[i] = ItemStack.EMPTY;
+            if (!AltusConfig.CARRY_ARMOR.get()) continue;
+            armor[i] = sp.getInventory().armor.get(i).copy();
+            sp.getInventory().armor.set(i, ItemStack.EMPTY);
+            wearing |= !armor[i].isEmpty();
+        }
         s.stash = sp.getInventory().save(new ListTag());
         sp.getInventory().clearContent();
+        for (int i = 0; i < 4; i++)
+            if (!armor[i].isEmpty()) {
+                Altars.mark(armor[i]);
+                sp.getInventory().armor.set(i, armor[i]);
+            }
         BoundItem bound = Altars.bound(sp);
         s.carrying = !bound.stack.isEmpty();
         ItemStack carried = bound.stack.copy();
@@ -88,8 +103,9 @@ public final class Dreams {
         BlockPos spot = AltusWorld.arrival(sp, focusGod, altus);
         sp.teleportTo(altus, spot.getX() + 0.5, spot.getY(), spot.getZ() + 0.5, sp.getYRot(), sp.getXRot());
         sp.displayClientMessage(intro, false);
-        if (s.carrying)
-            sp.displayClientMessage(Component.literal("You carry the " + carried.getHoverName().getString() + " into the dream.")
+        if (s.carrying || wearing)
+            sp.displayClientMessage(Component.literal((s.carrying ? "You carry the " + carried.getHoverName().getString()
+                    + (wearing ? ", and your armor," : "") : "Your armor comes with you") + " into the dream.")
                     .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), false);
         AltusMod.LOGGER.info("{} entered the Altus (focus god {}, {} s)", sp.getGameProfile().getName(), focusGod, ticks / 20);
         return true;
@@ -115,21 +131,37 @@ public final class Dreams {
             y = spawn.getY();
             z = spawn.getZ() + 0.5;
         }
-        ItemStack carriedBack = ItemStack.EMPTY;
-        for (int i = 0; i < sp.getInventory().getContainerSize(); i++) {
-            ItemStack it = sp.getInventory().getItem(i);
-            if (Altars.isCarried(it)) {
-                carriedBack = it.copy();
-                Altars.unmark(carriedBack);
-                break;
+        // Everything carried in comes back as it now is; armor goes back on if its slot is free.
+        ItemStack[] armorBack = new ItemStack[4];
+        List<ItemStack> carriedBack = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            ItemStack a = sp.getInventory().armor.get(i);
+            if (Altars.isCarried(a)) {
+                armorBack[i] = a.copy();
+                Altars.unmark(armorBack[i]);
             }
         }
+        List<ItemStack> rest = new ArrayList<>(sp.getInventory().items);
+        rest.addAll(sp.getInventory().offhand);
+        for (ItemStack it : rest)
+            if (Altars.isCarried(it)) {
+                ItemStack c = it.copy();
+                Altars.unmark(c);
+                carriedBack.add(c);
+            }
         sp.getInventory().clearContent();
         sp.getInventory().load(s.stash);
         s.stash = new ListTag();
-        if (!carriedBack.isEmpty()) {
-            if (!sp.getInventory().add(carriedBack)) sp.drop(carriedBack, false);
-        } else if (s.carrying)
+        for (int i = 0; i < 4; i++) {
+            if (armorBack[i] == null) continue;
+            if (sp.getInventory().armor.get(i).isEmpty()) sp.getInventory().armor.set(i, armorBack[i]);
+            else carriedBack.add(armorBack[i]);
+        }
+        for (ItemStack c : carriedBack)
+            if (!sp.getInventory().add(c)) sp.drop(c, false);
+        boolean anyBack = !carriedBack.isEmpty();
+        for (ItemStack a : armorBack) anyBack |= a != null;
+        if (s.carrying && !anyBack)
             sp.displayClientMessage(Component.literal("The thing you carried did not come back with you.")
                     .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), false);
         s.carrying = false;

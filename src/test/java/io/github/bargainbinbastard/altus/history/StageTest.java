@@ -3,6 +3,7 @@ package io.github.bargainbinbastard.altus.history;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashSet;
@@ -70,6 +71,45 @@ class StageTest {
             }
         }
         assertTrue(checked > 0, "some world should have a ruin with a remembered death");
+    }
+
+    @Test
+    void innerSanctumsEchoesAndConfessionsRender() {
+        int lies = 0, caught = 0, secrets = 0;
+        for (int i = 0; i < 120; i++) {
+            History h = HistorySimulator.simulate("inner-" + i);
+            Sites sites = Sites.assign(h);
+            for (History.God g : h.gods) {
+                if (sites.of(g.id) == null) continue;
+                Sanctum s = g.alive ? Sanctum.plan(h, sites, g.id) : Sanctum.planRuin(h, sites, g.id);
+                for (String id : s.echo) {
+                    Lore.Testimony t = Lore.render(h, sites, id);
+                    assertNotNull(t, id);
+                    assertFalse(t.text.contains("null"), t.text);
+                }
+                for (String id : s.inner) {
+                    Lore.Testimony t = Lore.render(h, sites, id);
+                    assertNotNull(t, id);
+                    assertFalse(t.text.contains("null"), t.text);
+                    assertTrue(t.level >= 4, id);
+                    if (id.startsWith("SC:")) secrets++;
+                    if (id.startsWith("TR:")) {
+                        lies++;
+                        // Its archive (or echo) tells the lie; its inner chamber holds the truth: together they catch it.
+                        String ev = id.split(":")[1];
+                        Set<String> written = new HashSet<>(Set.of(id, "EV:" + ev + ":" + g.id + ":" + Sanctum.reveals(h, h.event(ev), g.id)));
+                        if (Lore.contradiction(h, written, g.id) != null) caught++;
+                        assertNotNull(Lore.render(h, sites, "CF:" + ev + ":" + g.id));
+                        assertTrue(!Lore.render(h, sites, id).text.equals(
+                                Lore.render(h, sites, "EV:" + ev + ":" + g.id + ":" + Sanctum.reveals(h, h.event(ev), g.id)).text),
+                                "the truth differs from the lie");
+                    }
+                }
+            }
+        }
+        assertTrue(lies > 0 && secrets > 0, "inner sanctums should hold lies' truths and secrets: " + lies + ", " + secrets);
+        assertEquals(lies, caught, "every truth catches its lie");
+        assertNull(Lore.contradiction(HistorySimulator.simulate("inner-0"), Set.of(), 0));
     }
 
     @Test

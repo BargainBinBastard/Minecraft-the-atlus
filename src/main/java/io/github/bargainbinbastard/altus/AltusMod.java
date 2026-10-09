@@ -26,6 +26,7 @@ import io.github.bargainbinbastard.altus.history.Terrain;
 import io.github.bargainbinbastard.altus.lore.AltusCommands;
 import io.github.bargainbinbastard.altus.lore.AltusWorld;
 import io.github.bargainbinbastard.altus.lore.Altars;
+import io.github.bargainbinbastard.altus.lore.Echoes;
 import io.github.bargainbinbastard.altus.lore.Guardians;
 import io.github.bargainbinbastard.altus.lore.HeldMemories;
 import io.github.bargainbinbastard.altus.lore.Knowledge;
@@ -173,8 +174,101 @@ public class AltusMod {
         boolean carried = smokeCarried(server, p);
         boolean guardians = smokeGuardians(server, p);
         boolean ruin = smokeRuin(server, p);
+        boolean depth = smokeDepth(server, p);
         server.getPlayerList().remove(p);
-        return roundTrip && death && sleep && memories && stage && carried && guardians && ruin;
+        return roundTrip && death && sleep && memories && stage && carried && guardians && ruin && depth;
+    }
+
+    /** Echoes speak, the inner door asks for deep knowledge, a liar confesses, and the Archivist has hints. */
+    private static boolean smokeDepth(MinecraftServer server, ServerPlayer p) {
+        History h = WorldHistory.get(server);
+        Sites sites = WorldHistory.sites(server);
+        ServerLevel altus = AltusDimension.get(server);
+        int g = -1;
+        io.github.bargainbinbastard.altus.history.Sanctum plan = null;
+        for (Sites.Site s : sites.all) {
+            if (s.occupant < 0 || !h.god(s.occupant).alive) continue;
+            io.github.bargainbinbastard.altus.history.Sanctum sc = io.github.bargainbinbastard.altus.history.Sanctum.plan(h, sites, s.occupant);
+            if (sc.inner.stream().anyMatch(id -> id.startsWith("TR:"))) {
+                g = s.occupant;
+                plan = sc;
+                break;
+            }
+        }
+        if (g < 0) {
+            LOGGER.info("SMOKE: depth: no living god in this world tells a lie it keeps the truth of");
+            return false;
+        }
+        Knowledge k = Memories.knowledge(p);
+        k.written.clear();
+        k.understanding.clear();
+        Memories.held(p).list.clear();
+        if (Dreams.session(p).active) Dreams.end(p, "command");
+        Dreams.begin(p, -1, 300, p.getX(), p.getY(), p.getZ(), Component.literal("smoke"));
+        p.hasChangedDimension();
+        BlockPos in = AltusWorld.sanctumArrivalOf(g);
+        p.teleportTo(altus, in.getX() + 0.5, in.getY(), in.getZ() + 0.5, 0f, 0f);
+
+        // The echo appears and speaks.
+        Echoes.tick(altus, h, false);
+        BlockPos post = null;
+        for (java.util.Map.Entry<BlockPos, Integer> e : AltusWorld.echoes().entrySet()) if (e.getValue() == g) post = e.getKey();
+        List<net.minecraft.world.entity.Mob> figures = altus.getEntitiesOfClass(net.minecraft.world.entity.Mob.class,
+                new net.minecraft.world.phys.AABB(post).inflate(3), Echoes::isEcho);
+        boolean echoed = figures.size() == 1;
+        Echoes.tick(altus, h, false);
+        echoed &= altus.getEntitiesOfClass(net.minecraft.world.entity.Mob.class, new net.minecraft.world.phys.AABB(post).inflate(3), Echoes::isEcho).size() == 1;
+        boolean spoke = plan.echo.isEmpty();
+        if (echoed) {
+            Echoes.interact(p, figures.get(0));
+            spoke = plan.echo.isEmpty() || Memories.held(p).find(plan.echo.get(0)) != null;
+        }
+
+        // The inner door wants four things written about the god.
+        BlockPos o = AltusWorld.pocketOrigin(g);
+        BlockPos innerDoor = o.offset(5, 1, AltusWorld.INNER_DOOR_Z);
+        p.teleportTo(altus, o.getX() + 5.5, o.getY() + 1, o.getZ() + AltusWorld.INNER_DOOR_Z - 1.5, 0f, 0f);
+        k.understanding.put(g, AltusWorld.INNER_GATE - 1);
+        AltusWorld.useDoor(p, innerDoor);
+        boolean innerShut = p.getZ() < innerDoor.getZ();
+        k.understanding.put(g, AltusWorld.INNER_GATE);
+        AltusWorld.useDoor(p, innerDoor);
+        boolean innerOpen = p.getZ() > innerDoor.getZ();
+        int innerTaken = 0;
+        for (BlockPos r : AltusWorld.relicsOf(g)) {
+            if (r.getZ() <= innerDoor.getZ()) continue;
+            int n = Memories.held(p).list.size();
+            AltusWorld.useReliquary(p, r);
+            if (Memories.held(p).list.size() > n) innerTaken++;
+        }
+        AltusWorld.useDoor(p, innerDoor);
+        boolean innerOut = p.getZ() < innerDoor.getZ();
+
+        // Caught in a lie: its own account, against the truth from its inner chamber.
+        String tr = plan.inner.stream().filter(id -> id.startsWith("TR:")).findFirst().get();
+        String ev = tr.split(":")[1];
+        String lieId = "EV:" + ev + ":" + g + ":" + io.github.bargainbinbastard.altus.history.Sanctum.reveals(h, h.event(ev), g);
+        Echoes.confront(p, g);
+        boolean nothingYet = Memories.held(p).find("CF:" + ev + ":" + g) == null;
+        k.written.add(lieId);
+        k.written.add(tr);
+        Echoes.confront(p, g);
+        HeldMemories.Memory cf = Memories.held(p).find("CF:" + ev + ":" + g);
+        boolean confessed = nothingYet && cf != null;
+
+        // The Archivist.
+        List<String> hints = Echoes.hints(p);
+        BlockPos arch = AltusWorld.archivist();
+        p.teleportTo(altus, arch.getX() + 0.5, arch.getY(), arch.getZ() + 2.5, 180f, 0f);
+        Echoes.tick(altus, h, false);
+        boolean archivist = altus.getEntitiesOfClass(net.minecraft.world.entity.Mob.class, new net.minecraft.world.phys.AABB(arch).inflate(3),
+                Echoes::isEcho).size() == 1;
+        Dreams.end(p, "command");
+        LOGGER.info("SMOKE: depth, sanctum of {}: echoed={} spoke={} innerShut={} innerOpen={} innerTaken={} innerOut={} confessed={} archivist={} hints={}",
+                h.name(g), echoed, spoke, innerShut, innerOpen, innerTaken, innerOut, confessed, archivist, hints.size());
+        if (cf != null) LOGGER.info("SMOKE:   confession: {}", Lore.render(h, sites, cf.id).text);
+        for (String hint : hints) LOGGER.info("SMOKE:   Archivist: {}", hint);
+        return echoed && spoke && innerShut && innerOpen && innerTaken > 0 && innerOut && confessed && archivist && !hints.isEmpty();
     }
 
     /** One thing left on an altar goes into the dream, can't be lost there, and comes back as it was used. */
@@ -183,6 +277,7 @@ public class AltusMod {
         Altars.bound(p).stack = ItemStack.EMPTY;
         p.getInventory().clearContent();
         p.getInventory().setItem(0, new ItemStack(Items.DIAMOND, 3));
+        p.getInventory().armor.set(3, new ItemStack(Items.IRON_HELMET));
         ItemStack sword = new ItemStack(Items.IRON_SWORD);
         boolean bound = Altars.bind(p, sword) && sword.isEmpty();
         Dreams.begin(p, -1, 300, p.getX(), p.getY(), p.getZ(), Component.literal("smoke"));
@@ -190,7 +285,10 @@ public class AltusMod {
         ItemStack inHand = p.getInventory().getItem(p.getInventory().selected);
         boolean carriedIn = inHand.is(Items.IRON_SWORD) && Altars.isCarried(inHand) && Altars.bound(p).stack.isEmpty();
         int others = 0;
-        for (int i = 0; i < p.getInventory().getContainerSize(); i++) if (!p.getInventory().getItem(i).isEmpty()) others++;
+        for (ItemStack it : p.getInventory().items) if (!it.isEmpty()) others++;
+        ItemStack helmIn = p.getInventory().armor.get(3);
+        boolean armorIn = helmIn.is(Items.IRON_HELMET) && Altars.isCarried(helmIn);
+        helmIn.setDamageValue(7);
         inHand.setDamageValue(5);
         p.getInventory().setItem(5, new ItemStack(Items.DIRT));
         Dreams.end(p, "command");
@@ -202,13 +300,18 @@ public class AltusMod {
             if (it.is(Items.DIAMOND)) diamonds += it.getCount();
             if (it.is(Items.DIRT)) dirt = true;
         }
+        ItemStack helmOut = p.getInventory().armor.get(3);
+        int helmets = 0;
+        for (int i = 0; i < p.getInventory().getContainerSize(); i++) if (p.getInventory().getItem(i).is(Items.IRON_HELMET)) helmets++;
+        boolean armorBack = helmOut.is(Items.IRON_HELMET) && !Altars.isCarried(helmOut) && helmOut.getDamageValue() == 7 && helmets == 1;
+        p.getInventory().armor.set(3, ItemStack.EMPTY);
         ItemStack stick = new ItemStack(Items.STICK);
         Altars.bind(p, stick);
         Altars.reclaim(p);
         boolean reclaimed = Altars.bound(p).stack.isEmpty() && p.getInventory().contains(new ItemStack(Items.STICK));
-        LOGGER.info("SMOKE: carried item: bound={} carriedIn={} (only thing held: {}) back={} diamonds={} dreamDirtGone={} reclaimed={}",
-                bound, carriedIn, others == 1, back, diamonds, !dirt, reclaimed);
-        return bound && carriedIn && others == 1 && back && diamonds == 3 && !dirt && reclaimed;
+        LOGGER.info("SMOKE: carried item: bound={} carriedIn={} (only thing held: {}) back={} diamonds={} dreamDirtGone={} reclaimed={} armorIn={} armorBack={}",
+                bound, carriedIn, others == 1, back, diamonds, !dirt, reclaimed, armorIn, armorBack);
+        return bound && carriedIn && others == 1 && back && diamonds == 3 && !dirt && reclaimed && armorIn && armorBack;
     }
 
     /** A Warden Stone calls its god's guardians when a dreamer comes near, up to the god's limit. */

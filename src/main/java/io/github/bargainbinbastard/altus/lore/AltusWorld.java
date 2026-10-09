@@ -32,7 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public final class AltusWorld {
     private AltusWorld() {}
 
-    public static final int STAGE_VERSION = 3;
+    public static final int STAGE_VERSION = 4;
     public static final int GROUND_Y = Terrain.BASE + 1;
     public static final BlockPos CLEARING = new BlockPos(Terrain.CLEARING_X, GROUND_Y, Terrain.CLEARING_Z);
     /** Where the four Woods inscriptions stand, by facet. */
@@ -40,7 +40,7 @@ public final class AltusWorld {
             CLEARING.offset(0, 0, -5)};
     public static final int CLEARING_RADIUS = 9;
 
-    public enum DoorKind { ENTER, EXIT, SEALED }
+    public enum DoorKind { ENTER, EXIT, INNER }
 
     public record Door(DoorKind kind, int god) {}
 
@@ -52,6 +52,9 @@ public final class AltusWorld {
     private static final Map<Integer, BlockPos> SITE_ARRIVAL = new HashMap<>();
     private static final Map<Integer, BlockPos> SANCTUM_ARRIVAL = new HashMap<>();
     private static final Map<BlockPos, Integer> WARDENS = new HashMap<>();
+    private static final Map<BlockPos, Integer> ECHOES = new HashMap<>();
+    private static final Map<Integer, List<String>> ECHO_WORDS = new HashMap<>();
+    private static BlockPos archivist;
 
     // ---------------------------------------------------------------- geometry
 
@@ -92,12 +95,17 @@ public final class AltusWorld {
         return new BlockPos(s.x + o[0], d.getY(), s.z + o[1]);
     }
 
-    static BlockPos pocketOrigin(int god) {
+    public static BlockPos pocketOrigin(int god) {
         return new BlockPos(30000 + 128 * god, 120, 0);
     }
 
     private static final int[][] MURAL_SPOTS = {{1, 1, 17}, {5, 1, 21}, {9, 1, 17}, {1, 1, 13}, {9, 1, 13}};
     private static final int[][] RELIC_SPOTS = {{1, 1, 31}, {4, 1, 35}, {6, 1, 35}, {9, 1, 31}, {5, 1, 28}};
+    private static final int[][] INNER_SPOTS = {{2, 1, 45}, {5, 1, 48}, {8, 1, 45}, {2, 1, 41}, {8, 1, 41}};
+    /** How far the pocket reaches along z: entry, gallery, archive, then the inner chamber. */
+    static final int POCKET_END = 50;
+    /** The inner door stands in the wall between the archive and the inner chamber. */
+    public static final int INNER_DOOR_Z = 38;
 
     // ---------------------------------------------------------------- setup
 
@@ -127,6 +135,9 @@ public final class AltusWorld {
         SITE_ARRIVAL.clear();
         SANCTUM_ARRIVAL.clear();
         WARDENS.clear();
+        ECHOES.clear();
+        ECHO_WORDS.clear();
+        archivist = new BlockPos(-4, houseFloorY(), HZ1 - 3);
         for (Sites.Site s : sites.all) {
             if (s.occupant < 0) continue;
             int g = s.occupant;
@@ -138,8 +149,8 @@ public final class AltusWorld {
             BlockPos o = pocketOrigin(g);
             DOORS.put(o.offset(5, 1, 0), new Door(DoorKind.EXIT, g));
             DOORS.put(o.offset(5, 2, 0), new Door(DoorKind.EXIT, g));
-            DOORS.put(o.offset(5, 1, 38), new Door(DoorKind.SEALED, g));
-            DOORS.put(o.offset(5, 2, 38), new Door(DoorKind.SEALED, g));
+            DOORS.put(o.offset(5, 1, INNER_DOOR_Z), new Door(DoorKind.INNER, g));
+            DOORS.put(o.offset(5, 2, INNER_DOOR_Z), new Door(DoorKind.INNER, g));
             SANCTUM_ARRIVAL.put(g, o.offset(5, 1, 3));
             WARDENS.put(o.offset(8, 1, 7), g);
             WARDENS.put(o.offset(1, 1, 26), g);
@@ -154,6 +165,13 @@ public final class AltusWorld {
                 RELICS.put(p, plan.reliquaries.get(i));
                 RELIC_KEEPER.put(p, g);
             }
+            for (int i = 0; i < plan.inner.size() && i < INNER_SPOTS.length; i++) {
+                BlockPos p = o.offset(INNER_SPOTS[i][0], INNER_SPOTS[i][1], INNER_SPOTS[i][2]);
+                RELICS.put(p, plan.inner.get(i));
+                RELIC_KEEPER.put(p, g);
+            }
+            ECHOES.put(o.offset(5, 1, 16), g);
+            ECHO_WORDS.put(g, plan.echo);
         }
     }
 
@@ -169,6 +187,20 @@ public final class AltusWorld {
 
     public static Map<BlockPos, Integer> wardens() {
         return WARDENS;
+    }
+
+    /** Where each god's echo stands, in its sanctum's gallery. */
+    public static Map<BlockPos, Integer> echoes() {
+        return ECHOES;
+    }
+
+    public static List<String> echoWords(int god) {
+        return ECHO_WORDS.getOrDefault(god, List.of());
+    }
+
+    /** Where the Archivist stands, in the House's study. */
+    public static BlockPos archivist() {
+        return archivist;
     }
 
     private static void set(ServerLevel l, BlockPos p, BlockState s) {
@@ -257,6 +289,11 @@ public final class AltusWorld {
         for (int x = 3; x <= 5; x++)
             for (int z = HZ0 + 1; z <= HZ0 + 2; z++) set(l, x, yH, z, planks);
         set(l, 0, yH + 4, Sites.HOUSE_Z, Blocks.LANTERN.defaultBlockState());
+        // The study, by the front door, where the Archivist keeps watch.
+        for (int z = HZ1 - 5; z <= HZ1 - 1; z++)
+            for (int y = yH; y <= yH + 2; y++) set(l, HX0 + 1, y, z, Blocks.BOOKSHELF.defaultBlockState());
+        set(l, -5, yH, HZ1 - 2, Blocks.LECTERN.defaultBlockState());
+        set(l, -3, yH, HZ1 - 4, Blocks.CANDLE.defaultBlockState().setValue(net.minecraft.world.level.block.CandleBlock.LIT, true));
     }
 
     static void buildSite(ServerLevel l, History h, Sites.Site s) {
@@ -317,8 +354,8 @@ public final class AltusWorld {
         BlockState air = Blocks.AIR.defaultBlockState();
         for (int x = -2; x <= 12; x++)
             for (int y = 0; y <= 6; y++)
-                for (int z = 0; z <= 38; z++) set(l, o.offset(x, y, z), pal.wall());
-        int[][] rooms = {{1, 9, 1, 9}, {-1, 11, 11, 23}, {-1, 11, 25, 37}};
+                for (int z = 0; z <= POCKET_END; z++) set(l, o.offset(x, y, z), pal.wall());
+        int[][] rooms = {{1, 9, 1, 9}, {-1, 11, 11, 23}, {-1, 11, 25, 37}, {1, 9, 39, 49}};
         for (int[] r : rooms)
             for (int x = r[0]; x <= r[1]; x++)
                 for (int z = r[2]; z <= r[3]; z++) {
@@ -332,13 +369,16 @@ public final class AltusWorld {
             }
         for (int[] c : new int[][] {{-1, 11}, {11, 11}, {-1, 23}, {11, 23}, {-1, 25}, {11, 25}, {-1, 37}, {11, 37}})
             for (int y = 1; y <= 5; y++) set(l, o.offset(c[0], y, c[1]), pal.accent());
-        for (int[] c : new int[][] {{5, 5}, {1, 13}, {9, 13}, {1, 21}, {9, 21}, {5, 17}, {1, 27}, {9, 27}, {1, 35}, {9, 35}, {5, 31}})
+        for (int[] c : new int[][] {{5, 5}, {1, 13}, {9, 13}, {1, 21}, {9, 21}, {5, 17}, {1, 27}, {9, 27}, {1, 35}, {9, 35}, {5, 31},
+                {5, 44}, {2, 40}, {8, 40}, {2, 48}, {8, 48}})
             set(l, o.offset(c[0], 6, c[1]), pal.light());
+        for (int[] c : new int[][] {{1, 39}, {9, 39}, {1, 49}, {9, 49}})
+            for (int y = 1; y <= 5; y++) set(l, o.offset(c[0], y, c[1]), pal.accent());
         if (pal.decor() != null)
             for (int[] c : new int[][] {{2, 4}, {8, 4}, {0, 12}, {10, 22}, {0, 36}, {10, 36}}) set(l, o.offset(c[0], 1, c[1]), pal.decor());
         for (int y = 1; y <= 2; y++) {
             set(l, o.offset(5, y, 0), door());
-            set(l, o.offset(5, y, 38), door());
+            set(l, o.offset(5, y, INNER_DOOR_Z), door());
         }
         if (ruin) decay(l, o, god);
         set(l, o.offset(8, 1, 7), warden());
@@ -348,6 +388,8 @@ public final class AltusWorld {
             set(l, o.offset(MURAL_SPOTS[i][0], MURAL_SPOTS[i][1], MURAL_SPOTS[i][2]), AltusRegistry.INSCRIPTION.get().defaultBlockState());
         for (int i = 0; i < plan.reliquaries.size() && i < RELIC_SPOTS.length; i++)
             set(l, o.offset(RELIC_SPOTS[i][0], RELIC_SPOTS[i][1], RELIC_SPOTS[i][2]), AltusRegistry.RELIQUARY.get().defaultBlockState());
+        for (int i = 0; i < plan.inner.size() && i < INNER_SPOTS.length; i++)
+            set(l, o.offset(INNER_SPOTS[i][0], INNER_SPOTS[i][1], INNER_SPOTS[i][2]), AltusRegistry.RELIQUARY.get().defaultBlockState());
     }
 
     /** A dead god's sanctum crumbles: cracked and fallen walls, cobwebs, its lights mostly out. */
@@ -356,7 +398,7 @@ public final class AltusWorld {
         BlockState cracked = Blocks.CRACKED_STONE_BRICKS.defaultBlockState(), mossy = Blocks.MOSSY_COBBLESTONE.defaultBlockState();
         for (int x = -2; x <= 12; x++)
             for (int y = 0; y <= 6; y++)
-                for (int z = 0; z <= 38; z++) {
+                for (int z = 0; z <= POCKET_END; z++) {
                     BlockPos p = o.offset(x, y, z);
                     BlockState st = l.getBlockState(p);
                     if (st.isAir()) {
@@ -364,7 +406,7 @@ public final class AltusWorld {
                         continue;
                     }
                     if (st.is(AltusRegistry.ALTUS_DOOR.get())) continue;
-                    boolean shell = x == -2 || x == 12 || z == 0 || z == 38 || y == 6;
+                    boolean shell = x == -2 || x == 12 || z == 0 || z == INNER_DOOR_Z || z == POCKET_END || y == 6;
                     int roll = r.nextInt(100);
                     if (roll < 22) set(l, p, cracked);
                     else if (roll < 32) set(l, p, mossy);
@@ -435,7 +477,20 @@ public final class AltusWorld {
                 BlockPos a = SITE_ARRIVAL.get(d.god());
                 sp.teleportTo(altus, a.getX() + 0.5, a.getY(), a.getZ() + 0.5, sp.getYRot(), 0f);
             }
-            case SEALED -> say(sp, "This door will not open. Not yet.");
+            case INNER -> {
+                BlockPos o = pocketOrigin(d.god());
+                if (sp.getZ() > o.getZ() + INNER_DOOR_Z) {
+                    sp.teleportTo(altus, o.getX() + 5.5, o.getY() + 1, o.getZ() + INNER_DOOR_Z - 2 + 0.5, 180f, 0f);
+                    return;
+                }
+                if (Memories.knowledge(sp).understandingOf(d.god()) < INNER_GATE) {
+                    say(sp, "This door opens only for one who knows " + h.name(d.god()) + " deeply. Write more of it.");
+                    return;
+                }
+                sp.teleportTo(altus, o.getX() + 5.5, o.getY() + 1, o.getZ() + INNER_DOOR_Z + 2 + 0.5, 0f, 0f);
+                sp.displayClientMessage(Component.literal("You pass into the innermost chamber of " + h.name(d.god()) + ".")
+                        .withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC), true);
+            }
         }
     }
 
@@ -450,16 +505,20 @@ public final class AltusWorld {
                 io.github.bargainbinbastard.altus.history.Lore.render(WorldHistory.get(sp.server), WorldHistory.sites(sp.server), id);
         int needed = t == null ? 2 : requiredUnderstanding(t.level);
         if (Memories.knowledge(sp).understandingOf(keeper) < needed) {
-            say(sp, needed > 2 ? "The reliquary is sealed tight. You would need to know its keeper far better."
+            say(sp, needed > INNER_GATE ? "This reliquary holds something its keeper guards above all else. You would need to know it far better."
+                    : needed > 2 ? "The reliquary is sealed tight. You would need to know its keeper far better."
                     : "The reliquary will not open. You do not know its keeper well enough.");
             return;
         }
         Memories.take(sp, id, "relic");
     }
 
+    /** How much a player must have written about a god to pass its inner door. */
+    public static final int INNER_GATE = 4;
+
     /** How much a player must have written about a god to open a reliquary holding lore of this level. */
     public static int requiredUnderstanding(int level) {
-        return Math.max(2, level - 1);
+        return level <= 3 ? 2 : level == 4 ? 4 : 6;
     }
 
     private static void say(ServerPlayer sp, String msg) {

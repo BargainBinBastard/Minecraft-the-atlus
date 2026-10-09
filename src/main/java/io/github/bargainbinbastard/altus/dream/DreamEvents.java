@@ -1,6 +1,7 @@
 package io.github.bargainbinbastard.altus.dream;
 
 import io.github.bargainbinbastard.altus.lore.Altars;
+import io.github.bargainbinbastard.altus.lore.Echoes;
 import io.github.bargainbinbastard.altus.lore.Guardians;
 import io.github.bargainbinbastard.altus.lore.Memories;
 import io.github.bargainbinbastard.altus.lore.WorldHistory;
@@ -8,11 +9,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
@@ -26,6 +30,7 @@ public final class DreamEvents {
         NeoForge.EVENT_BUS.addListener(DreamEvents::onLogin);
         NeoForge.EVENT_BUS.addListener(DreamEvents::onToss);
         NeoForge.EVENT_BUS.addListener(DreamEvents::onLevelTick);
+        NeoForge.EVENT_BUS.addListener(DreamEvents::onEntityInteract);
     }
 
     private static void onPlayerTick(PlayerTickEvent.Post event) {
@@ -58,7 +63,18 @@ public final class DreamEvents {
 
     private static void onLevelTick(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel l) || !AltusDimension.isAltus(l)) return;
-        if (l.getGameTime() % 40 == 0) Guardians.tick(l, WorldHistory.get(l.getServer()));
+        if (l.getGameTime() % 40 == 0) {
+            Guardians.tick(l, WorldHistory.get(l.getServer()));
+            Echoes.tick(l, WorldHistory.get(l.getServer()));
+        }
+    }
+
+    /** Speaking to an echo or the Archivist. */
+    private static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+        if (!(event.getEntity() instanceof ServerPlayer sp) || !Echoes.isEcho(event.getTarget())) return;
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.SUCCESS);
+        if (event.getHand() == InteractionHand.MAIN_HAND) Echoes.interact(sp, event.getTarget());
     }
 
     /** Dying in the Altus costs nothing: the dreamer simply wakes. */
