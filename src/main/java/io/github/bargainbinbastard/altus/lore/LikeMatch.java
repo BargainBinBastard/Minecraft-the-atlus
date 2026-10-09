@@ -59,7 +59,7 @@ public final class LikeMatch {
     /** The display name of a like, e.g. "Copper" or "the Drowned". */
     public static String name(String id) {
         for (List<Item> l : List.of(Content.BLOCKS, Content.ENTITIES))
-            for (Item i : l) if (i.id.equals(id)) return i.name;
+            for (Item i : l) if (i.id.equals(id)) return i.label;
         return id;
     }
 }
