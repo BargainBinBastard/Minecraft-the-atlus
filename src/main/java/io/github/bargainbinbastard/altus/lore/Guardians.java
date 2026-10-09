@@ -67,10 +67,15 @@ public final class Guardians {
 
     /** Calls one guardian beside a stone. Returns it, or null if there was no room. */
     public static Mob spawn(ServerLevel l, BlockPos stone, EntityType<? extends Mob> type, int god) {
-        for (int i = 0; i < 12; i++) {
-            BlockPos p = stone.offset(l.random.nextInt(7) - 3, l.random.nextInt(3) - 1, l.random.nextInt(7) - 3);
-            if (!l.getBlockState(p).isAir() || !l.getBlockState(p.above()).isAir()) continue;
-            if (l.getBlockState(p.below()).getCollisionShape(l, p.below()).isEmpty()) continue;
+        // Every spot near the stone with solid footing and room to stand, then one of them at random.
+        java.util.List<BlockPos> spots = new java.util.ArrayList<>();
+        for (BlockPos q : BlockPos.betweenClosed(stone.offset(-3, -2, -3), stone.offset(3, 2, 3))) {
+            if (!l.getBlockState(q).isAir() || !l.getBlockState(q.above()).isAir()) continue;
+            if (l.getBlockState(q.below()).getCollisionShape(l, q.below()).isEmpty()) continue;
+            spots.add(q.immutable());
+        }
+        if (!spots.isEmpty()) {
+            BlockPos p = spots.get(l.random.nextInt(spots.size()));
             Mob mob = type.create(l);
             if (mob == null) return null;
             mob.moveTo(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, l.random.nextFloat() * 360f, 0f);
