@@ -8,11 +8,10 @@ Altus to recover fragments of that history, and the gods take notice.
 
 ## Status
 
-**Slice 6: depth.** Every world generates its history from its seed. Players dream their way into
-the Altus, find lore and write it in Tomes, climb the Mountain to the gods' doors and sanctums, face
-their guardians, and enter the ruins of dead gods. Now the gods' echoes speak, inner sanctums hold
-their secrets and the truth behind their lies, liars can be confronted, and the Archivist gives
-hints.
+**Slice 7: the gods respond.** Every world generates its history from its seed. Players dream into
+the Altus, find lore and write it in Tomes, climb the Mountain to the gods' sanctums, face their
+guardians, hear their echoes, catch their lies, and now earn their favor: offerings, rites from
+Tome entries, and becoming a god's Follower or Disciple.
 
 ### Dreaming
 
@@ -110,7 +109,42 @@ about 25.
 world that already visited the Altus in an earlier version, delete the world's
 `dimensions/altus/altus` folder (or start a new world).
 
-Favor with the gods, altars and rituals, and devotion come in the next slice.
+### Favor and devotion
+
+Every player has favor with every god. Crouch and use an **Altar** while holding something a god
+you know loves, and you offer it: favor rises by one for each item, up to 40 a day per god.
+Crouch and use the Altar empty-handed to see where you stand.
+
+The god you stand best with, once your favor with it reaches 25, is your **patron**:
+
+- **Follower** (25 favor): your patron's guardians let you pass, and its echo knows you.
+- **Disciple** (150 favor): your patron grants you its **gift**, a lasting effect drawn from what
+  it loves most (Haste for stone, metal and mining; Water Breathing for the sea; Health Boost for
+  growing things; and Speed, Night Vision, Fire Resistance, Strength, Resistance, Jump Boost, Slow
+  Falling or Luck for the rest). Dreaming toward your patron wakes you at its door. But you are
+  bound by its **taboos**: placing blocks it cannot abide costs 3 favor, and killing a creature it
+  loves costs 5. Killing creatures it hates pleases it a little (up to 10 favor a day).
+
+Confronting a liar costs favor with the liar and earns favor with whoever its lie wronged.
+
+### Rites
+
+Every entry written in a Tome from a memory is also a **rite**. Open the Tome near an Altar and
+press **Rites**: each entry shows what it does and what it needs, one offering of something loved
+by each god it names (hover to see). Each rite can be performed once a day. Deeper entries perform
+stronger rites:
+
+- level 1 and 2: Quicken the Fields (nearby crops ripen), Mend the Worn (tools and armor partly
+  repaired), Gain Favor (with the first god named);
+- level 2 and 3: The Long Dream (your next dream lasts half again as long), Ward of the Night (no
+  monsters spawn within 64 blocks of the altar for a day), Call of the God (your next dream leans
+  toward the god named), Borrowed Gift (that god's gift for a day);
+- level 4 and 5: Battle Fury, Unseal (on your next dream, that god's doors open as if you knew it
+  well), Seer's Whisper (a hint of where some lore you haven't found lies).
+
+**A rite built on a lie misfires**: the offerings are lost, you are weakened for a minute, and the
+gods it names think less of you. So a rite is also a way to test what you've written. A god's own
+archive leads with its official lies.
 
 ### Operator commands
 
@@ -125,6 +159,7 @@ These need permission level 2, because they spoil the mystery.
 - `/altus wake`: leave the Altus at once.
 - `/altus sites`: the Mountain's door sites, who holds each, and where.
 - `/altus visit <god number>`: while dreaming, jump to a god's door (numbers from `/altus history`).
+- `/altus favor [god number] [value]`: see your standing with the gods, or set your favor with one.
 
 ### Settings
 
@@ -163,7 +198,10 @@ You need JDK 21. Run `./gradlew build`; the jar lands in `build/libs/`.
   smoke world uses seed 14, which has a ruin whose corpse remembers a secret killing; worn armor
   goes in and comes back on; an echo appears once and speaks; the inner door refuses at three
   writings and opens at four; caught with the truth, a liar's echo confesses; and the Archivist
-  appears and has hints.
+  appears and has hints; an offering is refused by a god you don't know and accepted by one you do;
+  favor makes you a Follower whose patron's guardians spare you, then a Disciple with its gift; a
+  taboo costs favor; a Tome lists its rites; a true rite works once a day and uses its offerings;
+  a rite on a lie misfires; and losing favor takes the gift away.
 - Publishes the build log, test results and the smoke-test history to the `ci-logs` branch.
 
 ## Layout
