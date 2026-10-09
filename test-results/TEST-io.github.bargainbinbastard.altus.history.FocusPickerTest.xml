@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.github.bargainbinbastard.altus.history.FocusPickerTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-09T18:48:03.114Z" hostname="runnervmmprz5" time="1.9">
+  <properties/>
+  <testcase name="tiesGoToTheWoods()" classname="io.github.bargainbinbastard.altus.history.FocusPickerTest" time="0.496"/>
+  <testcase name="dislikedBlocksSubtract()" classname="io.github.bargainbinbastard.altus.history.FocusPickerTest" time="0.051"/>
+  <testcase name="aRoomFullOfOneGodsBlocksFindsAGod()" classname="io.github.bargainbinbastard.altus.history.FocusPickerTest" time="1.331"/>
+  <testcase name="emptyRoomMeansOrdinarySleep()" classname="io.github.bargainbinbastard.altus.history.FocusPickerTest" time="0.016"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

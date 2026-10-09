@@ -1,0 +1,527 @@
+THE ALTUS: history for seed 14
+
+== PANTHEON ==
+The Keeper of Phantoms
+  god-from-glory; born Y001; power 10 -> 26
+  traits: historian 7, protective 4, proud 8
+  likes: Kelp, Wheat, Phantoms, Endermen, quenching fires, mining ore, enchanting iron
+  dislikes: Sculk, Foxes, killing gentle beasts, forging tools
+The Saint of Moss
+  god-from-god, made by the Keeper of Phantoms; born Y008; power 1 -> 4
+  traits: protective 3, opportunist 9
+  likes: enchanting iron, Moss, Copper, Endermen, Wolves, building toward the sky
+  dislikes: Amethyst, Iron, Witches, felling trees, breeding the herds
+The Lantern of Amethyst (dead, slain in Y206)
+  god-from-god, made by the Keeper of Phantoms; born Y010; power 1 -> 4
+  traits: proud 8
+  likes: quenching fires, enchanting iron, Amethyst, Mud, the Drowned
+  dislikes: Coral, Prismarine, Bats, Sheep, forging tools, hunting the creatures of the night
+The Tongue of Coral
+  god-from-god, made by the Keeper of Phantoms; born Y039; power 1 -> 3
+  traits: historian 7
+  likes: quenching fires, Endermen, Coral, Prismarine, felling trees
+  dislikes: Candles, Wolves, building toward the sky
+The Beast of Bees
+  god-from-god, made by the Keeper of Phantoms; born Y050; power 1 -> 1
+  traits: proud 8, historian 7, opportunist 9
+  likes: Kelp, mining ore, Snow, Spiders, Bees, hunting the creatures of the night
+  dislikes: Cobwebs, Bone, the Drowned, Bats, digging deep, killing gentle beasts
+The Father of Bees
+  god-from-god, made by the Keeper of Phantoms; born Y068; power 1 -> 2
+  traits: proud 9, historian 7, opportunist 5
+  likes: quenching fires, enchanting iron, Sculk, Candles, Glass, Bees, Wolves, digging deep
+  dislikes: Coral, the Drowned, burning offerings
+
+== GROUPS ==
+The Ashen Bell: sworn to keep the true record of all that happens; public; founded Y040; members the Keeper of Phantoms, the Tongue of Coral, the Beast of Bees, and the Father of Bees
+The Unlit Tree: sworn to oppose the Father of Bees; public; founded Y077; members the Beast of Bees and the Keeper of Phantoms
+The Unlit Choir: sworn to oppose the Tongue of Coral; public; founded Y081; members the Saint of Moss, the Keeper of Phantoms, and the Father of Bees
+The Bitter Thorn: sworn to kill the Lantern of Amethyst; secret; founded Y103; dissolved Y206 (its purpose is fulfilled)
+The Ashen Choir: sworn to oppose the Beast of Bees; public; founded Y156; members the Keeper of Phantoms and the Father of Bees
+The Last Veil: sworn to kill the Lantern of Amethyst; secret; founded Y179; dissolved Y206 (its purpose is fulfilled)
+
+== SECRETS ==
+S-001 GROUP_PURPOSE [kept] The Bitter Thorn is a group sworn to kill the Lantern of Amethyst.
+S-002 MEMBERSHIP [kept] The Saint of Moss is a member of the Bitter Thorn.
+S-003 MEMBERSHIP [kept] The Father of Bees is a member of the Bitter Thorn.
+S-004 MEMBERSHIP [kept] The Beast of Bees is a member of the Bitter Thorn.
+S-005 DEED [kept] The Bitter Thorn struck the Lantern of Amethyst in the 110th year: the Saint of Moss, the Father of Bees, and the Beast of Bees.
+S-006 DEED [exposed] The Bitter Thorn struck the Lantern of Amethyst in the 112th year: the Beast of Bees, the Saint of Moss, and the Father of Bees.
+S-007 DEED [kept] The Bitter Thorn struck the Lantern of Amethyst in the 126th year: the Saint of Moss, the Father of Bees, and the Beast of Bees.
+S-008 GROUP_PURPOSE [kept] The Last Veil is a group sworn to kill the Lantern of Amethyst.
+S-009 MEMBERSHIP [kept] The Saint of Moss is a member of the Last Veil.
+S-010 MEMBERSHIP [kept] The Beast of Bees is a member of the Last Veil.
+S-011 MEMBERSHIP [kept] The Father of Bees is a member of the Last Veil.
+S-012 LOCATION [exposed] The hall of the Last Veil lies hidden in the Altus.
+S-013 DEED [kept] The Father of Bees, the Saint of Moss, and the Beast of Bees slew the Lantern of Amethyst in the 206th year.
+
+== HISTORY ==
+Y001 GLORY       E-0001 the Keeper of Phantoms came from glory and made the world (god-from-glory, power 10)
+                   Traits: historian 7, protective 4, proud 8
+Y008 CREATION    E-0002 the Keeper of Phantoms made the Saint of Moss (god-from-god, power 1)  reason=progenitor  [TRAIT:progenitor 9]
+                   Traits: protective 3, opportunist 9
+Y010 CREATION    E-0003 the Keeper of Phantoms made the Lantern of Amethyst (god-from-god, power 1)  reason=progenitor  [TRAIT:progenitor 9]
+                   Traits: proud 8
+                   GRUDGE G-001 the Saint of Moss → the Lantern of Amethyst sev=3  (the Lantern of Amethyst likes Amethyst, which the Saint of Moss despises)
+Y021 OFFENSE     E-0004 the Lantern of Amethyst raised a shrine of Amethyst, which the Saint of Moss despises  [TRAIT:proud 8 (flaunting)]
+                   G-001 deepens: the Saint of Moss → the Lantern of Amethyst sev=6
+Y027 OFFENSE     E-0005 the Lantern of Amethyst raised a shrine of Amethyst, which the Saint of Moss despises  [TRAIT:proud 8 (flaunting)]
+                   G-001 deepens: the Saint of Moss → the Lantern of Amethyst sev=8
+Y037 OFFENSE     E-0006 the Lantern of Amethyst raised a shrine of Amethyst, which the Saint of Moss despises  [TRAIT:proud 8 (flaunting)]
+                   G-001 deepens: the Saint of Moss → the Lantern of Amethyst sev=10
+Y039 CREATION    E-0007 the Keeper of Phantoms made the Tongue of Coral (god-from-god, power 1)  reason=progenitor  [TRAIT:progenitor 9]
+                   Traits: historian 7
+                   GRUDGE G-002 the Tongue of Coral → the Saint of Moss sev=5  (the Saint of Moss likes Wolves and build_height, which the Tongue of Coral despises)
+                   GRUDGE G-003 the Saint of Moss → the Tongue of Coral sev=3  (the Tongue of Coral likes fell_tree, which the Saint of Moss despises)
+                   GRUDGE G-004 the Lantern of Amethyst → the Tongue of Coral sev=5  (the Tongue of Coral likes Coral and Prismarine, which the Lantern of Amethyst despises)
+Y040 FOUNDED     E-0008 the Keeper of Phantoms and the Tongue of Coral founded the Ashen Bell, sworn to keep the true record of all that happens  [TRAIT:historian 7]
+                   Public; led by the Keeper of Phantoms; loyalty the Keeper of Phantoms 6, the Tongue of Coral 5
+Y050 OFFENSE     E-0009 the Lantern of Amethyst raised a shrine of Amethyst, which the Saint of Moss despises  [TRAIT:proud 8 (flaunting)]
+     LIE           L-001 told by the Lantern of Amethyst  motive=INFLATE_DEEDS  distortion=CHANGE_CAUSE  about E-0009
+                     Official story: “The Lantern of Amethyst raised a shrine of Amethyst, though the Saint of Moss despises it. Why? The Saint of Moss' insolence demanded it.”
+                     Can be caught: the Saint of Moss' account records no provocation
+Y050 CREATION    E-0010 the Keeper of Phantoms made the Beast of Bees (god-from-god, power 1)  reason=progenitor  [TRAIT:progenitor 9]
+                   Traits: proud 8, historian 7, opportunist 9
+                   GRUDGE G-005 the Beast of Bees → the Lantern of Amethyst sev=3  (the Lantern of Amethyst likes the Drowned, which the Beast of Bees despises)
+                   GRUDGE G-006 the Lantern of Amethyst → the Beast of Bees sev=3  (the Beast of Bees likes kill_hostile, which the Lantern of Amethyst despises)
+Y057 OFFENSE     E-0011 the Saint of Moss loosed Wolves upon the world, which the Tongue of Coral despises  [GRUDGE 3 vs the Tongue of Coral]
+                   G-002 deepens: the Tongue of Coral → the Saint of Moss sev=8
+Y057 COUNCIL     The Ashen Bell: the Keeper of Phantoms proposes to expose the Lantern of Amethyst's lie (L-001). the Keeper of Phantoms approves (its own proposal)
+Y057 CORRECTED   E-0012 the Ashen Bell proved the Lantern of Amethyst's story false (L-001)  [council of the Ashen Bell]
+                   GRUDGE G-007 the Lantern of Amethyst → group the Ashen Bell sev=3 cause=E-0012
+Y058 RESTRAINED  The Keeper of Phantoms wanted to avenge the Tongue of Coral (TRAIT:protective 4) but FRIENDSHIP 7 won
+Y059 COUNCIL     The Ashen Bell: the Keeper of Phantoms proposes to invite the Beast of Bees. the Keeper of Phantoms approves (its own proposal)
+                   The Beast of Bees joins the Ashen Bell (loyalty 1)
+Y068 CREATION    E-0014 the Keeper of Phantoms made the Father of Bees (god-from-god, power 1)  reason=progenitor  [TRAIT:progenitor 9]
+                   Traits: proud 9, historian 7, opportunist 5
+                   GRUDGE G-008 the Keeper of Phantoms → the Father of Bees sev=3  (the Father of Bees likes Sculk, which the Keeper of Phantoms despises)
+                   GRUDGE G-009 the Father of Bees → the Lantern of Amethyst sev=3  (the Lantern of Amethyst likes the Drowned, which the Father of Bees despises)
+                   GRUDGE G-010 the Father of Bees → the Tongue of Coral sev=3  (the Tongue of Coral likes Coral, which the Father of Bees despises)
+                   GRUDGE G-011 the Tongue of Coral → the Father of Bees sev=5  (the Father of Bees likes Candles and Wolves, which the Tongue of Coral despises)
+                   GRUDGE G-012 the Beast of Bees → the Father of Bees sev=3  (the Father of Bees likes dig_deep, which the Beast of Bees despises)
+Y072 COUNCIL     The Ashen Bell: the Beast of Bees proposes to invite the Father of Bees. the Keeper of Phantoms approves (6 vs GRUDGE 3)
+     COMPLIES      The Keeper of Phantoms takes part against its will (LOYALTY 6 ≥ GRUDGE 3)
+                     GRUDGE G-013 the Keeper of Phantoms → group the Ashen Bell sev=3
+     REFUSES       The Tongue of Coral refuses to take part (GRUDGE 5 > LOYALTY 5); its standing in the Ashen Bell falls
+                     GRUDGE G-014 the Tongue of Coral → group the Ashen Bell sev=2
+                   The Father of Bees joins the Ashen Bell (loyalty 2)
+Y077 FOUNDED     E-0016 the Beast of Bees and the Keeper of Phantoms founded the Unlit Tree, sworn to oppose the Father of Bees  [FRIENDSHIP 7 for the Keeper of Phantoms]
+                   Public; led by the Beast of Bees; loyalty the Beast of Bees 1, the Keeper of Phantoms 5
+Y079 STRIKE      E-0017 the Father of Bees struck at, and failed to hurt, the Lantern of Amethyst  power 1 vs 3  [FRIENDSHIP 4 for the Saint of Moss (defending the Saint of Moss)]
+                   GRUDGE G-015 the Lantern of Amethyst → the Father of Bees sev=4 cause=E-0017
+Y081 FOUNDED     E-0018 the Saint of Moss and the Keeper of Phantoms founded the Unlit Choir, sworn to oppose the Tongue of Coral  [FRIENDSHIP 7 for the Keeper of Phantoms]
+                   Public; led by the Keeper of Phantoms; loyalty the Saint of Moss 1, the Keeper of Phantoms 5
+Y082 WAR         E-0019 the Saint of Moss against the Lantern of Amethyst  power 2 vs 3  [GRUDGE 10 vs the Lantern of Amethyst]
+                   GRUDGE G-016 the Lantern of Amethyst → the Saint of Moss sev=4 cause=E-0019
+Y083 COUNCIL     The Unlit Tree: the Keeper of Phantoms proposes to agree on a lie about the Father of Bees. the Beast of Bees rejects (3 vs TRAIT:historian (absolute))
+Y084 OFFENSE     E-0020 the Lantern of Amethyst raised a shrine of Amethyst, which the Saint of Moss despises  [TRAIT:proud 8 (flaunting)]
+Y084 COUNCIL     The Unlit Choir: the Saint of Moss proposes to invite the Father of Bees. the Keeper of Phantoms approves (5 vs GRUDGE 3)
+     COMPLIES      The Keeper of Phantoms takes part against its will (LOYALTY 5 ≥ GRUDGE 3)
+                     GRUDGE G-017 the Keeper of Phantoms → group the Unlit Choir sev=3
+                   The Father of Bees joins the Unlit Choir (loyalty 2)
+Y085 RESTRAINED  The Keeper of Phantoms wanted to join the Lantern of Amethyst's war (FRIENDSHIP 7) but FRIENDSHIP 9 won
+Y085 LIE         L-002 told by the Saint of Moss  motive=SMEAR_RIVAL  distortion=SWAP_ACTOR  about E-0011
+                   Official story: “It was the Lantern of Amethyst who loosed Wolves upon the world, a thing the Tongue of Coral despises.”
+                   Can be caught: the Lantern of Amethyst was busy elsewhere that year (E-0012)
+Y085 COUNCIL     The Unlit Tree: the Beast of Bees proposes to strike the Father of Bees. the Beast of Bees approves (its own proposal)
+     REFUSES       The Keeper of Phantoms refuses to take part (FRIENDSHIP 5 > LOYALTY 5); its standing in the Unlit Tree falls
+                     GRUDGE G-018 the Keeper of Phantoms → group the Unlit Tree sev=2
+Y085 STRIKE      E-0022 the Unlit Tree (the Beast of Bees) struck and wounded the Father of Bees  power 2 vs 1  [council of the Unlit Tree]
+                   Power: the Beast of Bees +1, the Father of Bees −1
+                   GRUDGE G-019 the Father of Bees → group the Unlit Tree sev=3 cause=E-0022
+Y087 CORRECTED   E-0023 the Keeper of Phantoms proved the Saint of Moss' story false (L-002)  [TRAIT:historian 7]
+                   GRUDGE G-020 the Saint of Moss → the Keeper of Phantoms sev=4 cause=E-0023
+                   G-016 deepens: the Lantern of Amethyst → the Saint of Moss sev=6
+Y087 COUNCIL     The Ashen Bell: the Beast of Bees proposes to raise a hall in the Altus. the Keeper of Phantoms approves (no objection)
+                   The Ashen Bell raises a hall in the Altus
+Y088 WAR END     E-0025 the Lantern of Amethyst prevailed over the Saint of Moss, a rout  (power the Lantern of Amethyst +2, the Saint of Moss −2)
+                   G-016 satisfied by victory
+Y090 COUNCIL     The Unlit Choir: the Keeper of Phantoms proposes to agree on a lie about the Tongue of Coral. the Keeper of Phantoms approves (its own proposal)
+     REFUSES       The Father of Bees refuses to take part (TRAIT:historian (absolute) > LOYALTY 2); its standing in the Unlit Choir falls
+     COORDINATED   L-003 the Unlit Choir agrees on one story (the Saint of Moss)  motive=GROUP_SMEAR  distortion=SWAP_ACTOR  about E-0009
+                     Official story: “It was the Tongue of Coral who raised a shrine of Amethyst, a thing the Saint of Moss despises.”
+                     Can be caught: the Saint of Moss saw who truly did it
+Y094 WAR         E-0026 the Tongue of Coral against the Saint of Moss  power 2 vs 1  [GRUDGE 8 vs the Saint of Moss]
+                   G-003 deepens: the Saint of Moss → the Tongue of Coral sev=5
+Y095 COUNCIL     The Ashen Bell: the Keeper of Phantoms proposes to expose the Saint of Moss' lie (L-003) [LOYALTY 5]. the Keeper of Phantoms approves (its own proposal)
+Y095 CORRECTED   E-0027 the Ashen Bell proved the Saint of Moss' story false (L-003)  [council of the Ashen Bell]
+                   GRUDGE G-021 the Saint of Moss → group the Ashen Bell sev=3 cause=E-0027
+                   G-002 deepens: the Tongue of Coral → the Saint of Moss sev=10
+Y096 COUNCIL     The Unlit Tree: the Beast of Bees proposes to agree on a lie about the Father of Bees. the Beast of Bees approves (its own proposal)
+     REFUSES       The Keeper of Phantoms refuses to take part (TRAIT:historian (absolute) > LOYALTY 4); its standing in the Unlit Tree falls
+Y102 WAR END     E-0028 the Tongue of Coral prevailed over the Saint of Moss, a rout  (power the Tongue of Coral +2, the Saint of Moss −2)
+                   G-002 satisfied by victory
+                   G-003 deepens: the Saint of Moss → the Tongue of Coral sev=8
+Y103 FOUNDED     E-0029 the Saint of Moss, the Father of Bees, and the Beast of Bees founded the Bitter Thorn, sworn to kill the Lantern of Amethyst  [GRUDGE 10 vs the Lantern of Amethyst]
+                   Secret; led by the Beast of Bees; loyalty the Saint of Moss 1, the Father of Bees 2, the Beast of Bees 1
+     SECRET        S-001 GROUP_PURPOSE: “The Bitter Thorn is a group sworn to kill the Lantern of Amethyst.”  kept by the Saint of Moss, the Father of Bees, and the Beast of Bees  importance=9
+                   Each member's membership is kept as its own secret
+Y104 OFFENSE     E-0030 the Lantern of Amethyst loosed the Drowned upon the world, which the Beast of Bees despises  [TRAIT:proud 8 (flaunting)]
+                   G-005 deepens: the Beast of Bees → the Lantern of Amethyst sev=6
+Y107 SECLUSION   E-0031 the Saint of Moss withdrew into the deepest Woods until Y120  [SECRET 8 (S-003)]
+Y108 FOILED      The Tongue of Coral sought S-004 and failed (power 4 vs 6); its keepers have noticed  [TRAIT:historian 7]
+Y110 COUNCIL     The Bitter Thorn: the Saint of Moss proposes to strike the Lantern of Amethyst. the Beast of Bees approves (no objection)
+Y110 STRIKE      E-0032 the Bitter Thorn (the Saint of Moss, the Father of Bees, and the Beast of Bees) struck and wounded the Lantern of Amethyst  power 6 vs 5  [council of the Bitter Thorn]
+                   Power: the Saint of Moss +1, the Lantern of Amethyst −1
+     SECRET        S-005 DEED: “The Bitter Thorn struck the Lantern of Amethyst in the 110th year: the Saint of Moss, the Father of Bees, and the Beast of Bees.”  kept by the Saint of Moss, the Father of Bees, and the Beast of Bees  importance=9
+                   The Lantern of Amethyst never saw who struck
+Y112 COUNCIL     The Bitter Thorn: the Beast of Bees proposes to strike the Lantern of Amethyst. the Beast of Bees approves (its own proposal)
+Y112 STRIKE      E-0033 the Bitter Thorn (the Beast of Bees, the Saint of Moss, and the Father of Bees) struck and wounded the Lantern of Amethyst  power 7 vs 4  [council of the Bitter Thorn]
+                   Power: the Beast of Bees +1, the Lantern of Amethyst −1
+     SECRET        S-006 DEED: “The Bitter Thorn struck the Lantern of Amethyst in the 112th year: the Beast of Bees, the Saint of Moss, and the Father of Bees.”  kept by the Beast of Bees, the Saint of Moss, and the Father of Bees  importance=9
+                   The Lantern of Amethyst never saw who struck
+Y124 RESTRAINED  The Tongue of Coral wanted to splinter the Ashen Bell (GRUDGE 2) but LOYALTY 4 won
+Y126 COUNCIL     The Bitter Thorn: the Saint of Moss proposes to strike the Lantern of Amethyst. the Beast of Bees approves (no objection)
+Y126 STRIKE      E-0034 the Bitter Thorn (the Saint of Moss, the Father of Bees, and the Beast of Bees) struck at, and failed to hurt, the Lantern of Amethyst  power 8 vs 4  [council of the Bitter Thorn]
+     SECRET        S-007 DEED: “The Bitter Thorn struck the Lantern of Amethyst in the 126th year: the Saint of Moss, the Father of Bees, and the Beast of Bees.”  kept by the Saint of Moss, the Father of Bees, and the Beast of Bees  importance=9
+                   The Lantern of Amethyst never saw who struck
+Y135 FOILED      The Tongue of Coral sought S-002 and failed (power 4 vs 8); its keepers have noticed  [TRAIT:historian 7]
+Y137 COUNCIL     The Unlit Tree: the Beast of Bees proposes to agree on a lie about the Father of Bees. the Beast of Bees approves (its own proposal)
+     REFUSES       The Keeper of Phantoms refuses to take part (TRAIT:historian (absolute) > LOYALTY 3); its standing in the Unlit Tree falls
+Y139 STRIKE      E-0035 the Father of Bees struck at, and failed to hurt, the Tongue of Coral  power 1 vs 4  [SECRET 7 (S-002) silencing a seeker]
+                   G-011 deepens: the Tongue of Coral → the Father of Bees sev=7
+Y142 COUNCIL     The Unlit Tree: the Beast of Bees proposes to strike the Father of Bees. the Beast of Bees approves (its own proposal)
+     REFUSES       The Keeper of Phantoms refuses to take part (FRIENDSHIP 5 > LOYALTY 2); its standing in the Unlit Tree falls
+                     G-018 deepens: the Keeper of Phantoms → group the Unlit Tree sev=3
+Y142 STRIKE      E-0036 the Unlit Tree (the Beast of Bees) struck at, and failed to hurt, the Father of Bees  power 5 vs 1  [council of the Unlit Tree]
+                   G-019 deepens: the Father of Bees → group the Unlit Tree sev=5
+Y142 COUNCIL     The Bitter Thorn: the Beast of Bees proposes to agree on a lie about the Lantern of Amethyst. the Beast of Bees approves (its own proposal)
+     REFUSES       The Father of Bees refuses to take part (TRAIT:historian (absolute) > LOYALTY 2); its standing in the Bitter Thorn falls
+Y144 FOILED      The Keeper of Phantoms sought S-006 and failed (power 12 vs 8); its keepers have noticed  [TRAIT:historian 7]
+Y144 COUNCIL     The Bitter Thorn: the Father of Bees proposes to strike the Lantern of Amethyst. the Beast of Bees approves (no objection)
+Y144 STRIKE      E-0037 the Bitter Thorn (the Father of Bees, the Saint of Moss, and the Beast of Bees) struck at, and failed to hurt, the Lantern of Amethyst  power 8 vs 4  [council of the Bitter Thorn]
+                   GRUDGE G-022 the Lantern of Amethyst → group the Bitter Thorn sev=5 cause=E-0037
+Y148 OFFENSE     E-0038 the Tongue of Coral raised a shrine of Coral, which the Father of Bees despises  [GRUDGE 7 vs the Father of Bees]
+                   G-010 deepens: the Father of Bees → the Tongue of Coral sev=6
+Y149 LIE         L-004 told by the Saint of Moss  motive=KEEP_SECRET  distortion=OMIT_ACTOR  about E-0029
+                   Official story: “The Saint of Moss, the Father of Bees, and the Beast of Bees founded the Bitter Thorn, with the Beast of Bees at its head.”
+                   Can be caught: those who were there remember
+Y150 STRIKE      E-0039 the Lantern of Amethyst struck at, and failed to hurt, the Beast of Bees  power 4 vs 5  [GRUDGE 5 vs the Beast of Bees]
+     LIE           L-005 told by the Lantern of Amethyst  motive=INFLATE_DEEDS  distortion=CHANGE_CAUSE  about E-0039
+                     Official story: “The Lantern of Amethyst struck the Beast of Bees, because the Beast of Bees' insolence demanded it.”
+                     Can be caught: the Beast of Bees' account records no provocation
+                   G-005 deepens: the Beast of Bees → the Lantern of Amethyst sev=9
+Y150 COUNCIL     The Ashen Bell: the Beast of Bees proposes to cast out the Keeper of Phantoms. the Keeper of Phantoms rejects (5 vs SELF (absolute))
+Y151 LIE         L-006 told by the Saint of Moss  motive=KEEP_SECRET  distortion=OMIT_ACTOR  about E-0033
+                   Official story: “An unseen hand struck the Lantern of Amethyst and wounded them.”
+                   Can be caught: those who were there remember
+Y152 COUNCIL     The Ashen Bell: the Keeper of Phantoms proposes to expose the Saint of Moss' lie (L-006). the Keeper of Phantoms approves (its own proposal)
+Y152 FOILED      The Ashen Bell tried to disprove L-006 and failed  [council of the Ashen Bell]
+Y153 EXPOSED     E-0040 the Keeper of Phantoms laid bare S-006: “The Bitter Thorn struck the Lantern of Amethyst in the 112th year: the Beast of Bees, the Saint of Moss, and the Father of Bees.”  [TRAIT:historian 7, power 12 vs 9]
+                   GRUDGE G-023 the Beast of Bees → the Keeper of Phantoms sev=6 cause=E-0040
+                   G-020 deepens: the Saint of Moss → the Keeper of Phantoms sev=7
+                   GRUDGE G-024 the Father of Bees → the Keeper of Phantoms sev=6 cause=E-0040
+                   G-006 deepens: the Lantern of Amethyst → the Beast of Bees sev=6
+                   GRUDGE G-025 the Lantern of Amethyst → the Saint of Moss sev=5 cause=E-0040
+                   G-015 deepens: the Lantern of Amethyst → the Father of Bees sev=7
+Y154 FOILED      The Tongue of Coral sought S-003 and failed (power 4 vs 9); its keepers have noticed  [TRAIT:historian 7]
+Y154 COUNCIL     The Unlit Choir: the Father of Bees proposes to raise a hall in the Altus. the Keeper of Phantoms approves (no objection)
+                   The Unlit Choir raises a hall in the Altus
+Y156 STRIKE      E-0042 the Beast of Bees struck at, and failed to hurt, the Tongue of Coral  power 5 vs 4  [SECRET 8 (S-004) silencing a seeker]
+                   GRUDGE G-026 the Tongue of Coral → the Beast of Bees sev=4 cause=E-0042
+Y156 FOUNDED     E-0043 the Keeper of Phantoms and the Father of Bees founded the Ashen Choir, sworn to oppose the Beast of Bees  [FRIENDSHIP 5 for the Father of Bees]
+                   Public; led by the Keeper of Phantoms; loyalty the Keeper of Phantoms 6, the Father of Bees 2
+Y156 COUNCIL     The Unlit Tree: the Beast of Bees proposes to agree on a lie about the Father of Bees. the Beast of Bees approves (its own proposal)
+     REFUSES       The Keeper of Phantoms refuses to take part (TRAIT:historian (absolute) > LOYALTY 1); its standing in the Unlit Tree falls
+Y157 OFFENSE     E-0044 the Lantern of Amethyst loosed the Drowned upon the world, which the Father of Bees despises  [TRAIT:proud 8 (flaunting)]
+                   G-009 deepens: the Father of Bees → the Lantern of Amethyst sev=6
+Y158 COUNCIL     The Ashen Bell: the Tongue of Coral proposes to expose the Lantern of Amethyst's lie (L-005). the Keeper of Phantoms approves (no objection)
+Y158 CORRECTED   E-0045 the Ashen Bell proved the Lantern of Amethyst's story false (L-005)  [council of the Ashen Bell]
+                   G-007 deepens: the Lantern of Amethyst → group the Ashen Bell sev=5
+Y159 COUNCIL     The Unlit Choir: the Saint of Moss proposes to strike the Tongue of Coral. the Keeper of Phantoms rejects (4 vs FRIENDSHIP 7)
+Y160 COUNCIL     The Ashen Bell: the Father of Bees proposes to cast out the Keeper of Phantoms. the Keeper of Phantoms rejects (5 vs SELF (absolute))
+Y162 COUNCIL     The Unlit Choir: the Saint of Moss proposes to cast out the Keeper of Phantoms. the Keeper of Phantoms rejects (4 vs SELF (absolute))
+Y164 COUNCIL     The Ashen Bell: the Tongue of Coral proposes to cast out the Keeper of Phantoms [LOYALTY 4]. the Keeper of Phantoms rejects (5 vs SELF (absolute))
+Y164 COUNCIL     The Ashen Choir: the Keeper of Phantoms proposes to make war on the Beast of Bees. the Keeper of Phantoms approves (its own proposal)
+     COMPLIES      The Father of Bees takes part against its will (LOYALTY 2 ≥ LOYALTY 2)
+                     GRUDGE G-027 the Father of Bees → group the Ashen Choir sev=2
+Y164 WAR         E-0046 the Ashen Choir: the Keeper of Phantoms, the Father of Bees, and the Lantern of Amethyst against the Beast of Bees  power 17 vs 5  [council of the Ashen Choir]
+                   GRUDGE G-028 the Beast of Bees → group the Ashen Choir sev=5 cause=E-0046
+Y167 WAR END     E-0047 the Keeper of Phantoms, the Father of Bees, and the Lantern of Amethyst prevailed over the Beast of Bees, a rout  (power the Keeper of Phantoms +2, the Beast of Bees −2)
+                   G-023 deepens: the Beast of Bees → the Keeper of Phantoms sev=8
+Y167 RESTRAINED  The Tongue of Coral wanted to plot against the Beast of Bees (GRUDGE 4) but LOYALTY 4 won (tie, chance)
+Y167 COUNCIL     The Unlit Tree: the Keeper of Phantoms proposes to strike the Father of Bees. the Beast of Bees approves (5 vs LOYALTY 1)
+     REFUSES       The Beast of Bees refuses to take part (LOYALTY 1 > LOYALTY 1); its standing in the Unlit Tree falls
+                     GRUDGE G-029 the Beast of Bees → group the Unlit Tree sev=1
+Y167 STRIKE      E-0048 the Unlit Tree (the Keeper of Phantoms) struck and wounded the Father of Bees  power 14 vs 1  [council of the Unlit Tree]
+                   Power: the Keeper of Phantoms +1, the Father of Bees −1
+                   G-019 deepens: the Father of Bees → group the Unlit Tree sev=7
+Y169 LIE         L-007 told by the Saint of Moss  motive=KEEP_SECRET  distortion=OMIT_ACTOR  about E-0032
+                   Official story: “An unseen hand struck the Lantern of Amethyst and wounded them.”
+                   Can be caught: those who were there remember
+Y172 COUNCIL     The Unlit Choir: the Keeper of Phantoms proposes to agree on a lie about the Tongue of Coral. the Keeper of Phantoms approves (its own proposal)
+     REFUSES       The Father of Bees refuses to take part (TRAIT:historian (absolute) > LOYALTY 1); its standing in the Unlit Choir falls
+     COORDINATED   L-008 the Unlit Choir agrees on one story (the Saint of Moss)  motive=GROUP_SMEAR  distortion=SWAP_ACTOR  about E-0017
+                     Official story: “It was the Tongue of Coral who struck at the Lantern of Amethyst.”
+                     Can be caught: the Lantern of Amethyst saw who truly did it
+                     The Lantern of Amethyst believes it
+                     G-004 deepens: the Lantern of Amethyst → the Tongue of Coral sev=7
+Y173 FOILED      The Tongue of Coral sought S-003 and failed (power 4 vs 7); its keepers have noticed  [TRAIT:historian 7]
+Y176 FORGIVE     E-0049 the Father of Bees forgave the Keeper of Phantoms, but not the Unlit Tree; G-019 still stands for the others  [FRIENDSHIP 8 for the Keeper of Phantoms]
+Y176 COUNCIL     The Unlit Choir: the Father of Bees proposes to strike the Tongue of Coral. the Keeper of Phantoms rejects (4 vs FRIENDSHIP 7)
+Y179 FOUNDED     E-0050 the Saint of Moss, the Beast of Bees, and the Father of Bees founded the Last Veil, sworn to kill the Lantern of Amethyst  [GRUDGE 10 vs the Lantern of Amethyst]
+                   Secret; leaderless, decides by vote; loyalty the Saint of Moss 1, the Beast of Bees 1, the Father of Bees 2
+     SECRET        S-008 GROUP_PURPOSE: “The Last Veil is a group sworn to kill the Lantern of Amethyst.”  kept by the Saint of Moss, the Beast of Bees, and the Father of Bees  importance=9
+                   Each member's membership is kept as its own secret
+Y183 CORRECTED   E-0051 the Beast of Bees proved the Saint of Moss' story false (L-006)  [TRAIT:historian 7]
+                   GRUDGE G-030 the Saint of Moss → the Beast of Bees sev=5 cause=E-0051
+Y184 COUNCIL     The Ashen Bell: the Keeper of Phantoms proposes to expose the Saint of Moss' lie (L-008). the Keeper of Phantoms approves (its own proposal)
+Y184 CORRECTED   E-0052 the Ashen Bell proved the Saint of Moss' story false (L-008)  [council of the Ashen Bell]
+                   G-021 deepens: the Saint of Moss → group the Ashen Bell sev=6
+                   GRUDGE G-031 the Tongue of Coral → the Saint of Moss sev=4 cause=E-0052
+Y186 FOILED      The Tongue of Coral sought S-003 and failed (power 4 vs 7); its keepers have noticed  [TRAIT:historian 7]
+Y190 COUNCIL     The Unlit Choir: the Father of Bees proposes to cast out the Keeper of Phantoms. the Keeper of Phantoms rejects (4 vs SELF (absolute))
+Y191 COUNCIL     The Ashen Choir: the Father of Bees proposes to make war on the Beast of Bees. the Keeper of Phantoms rejects (6 vs FRIENDSHIP 6)
+Y193 FOILED      The Tongue of Coral sought S-008 and failed (power 4 vs 7); its keepers have noticed  [TRAIT:historian 7]
+Y196 COUNCIL     The Ashen Bell: the Beast of Bees proposes to cast out the Keeper of Phantoms. the Keeper of Phantoms rejects (5 vs SELF (absolute))
+Y201 COUNCIL     The Unlit Tree: the Keeper of Phantoms proposes to make war on the Father of Bees. the Beast of Bees approves (5 vs LOYALTY 1)
+     COMPLIES      The Beast of Bees takes part against its will (LOYALTY 1 ≥ LOYALTY 1)
+                     G-029 deepens: the Beast of Bees → group the Unlit Tree sev=2
+Y201 WAR         E-0053 the Unlit Tree: the Keeper of Phantoms, the Beast of Bees, the Saint of Moss, and the Tongue of Coral against the Father of Bees  power 27 vs 1  [council of the Unlit Tree]
+                   G-019 deepens: the Father of Bees → group the Unlit Tree sev=10
+Y202 COUNCIL     The Ashen Bell: the Father of Bees proposes to cast out the Keeper of Phantoms. the Keeper of Phantoms rejects (5 vs SELF (absolute))
+Y203 COUNCIL     The Last Veil: the Saint of Moss proposes to raise a hall in the Altus. vote 3–0: carried
+                   The Last Veil raises a hall in the Altus, hidden from all others
+     SECRET          S-012 LOCATION: “The hall of the Last Veil lies hidden in the Altus.”  kept by the Saint of Moss, the Beast of Bees, and the Father of Bees  importance=6
+Y205 STRIKE      E-0055 the Beast of Bees struck at, and failed to hurt, the Tongue of Coral  power 4 vs 4  [SECRET 7 (S-002) silencing a seeker]
+                   G-026 deepens: the Tongue of Coral → the Beast of Bees sev=7
+Y206 STRIKE      E-0056 the Beast of Bees struck and wounded the Tongue of Coral  power 4 vs 4  [SECRET 8 (S-004) silencing a seeker]
+                   Power: the Tongue of Coral −1
+                   G-026 deepens: the Tongue of Coral → the Beast of Bees sev=9
+Y206 COUNCIL     The Bitter Thorn: the Father of Bees proposes to kill the Lantern of Amethyst. the Beast of Bees approves (no objection)
+Y206 DEICIDE     E-0057 the Bitter Thorn (the Father of Bees, the Saint of Moss, and the Beast of Bees) slew the Lantern of Amethyst  power 8 vs 4, roll 0.019 < 0.13  [council of the Bitter Thorn]
+                   Orphaned likes: extinguish_fire, enchant_item, Amethyst, Mud, the Drowned
+                   Power: the Father of Bees +2 (half of the Lantern of Amethyst's 4)
+     SECRET        S-013 DEED: “The Father of Bees, the Saint of Moss, and the Beast of Bees slew the Lantern of Amethyst in the 206th year.”  kept by the Father of Bees, the Saint of Moss, and the Beast of Bees  importance=10
+     COORDINATED   L-009 the Bitter Thorn agrees on one story (the Saint of Moss)  motive=KEEP_SECRET  distortion=OMIT_ACTOR  about E-0057
+                     Official story: “An unseen hand slew the Lantern of Amethyst, and the Lantern of Amethyst is no more.”
+                     Can be caught: the corpse of the Lantern of Amethyst remembers its killers
+                   No one saw the killers; the heavens do not know who struck
+     DISSOLVED     The Bitter Thorn is no more: its purpose is fulfilled
+     DISSOLVED     The Last Veil is no more: its purpose is fulfilled
+Y209 COUNCIL     The Ashen Bell: the Keeper of Phantoms proposes to expose the Saint of Moss' lie (L-007) [LOYALTY 5]. the Keeper of Phantoms approves (its own proposal)
+Y209 CORRECTED   E-0058 the Ashen Bell proved the Saint of Moss' story false (L-007)  [council of the Ashen Bell]
+                   G-021 deepens: the Saint of Moss → group the Ashen Bell sev=8
+Y211 WAR END     E-0059 the Keeper of Phantoms, the Beast of Bees, the Saint of Moss, and the Tongue of Coral prevailed over the Father of Bees, a rout  (power the Keeper of Phantoms +2, the Father of Bees −2)
+                   G-008 satisfied by victory
+                   G-024 deepens: the Father of Bees → the Keeper of Phantoms sev=9
+Y211 STRIKE      E-0060 the Father of Bees struck and wounded the Tongue of Coral  power 1 vs 3  [SECRET 8 (S-003) silencing a seeker]
+                   Power: the Tongue of Coral −1
+                   G-011 deepens: the Tongue of Coral → the Father of Bees sev=9
+Y215 STRIKE      E-0061 the Saint of Moss struck and wounded the Tongue of Coral  power 3 vs 2  [GRUDGE 8 vs the Tongue of Coral]
+                   Power: the Tongue of Coral −1
+                   G-031 deepens: the Tongue of Coral → the Saint of Moss sev=6
+Y216 STRIKE      E-0062 the Beast of Bees struck at, and failed to hurt, the Tongue of Coral  power 4 vs 1  [SECRET 8 (S-003) silencing a seeker]
+                   G-026 deepens: the Tongue of Coral → the Beast of Bees sev=10
+Y218 WAR         E-0063 the Tongue of Coral and the Keeper of Phantoms against the Father of Bees  power 19 vs 1  [GRUDGE 9 vs the Father of Bees]
+                   G-010 deepens: the Father of Bees → the Tongue of Coral sev=9
+Y220 COUNCIL     The Ashen Bell: the Beast of Bees proposes to expose the Saint of Moss' lie (L-004). the Keeper of Phantoms approves (no objection)
+Y220 CORRECTED   E-0064 the Ashen Bell proved the Saint of Moss' story false (L-004)  [council of the Ashen Bell]
+                   G-021 deepens: the Saint of Moss → group the Ashen Bell sev=10
+Y223 WAR END     E-0065 the Tongue of Coral and the Keeper of Phantoms prevailed over the Father of Bees, a rout  (power the Tongue of Coral +2, the Father of Bees −2)
+                   G-011 satisfied by victory
+                   G-010 deepens: the Father of Bees → the Tongue of Coral sev=10
+Y223 COUNCIL     The Unlit Tree: the Beast of Bees proposes to agree on a lie about the Father of Bees. the Beast of Bees approves (its own proposal)
+     REFUSES       The Keeper of Phantoms refuses to take part (TRAIT:historian (absolute) > LOYALTY 1); its standing in the Unlit Tree falls
+Y227 STRIKE      E-0066 the Tongue of Coral struck and wounded the Saint of Moss  power 3 vs 3  [GRUDGE 6 vs the Saint of Moss]
+                   Power: the Saint of Moss −1
+                   G-003 deepens: the Saint of Moss → the Tongue of Coral sev=10
+Y229 SECLUSION   E-0067 the Saint of Moss withdrew into the deepest Woods until Y238  [SECRET 9 (S-005)]
+Y229 CORRECTED   E-0068 the Keeper of Phantoms proved the Saint of Moss' story false (L-009)  [TRAIT:historian 7]
+                   G-020 deepens: the Saint of Moss → the Keeper of Phantoms sev=9
+Y231 COUNCIL     The Ashen Choir: the Keeper of Phantoms proposes to make war on the Beast of Bees. the Keeper of Phantoms approves (its own proposal)
+     REFUSES       The Father of Bees refuses to take part (LOYALTY 2 > LOYALTY 1); its standing in the Ashen Choir falls
+                     G-027 deepens: the Father of Bees → group the Ashen Choir sev=3
+Y231 WAR         E-0069 the Ashen Choir: the Keeper of Phantoms and the Tongue of Coral against the Beast of Bees  power 21 vs 4  [council of the Ashen Choir]
+                   G-028 deepens: the Beast of Bees → group the Ashen Choir sev=8
+Y235 COUNCIL     The Unlit Choir: the Saint of Moss proposes to agree on a lie about the Tongue of Coral. the Keeper of Phantoms rejects (4 vs TRAIT:historian (absolute))
+Y241 EXPOSED     E-0070 the Keeper of Phantoms laid bare S-012: “The hall of the Last Veil lies hidden in the Altus.”  [TRAIT:historian 7, power 18 vs 7]
+                   G-020 deepens: the Saint of Moss → the Keeper of Phantoms sev=10
+                   G-023 deepens: the Beast of Bees → the Keeper of Phantoms sev=10
+                   G-024 deepens: the Father of Bees → the Keeper of Phantoms sev=10
+Y242 COUNCIL     The Unlit Tree: the Keeper of Phantoms proposes to strike the Father of Bees. the Beast of Bees approves (8 vs LOYALTY 1)
+     REFUSES       The Beast of Bees refuses to take part (LOYALTY 1 > LOYALTY 1); its standing in the Unlit Tree falls
+                     G-029 deepens: the Beast of Bees → group the Unlit Tree sev=3
+Y242 STRIKE      E-0071 the Unlit Tree (the Keeper of Phantoms) struck and wounded the Father of Bees  power 18 vs 1  [council of the Unlit Tree]
+                   Power: the Keeper of Phantoms +1, the Father of Bees −1
+Y245 WAR END     E-0072 the Keeper of Phantoms and the Tongue of Coral prevailed over the Beast of Bees, a rout  (power the Keeper of Phantoms +2, the Beast of Bees −2)
+Y245 COUNCIL     The Ashen Choir: the Father of Bees proposes to strike the Beast of Bees. the Keeper of Phantoms approves (6 vs FRIENDSHIP 5)
+     COMPLIES      The Keeper of Phantoms takes part against its will (LOYALTY 6 ≥ FRIENDSHIP 5)
+                     GRUDGE G-032 the Keeper of Phantoms → group the Ashen Choir sev=5
+Y245 STRIKE      E-0073 the Ashen Choir (the Father of Bees and the Keeper of Phantoms) struck and wounded the Beast of Bees  power 22 vs 2  [council of the Ashen Choir]
+                   Power: the Father of Bees +1, the Beast of Bees −1
+                   G-028 deepens: the Beast of Bees → group the Ashen Choir sev=10
+Y246 COUNCIL     The Unlit Choir: the Father of Bees proposes to cast out the Keeper of Phantoms. the Keeper of Phantoms rejects (4 vs SELF (absolute))
+Y247 RESTRAINED  The Tongue of Coral wanted to splinter the Ashen Bell (GRUDGE 2) but LOYALTY 4 won
+Y252 COUNCIL     The Unlit Choir: the Keeper of Phantoms proposes to strike the Tongue of Coral. the Keeper of Phantoms approves (its own proposal)
+     REFUSES       The Father of Bees refuses to take part (LOYALTY 2 > LOYALTY 1); its standing in the Unlit Choir falls
+                     GRUDGE G-033 the Father of Bees → group the Unlit Choir sev=1
+Y252 STRIKE      E-0074 the Unlit Choir (the Keeper of Phantoms and the Saint of Moss) struck at, and failed to hurt, the Tongue of Coral  power 24 vs 3  [council of the Unlit Choir]
+                   GRUDGE G-034 the Tongue of Coral → group the Unlit Choir sev=5 cause=E-0074
+Y259 COUNCIL     The Unlit Tree: the Keeper of Phantoms proposes to strike the Father of Bees. the Beast of Bees approves (10 vs LOYALTY 1)
+     REFUSES       The Beast of Bees refuses to take part (LOYALTY 1 > LOYALTY 1); its standing in the Unlit Tree falls
+                     G-029 deepens: the Beast of Bees → group the Unlit Tree sev=4
+Y259 STRIKE      E-0075 the Unlit Tree (the Keeper of Phantoms) struck and wounded the Father of Bees  power 21 vs 3  [council of the Unlit Tree]
+                   Power: the Keeper of Phantoms +1, the Father of Bees −1
+Y263 OFFENSE     E-0076 the Father of Bees dug toward the floor of the world, which the Beast of Bees despises  [TRAIT:proud 9 (flaunting)]
+                   G-012 deepens: the Beast of Bees → the Father of Bees sev=5
+Y268 RESTRAINED  The Keeper of Phantoms wanted to forgive the Father of Bees (FRIENDSHIP 4) but GRUDGE 5 won
+Y274 STRIKE      E-0077 the Beast of Bees struck at, and failed to hurt, the Tongue of Coral  power 1 vs 3  [SECRET 8 (S-004) silencing a seeker]
+Y277 COUNCIL     The Ashen Bell: the Tongue of Coral proposes to cast out the Keeper of Phantoms. the Keeper of Phantoms rejects (5 vs SELF (absolute))
+Y278 COUNCIL     The Unlit Tree: the Beast of Bees proposes to strike the Father of Bees. the Beast of Bees approves (its own proposal)
+     REFUSES       The Keeper of Phantoms refuses to take part (LOYALTY 5 > LOYALTY 1); its standing in the Unlit Tree falls
+                     G-018 deepens: the Keeper of Phantoms → group the Unlit Tree sev=4
+Y278 STRIKE      E-0078 the Unlit Tree (the Beast of Bees) struck and wounded the Father of Bees  power 1 vs 2  [council of the Unlit Tree]
+                   Power: the Beast of Bees +1, the Father of Bees −1
+Y280 COUNCIL     The Ashen Choir: the Father of Bees proposes to agree on a lie about the Beast of Bees. the Keeper of Phantoms rejects (5 vs TRAIT:historian (absolute))
+Y281 COUNCIL     The Unlit Tree: the Beast of Bees proposes to strike the Father of Bees. the Beast of Bees approves (its own proposal)
+     REFUSES       The Keeper of Phantoms refuses to take part (LOYALTY 5 > LOYALTY 1); its standing in the Unlit Tree falls
+                     G-018 deepens: the Keeper of Phantoms → group the Unlit Tree sev=5
+Y281 STRIKE      E-0079 the Unlit Tree (the Beast of Bees) struck and wounded the Father of Bees  power 2 vs 1  [council of the Unlit Tree]
+                   Power: the Beast of Bees +1, the Father of Bees −1
+Y282 COUNCIL     The Unlit Choir: the Keeper of Phantoms proposes to strike the Tongue of Coral. the Keeper of Phantoms approves (its own proposal)
+     REFUSES       The Father of Bees refuses to take part (LOYALTY 2 > LOYALTY 1); its standing in the Unlit Choir falls
+                     G-033 deepens: the Father of Bees → group the Unlit Choir sev=2
+Y282 STRIKE      E-0080 the Unlit Choir (the Keeper of Phantoms and the Saint of Moss) struck at, and failed to hurt, the Tongue of Coral  power 25 vs 3  [council of the Unlit Choir]
+                   G-034 deepens: the Tongue of Coral → group the Unlit Choir sev=7
+Y285 WAR         E-0081 the Beast of Bees against the Keeper of Phantoms, the Saint of Moss, the Tongue of Coral, and the Father of Bees  power 3 vs 29  [GRUDGE 10 vs the Keeper of Phantoms]
+                   GRUDGE G-035 the Keeper of Phantoms → the Beast of Bees sev=6 cause=E-0081
+Y286 COUNCIL     The Ashen Bell: the Father of Bees proposes to cast out the Keeper of Phantoms. the Keeper of Phantoms rejects (5 vs SELF (absolute))
+Y291 COUNCIL     The Unlit Tree: the Beast of Bees proposes to agree on a lie about the Father of Bees. the Beast of Bees approves (its own proposal)
+     REFUSES       The Keeper of Phantoms refuses to take part (TRAIT:historian (absolute) > LOYALTY 1); its standing in the Unlit Tree falls
+Y292 COUNCIL     The Unlit Tree: the Keeper of Phantoms proposes to strike the Father of Bees. the Beast of Bees approves (10 vs LOYALTY 1)
+     REFUSES       The Beast of Bees refuses to take part (LOYALTY 1 > LOYALTY 1); its standing in the Unlit Tree falls
+                     G-029 deepens: the Beast of Bees → group the Unlit Tree sev=5
+Y292 STRIKE      E-0082 the Unlit Tree (the Keeper of Phantoms) struck and wounded the Father of Bees  power 22 vs 1  [council of the Unlit Tree]
+                   Power: the Keeper of Phantoms +1, the Father of Bees −1
+Y295 WAR END     E-0083 the Keeper of Phantoms, the Saint of Moss, the Tongue of Coral, and the Father of Bees prevailed over the Beast of Bees, a rout  (power the Keeper of Phantoms +2, the Beast of Bees −2)
+                   G-035 satisfied by victory
+Y298 COUNCIL     The Unlit Choir: the Keeper of Phantoms proposes to strike the Tongue of Coral. the Keeper of Phantoms approves (its own proposal)
+     REFUSES       The Father of Bees refuses to take part (LOYALTY 2 > LOYALTY 1); its standing in the Unlit Choir falls
+                     G-033 deepens: the Father of Bees → group the Unlit Choir sev=3
+Y298 STRIKE      E-0084 the Unlit Choir (the Keeper of Phantoms and the Saint of Moss) struck and wounded the Tongue of Coral  power 29 vs 3  [council of the Unlit Choir]
+                   Power: the Keeper of Phantoms +1, the Tongue of Coral −1
+                   G-034 deepens: the Tongue of Coral → group the Unlit Choir sev=10
+Y300 COUNCIL     The Unlit Tree: the Beast of Bees proposes to agree on a lie about the Father of Bees. the Beast of Bees approves (its own proposal)
+     REFUSES       The Keeper of Phantoms refuses to take part (TRAIT:historian (absolute) > LOYALTY 1); its standing in the Unlit Tree falls
+Y300 ALTUS       Region claims computed
+Y300 LOCATION    E-0085 the Keeper of Phantoms' sanctum lies beneath a cairn on the Mountain's northern slope
+Y300 LOCATION    E-0086 the Saint of Moss' sanctum lies beneath the House's cellar stair
+Y300 LOCATION    E-0087 the Tongue of Coral's sanctum lies in the House's locked attic
+
+== ALTUS REGIONS ==
+The Woods: unclaimed; the same in every world
+The Mountain: held by the Keeper of Phantoms
+The House on the mountainside: contested by the Saint of Moss and the Tongue of Coral
+Hall of the Ashen Bell: kept by its members
+Hall of the Unlit Choir: kept by its members
+Hall of the Last Veil: abandoned; hidden
+Ruins of the Lantern of Amethyst: a broken shrine on the Mountain's northern slope, from the 206th year
+
+== OPEN TENSIONS ==
+G-003: the Saint of Moss holds a grudge against the Tongue of Coral (sev 10)
+G-010: the Father of Bees holds a grudge against the Tongue of Coral (sev 10)
+G-012: the Beast of Bees holds a grudge against the Father of Bees (sev 5)
+G-018: the Keeper of Phantoms holds a grudge against group the Unlit Tree (sev 5)
+G-019: the Father of Bees holds a grudge against group the Unlit Tree (sev 10)
+G-020: the Saint of Moss holds a grudge against the Keeper of Phantoms (sev 10)
+G-021: the Saint of Moss holds a grudge against group the Ashen Bell (sev 10)
+G-023: the Beast of Bees holds a grudge against the Keeper of Phantoms (sev 10)
+G-024: the Father of Bees holds a grudge against the Keeper of Phantoms (sev 10)
+G-026: the Tongue of Coral holds a grudge against the Beast of Bees (sev 10)
+G-028: the Beast of Bees holds a grudge against group the Ashen Choir (sev 10)
+G-029: the Beast of Bees holds a grudge against group the Unlit Tree (sev 5)
+G-030: the Saint of Moss holds a grudge against the Beast of Bees (sev 5)
+G-031: the Tongue of Coral holds a grudge against the Saint of Moss (sev 6)
+G-032: the Keeper of Phantoms holds a grudge against group the Ashen Choir (sev 5)
+G-034: the Tongue of Coral holds a grudge against group the Unlit Choir (sev 10)
+The Unlit Tree is strained: the Beast of Bees and the Keeper of Phantoms resent it more than they are loyal
+The Unlit Choir is strained: the Father of Bees resents it more than it is loyal
+The Ashen Choir is strained: the Keeper of Phantoms and the Father of Bees resent it more than they are loyal
+11 secrets still kept
+
+== SAMPLE LORE FRAGMENTS ==
+
+[event] The Making of the Tongue of Coral
+  In the 39th year, the Keeper of Phantoms made the Tongue of Coral in the first days.
+  So the Keeper of Phantoms tells it.
+
+[event] The End of the War of the Keeper of Phantoms and the Beast of Bees
+  The Keeper of Phantoms, the Saint of Moss, the Tongue of Coral, and the Father of Bees broke the Beast of Bees utterly.
+  So the Father of Bees tells it.
+
+[event] The End of the War of the Lantern of Amethyst and the Saint of Moss
+  The Lantern of Amethyst broke the Saint of Moss utterly.
+  So the Saint of Moss tells it.
+
+[event] The End of the War of the Keeper of Phantoms and the Father of Bees
+  The Keeper of Phantoms, the Beast of Bees, the Saint of Moss, and the Tongue of Coral broke the Father of Bees utterly.
+  So the Father of Bees tells it.
+
+[event] A Blow Against the Father of Bees
+  It was the Keeper of Phantoms, acting as the Unlit Tree, who wounded the Father of Bees.
+  So the Father of Bees tells it.
+
+[event] The Founding of the Unlit Tree
+  The Beast of Bees and the Keeper of Phantoms founded the Unlit Tree, with the Beast of Bees at its head.
+  So the Father of Bees tells it.
+
+[event] The End of the War of the Tongue of Coral and the Saint of Moss
+  The Tongue of Coral broke the Saint of Moss utterly.
+  So the Tongue of Coral tells it.
+
+[event] The End of the War of the Lantern of Amethyst and the Saint of Moss
+  The Lantern of Amethyst broke the Saint of Moss utterly.
+  So the Keeper of Phantoms tells it.
+
+[event] An Offense Against the Beast of Bees
+  In the 263rd year, the Father of Bees dug toward the floor of the world, a thing the Beast of Bees despises.
+  So the Keeper of Phantoms tells it.
+
+[event] An Offense Against the Saint of Moss
+  The Lantern of Amethyst raised a shrine of Amethyst, though the Saint of Moss despises it. Why? The Lantern of Amethyst cared nothing for what the Saint of Moss holds sacred.
+  So the Saint of Moss tells it.
+
+[event] A Falsehood Undone
+  The Ashen Bell proved that the Saint of Moss' account of the 50th year was false.
+  So the Tongue of Coral tells it.
+
+[event] A Falsehood Undone
+  The Ashen Bell proved that the Saint of Moss' account of the 79th year was false.
+  So the Keeper of Phantoms tells it.
+
+[secret] A Hidden Place
+  The hall of the Last Veil lies hidden in the Altus.
+  So the Keeper of Phantoms tells it.
+
+[secret] A Hidden Deed
+  The Bitter Thorn struck the Lantern of Amethyst in the 112th year: the Beast of Bees, the Saint of Moss, and the Father of Bees.
+  So the Keeper of Phantoms tells it.
+
+[secret] A Hidden Allegiance
+  The Saint of Moss is a member of the Last Veil.
+  Glimpsed, unbidden, in the Altus.
+
+[static] The Loves of the Father of Bees
+  The Father of Bees delights in Sculk, Wolves, and Bees.
+  So the Keeper of Phantoms tells it.
+
+[static] The Hatreds of the Lantern of Amethyst
+  The Lantern of Amethyst cannot abide Sheep, hunting the creatures of the night, and Bats.
+  So the Tongue of Coral tells it.
+
+[static] On the Unlit Tree
+  The Unlit Tree is sworn to oppose the Father of Bees. the Beast of Bees leads it. Its members are the Beast of Bees and the Keeper of Phantoms.
+  So the Beast of Bees tells it.
+
+[static] The Hatreds of the Saint of Moss
+  The Saint of Moss cannot abide breeding the herds and Witches.
+  So the Tongue of Coral tells it.
+
+[static] The Loves of the Tongue of Coral
+  The Tongue of Coral delights in Coral and Endermen.
+  So the Keeper of Phantoms tells it.
+
+[static] The Loves of the Beast of Bees
+  The Beast of Bees delights in hunting the creatures of the night and Snow.
+  So the Father of Bees tells it.

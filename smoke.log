@@ -1,0 +1,400 @@
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /proc/stat
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/topology/core_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/topology/core_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/topology/physical_package_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/topology/physical_package_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cpu_capacity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cpu_capacity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index2/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index2/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index2/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index2/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index2/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index2/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index2/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index2/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index2/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index2/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index0/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index0/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index0/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index0/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index0/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index0/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index0/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index0/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index0/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index0/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index3/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index3/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index3/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index3/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index3/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index3/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index3/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index3/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index3/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index3/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index1/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index1/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index1/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index1/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index1/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index1/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index1/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index1/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index1/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu0/cache/index1/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/topology/core_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/topology/core_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/topology/physical_package_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/topology/physical_package_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cpu_capacity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cpu_capacity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index2/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index2/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index2/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index2/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index2/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index2/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index2/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index2/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index2/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index2/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index0/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index0/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index0/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index0/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index0/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index0/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index0/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index0/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index0/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index0/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index3/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index3/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index3/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index3/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index3/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index3/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index3/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index3/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index3/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index3/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index1/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index1/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index1/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index1/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index1/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index1/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index1/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index1/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index1/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu1/cache/index1/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/topology/core_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/topology/core_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/topology/physical_package_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/topology/physical_package_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cpu_capacity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cpu_capacity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index2/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index2/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index2/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index2/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index2/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index2/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index2/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index2/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index2/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index2/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index0/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index0/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index0/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index0/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index0/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index0/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index0/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index0/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index0/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index0/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index3/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index3/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index3/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index3/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index3/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index3/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index3/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index3/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index3/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index3/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index1/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index1/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index1/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index1/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index1/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index1/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index1/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index1/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index1/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu2/cache/index1/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/topology/core_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/topology/core_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/topology/physical_package_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/topology/physical_package_id
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cpu_capacity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cpu_capacity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index2/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index2/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index2/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index2/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index2/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index2/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index2/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index2/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index2/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index2/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index0/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index0/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index0/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index0/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index0/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index0/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index0/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index0/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index0/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index0/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index3/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index3/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index3/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index3/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index3/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index3/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index3/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index3/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index3/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index3/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index1/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index1/level
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index1/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index1/type
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index1/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index1/ways_of_associativity
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index1/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index1/coherency_line_size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index1/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /sys/devices/system/cpu/cpu3/cache/index1/size
+[18:48:34] [main/DEBUG] [os.ut.FileUtil/]: Reading file /proc/cpuinfo
+[18:48:35] [main/DEBUG] [os.ut.FileUtil/]: Reading file /proc/self/auxv
+[18:48:35] [main/DEBUG] [os.ut.FileUtil/]: No oshi.architecture.properties file found from ClassLoader cpw.mods.modlauncher.TransformingClassLoader@3b569985
+[18:48:35] [main/DEBUG] [os.ut.FileUtil/]: Reading file /proc/meminfo
+[18:48:35] [main/DEBUG] [os.ut.FileUtil/]: Reading file /proc/meminfo
+[18:48:35] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.4.1).
+[18:48:35] [main/DEBUG] [mixin/]: Registering new injector for @SugarWrapper with com.llamalad7.mixinextras.sugar.impl.SugarWrapperInjectionInfo
+[18:48:35] [main/DEBUG] [mixin/]: Registering new injector for @FactoryRedirectWrapper with com.llamalad7.mixinextras.wrapper.factory.FactoryRedirectWrapperInjectionInfo
+[18:48:35] [main/DEBUG] [mixin/]: Mixing MappedRegistryAccessor from neoforge.mixins.json into net.minecraft.core.MappedRegistry
+[18:48:35] [main/DEBUG] [mixin/]: neoforge.mixins.json:MappedRegistryAccessor from mod neoforge: Class version 65 required is higher than the class version supported by the current version of Mixin (JAVA_16 supports class version 60)
+[18:48:36] [main/DEBUG] [mixin/]: Mixing BlockEntityTypeAccessor from neoforge.mixins.json into net.minecraft.world.level.block.entity.BlockEntityType
+[18:48:36] [main/DEBUG] [mixin/]: neoforge.mixins.json:BlockEntityTypeAccessor from mod neoforge: Class version 65 required is higher than the class version supported by the current version of Mixin (JAVA_16 supports class version 60)
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent0/]: -Dio.netty.noUnsafe: false
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent0/]: Java version: 21
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent0/]: sun.misc.Unsafe.theUnsafe: available
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent0/]: sun.misc.Unsafe.copyMemory: available
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent0/]: sun.misc.Unsafe.storeFence: available
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent0/]: java.nio.Buffer.address: available
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent0/]: direct buffer constructor: unavailable: Reflective setAccessible(true) disabled
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent0/]: java.nio.Bits.unaligned: available, true
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent0/]: jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable: class io.netty.util.internal.PlatformDependent0$7 (in module io.netty.common) cannot access class jdk.internal.misc.Unsafe (in module java.base) because module java.base does not export jdk.internal.misc to module io.netty.common
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent0/]: java.nio.DirectByteBuffer.<init>(long, {int,long}): unavailable
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent/]: sun.misc.Unsafe: available
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent/]: maxDirectMemory: 4192206848 bytes (maybe)
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent/]: -Dio.netty.tmpdir: /tmp (java.io.tmpdir)
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent/]: -Dio.netty.bitMode: 64 (sun.arch.data.model)
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent/]: -Dio.netty.maxDirectMemory: -1 bytes
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent/]: -Dio.netty.uninitializedArrayAllocationThreshold: -1
+[18:48:38] [main/DEBUG] [io.ne.ut.in.CleanerJava9/]: java.nio.ByteBuffer.cleaner(): available
+[18:48:38] [main/DEBUG] [io.ne.ut.in.PlatformDependent/]: -Dio.netty.noPreferDirect: false
+[18:48:41] [main/WARN] [minecraft/Commands]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[18:48:41] [main/WARN] [minecraft/Commands]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[18:48:41] [main/WARN] [minecraft/Commands]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[18:48:41] [main/WARN] [minecraft/Commands]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[18:48:41] [main/WARN] [minecraft/Commands]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[18:48:41] [main/DEBUG] [ne.ne.fm.ModWorkManager/LOADING]: Using 4 threads for parallel mod-loading
+[18:48:41] [main/DEBUG] [ne.ne.fm.ja.FMLModContainer/LOADING]: Creating FMLModContainer instance for [net.neoforged.neoforge.common.NeoForgeMod]
+[18:48:41] [main/DEBUG] [ne.ne.fm.ja.FMLModContainer/LOADING]: Creating FMLModContainer instance for [io.github.bargainbinbastard.altus.AltusMod]
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.ne.in.ve.ne.NeoForgeVersion/CORE]: Found NeoForge version 21.1.176
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.ne.in.ve.ne.NeoForgeVersion/CORE]: Found FML version 4.0.39
+[18:48:41] [modloading-worker-0/INFO] [ne.ne.ne.co.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.176, for MC 1.21.1
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Config file altus-server.toml for altus tracking
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Config file neoforge-client.toml for neoforge tracking
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Config file neoforge-server.toml for neoforge tracking
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Config file neoforge-common.toml for neoforge tracking
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.fm.ja.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for altus
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.fm.ja.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for neoforge
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.fm.ja.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.neoforged.neoforge.network.filters.GenericPacketSplitter to MOD
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.AbstractByteBuf/]: -Dio.netty.buffer.checkAccessible: true
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.AbstractByteBuf/]: -Dio.netty.buffer.checkBounds: true
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.ut.ResourceLeakDetectorFactory/]: Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@24640640
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.ut.in.InternalThreadLocalMap/]: -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.ut.in.InternalThreadLocalMap/]: -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.numHeapArenas: 8
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.numDirectArenas: 8
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.pageSize: 8192
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.maxOrder: 9
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.chunkSize: 4194304
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.smallCacheSize: 256
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.normalCacheSize: 64
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.cacheTrimInterval: 8192
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.useCacheForAllThreads: false
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.ByteBufUtil/]: -Dio.netty.allocator.type: pooled
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.ByteBufUtil/]: -Dio.netty.threadLocalDirectBufferSize: 0
+[18:48:41] [modloading-worker-0/DEBUG] [io.ne.bu.ByteBufUtil/]: -Dio.netty.maxThreadLocalCharBufferSize: 16384
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.fm.ja.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.neoforged.neoforge.network.NetworkInitialization to MOD
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.fm.ja.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.neoforged.neoforge.network.ConfigurationInitialization to MOD
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.fm.ja.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.neoforged.neoforge.common.MonsterRoomHooks to GAME
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.fm.ja.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.neoforged.neoforge.common.DeferredSpawnEggItem$CommonHandler to MOD
+[18:48:41] [modloading-worker-0/DEBUG] [ne.ne.fm.ja.AutomaticEventSubscriber/LOADING]: Auto-subscribing net.neoforged.neoforge.attachment.AttachmentInternals to GAME
+[18:48:41] [modloading-sync-worker/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Loading configs type COMMON
+[18:48:41] [modloading-sync-worker/DEBUG] [ne.ne.ne.co.NeoForgeConfig/FORGEMOD]: Loaded NeoForge config file neoforge-common.toml
+[18:48:41] [modloading-sync-worker/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Loaded TOML config file /home/runner/work/Minecraft-the-atlus/Minecraft-the-atlus/run-smoke/config/neoforge-common.toml
+[18:48:41] [modloading-sync-worker/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Watching TOML config file /home/runner/work/Minecraft-the-atlus/Minecraft-the-atlus/run-smoke/config/neoforge-common.toml for changes
+[18:48:41] [modloading-sync-worker/DEBUG] [ne.ne.fm.DeferredWorkQueue/LOADING]: Dispatching synchronous work for work queue Common setup: 1 jobs
+[18:48:41] [modloading-sync-worker/DEBUG] [ne.ne.fm.DeferredWorkQueue/LOADING]: Synchronous work queue completed in 971.3 μs
+[18:48:41] [main/INFO] [mojang/YggdrasilAuthenticationService]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[18:48:41] [main/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/home/runner/work/Minecraft-the-atlus/Minecraft-the-atlus/build/moddev/artifacts/neoforge-21.1.176.jar%23125!/assets/.mcassetsroot' uses unexpected schema
+[18:48:41] [main/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/home/runner/work/Minecraft-the-atlus/Minecraft-the-atlus/build/moddev/artifacts/neoforge-21.1.176.jar%23125!/data/.mcassetsroot' uses unexpected schema
+[18:48:42] [main/INFO] [minecraft/Main]: No existing world data, creating new world
+[18:48:43] [main/INFO] [minecraft/RecipeManager]: Loaded 1292 recipes
+[18:48:43] [main/INFO] [minecraft/AdvancementTree]: Loaded 1399 advancements
+[18:48:43] [main/DEBUG] [ne.ne.ne.co.CommonHooks/WP]: Gathered mod list to write to world save world
+[18:48:43] [Server thread/INFO] [minecraft/DedicatedServer]: Starting minecraft server version 1.21.1
+[18:48:43] [Server thread/INFO] [minecraft/DedicatedServer]: Loading properties
+[18:48:43] [Server thread/INFO] [minecraft/DedicatedServer]: Default game type: SURVIVAL
+[18:48:43] [Server thread/INFO] [minecraft/MinecraftServer]: Generating keypair
+[18:48:43] [Server thread/INFO] [minecraft/DedicatedServer]: Starting Minecraft server on *:25565
+[18:48:43] [Server thread/DEBUG] [ne.ne.ne.ne.DualStackUtils/]: Detected IPv6 address: "0:0:0:0:0:0:0:0"
+[18:48:43] [Server thread/DEBUG] [io.ne.ut.in.NativeLibraryLoader/]: -Dio.netty.native.workdir: /tmp (io.netty.tmpdir)
+[18:48:43] [Server thread/DEBUG] [io.ne.ut.in.NativeLibraryLoader/]: -Dio.netty.native.deleteLibAfterLoading: true
+[18:48:43] [Server thread/DEBUG] [io.ne.ut.in.NativeLibraryLoader/]: -Dio.netty.native.tryPatchShadedId: true
+[18:48:43] [Server thread/DEBUG] [io.ne.ut.in.NativeLibraryLoader/]: -Dio.netty.native.detectNativeLibraryDuplicates: true
+[18:48:43] [Server thread/DEBUG] [io.ne.ut.in.NativeLibraryLoader/]: Successfully loaded the library /tmp/libnetty_transport_native_epoll_x86_645175455941126582427.so
+[18:48:43] [Server thread/DEBUG] [io.ne.ut.NetUtil/]: -Djava.net.preferIPv4Stack: false
+[18:48:43] [Server thread/DEBUG] [io.ne.ut.NetUtil/]: -Djava.net.preferIPv6Addresses: true
+[18:48:43] [Server thread/DEBUG] [io.ne.ut.NetUtilInitializations/]: Loopback interface: lo (lo, 0:0:0:0:0:0:0:1%lo)
+[18:48:43] [Server thread/DEBUG] [io.ne.ut.NetUtil/]: /proc/sys/net/core/somaxconn: 4096
+[18:48:43] [Server thread/DEBUG] [io.ne.ch.MultithreadEventLoopGroup/]: -Dio.netty.eventLoopThreads: 8
+[18:48:44] [Server thread/DEBUG] [io.ne.ut.co.GlobalEventExecutor/]: -Dio.netty.globalEventExecutor.quietPeriodSeconds: 1
+[18:48:44] [Server thread/DEBUG] [io.ne.ut.in.PlatformDependent/]: org.jctools-core.MpscChunkedArrayQueue: available
+[18:48:44] [Server thread/INFO] [minecraft/ServerConnectionListener]: Using epoll channel type
+[18:48:44] [Server thread/DEBUG] [io.ne.ch.DefaultChannelId/]: -Dio.netty.processId: 2821 (auto-detected)
+[18:48:44] [Server thread/DEBUG] [io.ne.ch.DefaultChannelId/]: -Dio.netty.machineId: 70:a8:a5:ff:fe:27:71:fe (auto-detected)
+[18:48:44] [Server thread/WARN] [minecraft/DedicatedServer]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[18:48:44] [Server thread/WARN] [minecraft/DedicatedServer]: The server will make no attempt to authenticate usernames. Beware.
+[18:48:44] [Server thread/WARN] [minecraft/DedicatedServer]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[18:48:44] [Server thread/WARN] [minecraft/DedicatedServer]: To change this, set "online-mode" to "true" in the server.properties file.
+[18:48:44] [Server thread/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Loading configs type SERVER
+[18:48:44] [Server thread/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Loaded TOML config file /home/runner/work/Minecraft-the-atlus/Minecraft-the-atlus/run-smoke/config/altus-server.toml
+[18:48:44] [Server thread/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Watching TOML config file /home/runner/work/Minecraft-the-atlus/Minecraft-the-atlus/run-smoke/config/altus-server.toml for changes
+[18:48:44] [Server thread/DEBUG] [ne.ne.ne.co.NeoForgeConfig/FORGEMOD]: Loaded NeoForge config file neoforge-server.toml
+[18:48:44] [Server thread/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Loaded TOML config file /home/runner/work/Minecraft-the-atlus/Minecraft-the-atlus/run-smoke/config/neoforge-server.toml
+[18:48:44] [Server thread/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Watching TOML config file /home/runner/work/Minecraft-the-atlus/Minecraft-the-atlus/run-smoke/config/neoforge-server.toml for changes
+[18:48:44] [Server thread/INFO] [minecraft/DedicatedServer]: Preparing level "world"
+[18:48:49] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing start region for dimension minecraft:overworld
+[18:48:49] [worldgen/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 2%
+[18:48:49] [worldgen/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 2%
+[18:48:50] [worldgen/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 2%
+[18:48:50] [worldgen/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 2%
+[18:48:51] [worldgen/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 8%
+[18:48:51] [worldgen/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 18%
+[18:48:52] [worldgen/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 18%
+[18:48:52] [worldgen/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 51%
+[18:48:53] [worldgen/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 51%
+[18:48:53] [worldgen/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 51%
+[18:48:54] [Server thread/INFO] [minecraft/LoggerChunkProgressListener]: Time elapsed: 4982 ms
+[18:48:54] [Server thread/INFO] [minecraft/DedicatedServer]: Done (10.083s)! For help, type "help"
+[18:48:54] [Server thread/DEBUG] [ne.ne.ne.ne.DualStackUtils/]: Detected IPv6 address: "0:0:0:0:0:0:0:0"
+[18:48:54] [Server thread/DEBUG] [ne.ne.ne.se.LanguageHook/]: Loaded 4 language files for en_us
+[18:48:54] [Server thread/INFO] [ne.ne.ne.ga.GameTestHooks/]: Enabled Gametest Namespaces: []
+[18:48:54] [Server thread/INFO] [ne.ne.ne.se.pe.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[18:48:54] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: The Altus: generated the history of this world in 224 ms: 6 gods, 87 events, 6 groups, 13 secrets.
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: The Altus: built the stage (version 4) in 2981 ms.
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: the Altus loaded; a Clearing spot is BlockPos{x=-2, y=64, z=244} on Block{minecraft:grass_block}[snowy=false]
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: placed 6 Block{minecraft:dried_kelp_block} for the Keeper of Phantoms; the scan counted 6; focus TIE -
+[18:48:57] [Server thread/INFO] [minecraft/PlayerList]: AltusSmoke[embedded] logged in with entity id 5 at (-287.5, 65.0, 348.5)
+[18:48:57] [Server thread/DEBUG] [io.ne.ut.Recycler/]: -Dio.netty.recycler.maxCapacityPerThread: 4096
+[18:48:57] [Server thread/DEBUG] [io.ne.ut.Recycler/]: -Dio.netty.recycler.ratio: 8
+[18:48:57] [Server thread/DEBUG] [io.ne.ut.Recycler/]: -Dio.netty.recycler.chunkSize: 32
+[18:48:57] [Server thread/DEBUG] [io.ne.ut.Recycler/]: -Dio.netty.recycler.blocking: false
+[18:48:57] [Server thread/DEBUG] [io.ne.ut.Recycler/]: -Dio.netty.recycler.batchFastThreadLocalOnly: true
+[18:48:57] [Server thread/INFO] [minecraft/MinecraftServer]: AltusSmoke joined the game
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke entered the Altus (focus god -1, 10 s)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke left the Altus (command)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: dream round trip: began=true inAltus=true emptied=true active=true | home=true restored=true altusItemsGone=true closed=true
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke entered the Altus (focus god -1, 10 s)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke left the Altus (death)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: death in the Altus: began=true alive=true home=true restored=true closed=true
+[18:48:57] [Server thread/INFO] [minecraft/MinecraftServer]: AltusSmoke has made the advancement [Sweet Dreams]
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke entered the Altus (focus god 0, 600 s)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: sleeping into the Altus: problem=none slept=true began=true inAltus=true focus=0 expected=GOD 0
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke left the Altus (command)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: a second dream the same night is refused: true
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke entered the Altus (focus god 0, 10 s)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke left the Altus (command)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: Tome title: 'Notes on cthe Gods' (shown as 'Notes on cthe Gods')
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: fading: held before=3 after=0 effect still present=false (null)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: memories: carved=true recipe=true pending=4 readable=4 effect=true written=true known=true reconciled=true faded=true
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: the Tome's first entry read: The Loves of the Keeper of Phantoms | The Keeper of Phantoms delights in Kelp, Wheat, Phantoms, Endermen, quenching fires, mining ore, and enchanting iron. | (Carved in stone, in the Woods of the Altus. Day 1.)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: stage: summit height 208 (terrain says 208); doors built 5 of 5
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke entered the Altus (focus god -1, 20 s)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke left the Altus (command)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke entered the Altus (focus god 0, 10 s)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke left the Altus (command)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: sanctum of the Keeper of Phantoms at summit_south: shut=true entered=true muralTaken=true built=true relics=4 relicShut=true relicOpened=true out=true arrivedAtDoor=true
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE:   took [OP:0:1] What the Keeper of Phantoms Thinks of the Saint of Moss: The Keeper of Phantoms holds the Saint of Moss dear.
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE:   took [EV:E-0070:0:WHO] A Thing Laid Bare: The Keeper of Phantoms uncovered a hidden thing: the hall of the Last Veil lies hidden in the Altus.
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke entered the Altus (focus god -1, 15 s)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke left the Altus (command)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: carried item: bound=true carriedIn=true (only thing held: true) back=true diamonds=3 dreamDirtGone=true reclaimed=true armorIn=true armorBack=true
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke entered the Altus (focus god -1, 15 s)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke left the Altus (command)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: guardians of the Keeper of Phantoms (power 26) at summit_south: stone=true called=true (entity.minecraft.phantom) capped=true (4 of 4)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke entered the Altus (focus god -1, 15 s)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke left the Altus (command)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: ruin of the Lantern of Amethyst at west_terrace: entered=true relics=6 gated=true first relic: [level 4] The Father of Bees, the Saint of Moss, and the Beast of Bees slew the Lantern of Amethyst, and the Lantern of Amethyst is no more. (So the corpse of the Lantern of Amethyst remembers it.)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke entered the Altus (focus god -1, 15 s)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: AltusSmoke left the Altus (command)
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: depth, sanctum of the Saint of Moss: echoed=true spoke=true innerShut=true innerOpen=true innerTaken=2 innerOut=true confessed=true archivist=true hints=2
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE:   confession: Confronted with the truth, the Saint of Moss admitted it: It was the Saint of Moss who loosed Wolves upon the world, a thing the Tongue of Coral despises.
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE:   Archivist: The door of the Saint of Moss stands on the Mountain, set in a wall of moss block. Learn where, and you will wake beside it.
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE:   Archivist: Two of your writings disagree, and the Saint of Moss is the liar. Find its echo and crouch as you speak to it.
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: SMOKE: devotion to the Saint of Moss (offers moss, gift luck): refused=true offered=true follower=true spared=true disciple=true taboo=true views=2 rite MEND_TOOLS performed=true offeringsUsed=true onceADay=true misfired=true giftGone=true
+[18:48:57] [Server thread/INFO] [io.gi.ba.al.AltusMod/]: ALTUS SMOKE TEST PASSED
+[18:48:57] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[18:48:57] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[18:48:57] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[18:49:01] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[18:49:01] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/altus:altus
+[18:49:01] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[18:49:01] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[18:49:01] [Server thread/DEBUG] [ne.ne.ne.co.CommonHooks/WP]: Gathered mod list to write to world save world
+[18:49:01] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[18:49:01] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (altus): All chunks are saved
+[18:49:01] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[18:49:01] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[18:49:01] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved
+[18:49:01] [Server thread/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Unloading configs type SERVER
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1791571709755.json
+
+[Incubating] Problems report is available at: file:///home/runner/work/Minecraft-the-atlus/Minecraft-the-atlus/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.14.2/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 32s
+8 actionable tasks: 4 executed, 4 up-to-date
+Configuration cache entry stored.

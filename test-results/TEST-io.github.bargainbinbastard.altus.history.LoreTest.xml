@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.github.bargainbinbastard.altus.history.LoreTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-09T18:48:10.467Z" hostname="runnervmmprz5" time="3.912">
+  <properties/>
+  <testcase name="everyWoodsInscriptionRendersForEveryGod()" classname="io.github.bargainbinbastard.altus.history.LoreTest" time="2.183"/>
+  <testcase name="fallbackGodIsVisibleAndAlive()" classname="io.github.bargainbinbastard.altus.history.LoreTest" time="1.696"/>
+  <testcase name="nonsenseIdsRenderNothing()" classname="io.github.bargainbinbastard.altus.history.LoreTest" time="0.031"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

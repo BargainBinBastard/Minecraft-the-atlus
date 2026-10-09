@@ -1,0 +1,129 @@
+jar: build/moddev/artifacts/neoforge-21.1.176.jar
+=== net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent
+Compiled from "FinalizeSpawnEvent.java"
+public class net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent extends net.neoforged.neoforge.event.entity.living.MobSpawnEvent implements net.neoforged.bus.api.ICancellableEvent {
+  public net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent(net.minecraft.world.entity.Mob, net.minecraft.world.level.ServerLevelAccessor, double, double, double, net.minecraft.world.DifficultyInstance, net.minecraft.world.entity.MobSpawnType, net.minecraft.world.entity.SpawnGroupData, com.mojang.datafixers.util.Either<net.minecraft.world.level.block.entity.BlockEntity, net.minecraft.world.entity.Entity>);
+  public net.minecraft.world.DifficultyInstance getDifficulty();
+  public void setDifficulty(net.minecraft.world.DifficultyInstance);
+  public net.minecraft.world.entity.MobSpawnType getSpawnType();
+  public net.minecraft.world.entity.SpawnGroupData getSpawnData();
+  public void setSpawnData(net.minecraft.world.entity.SpawnGroupData);
+  public com.mojang.datafixers.util.Either<net.minecraft.world.level.block.entity.BlockEntity, net.minecraft.world.entity.Entity> getSpawner();
+  public void setSpawnCancelled(boolean);
+  public boolean isSpawnCancelled();
+}
+=== net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent
+Compiled from "LivingChangeTargetEvent.java"
+public class net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent extends net.neoforged.neoforge.event.entity.living.LivingEvent implements net.neoforged.bus.api.ICancellableEvent {
+  public net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent(net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.LivingEntity, net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent$ILivingTargetType);
+  public net.minecraft.world.entity.LivingEntity getNewAboutToBeSetTarget();
+  public void setNewAboutToBeSetTarget(net.minecraft.world.entity.LivingEntity);
+  public net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent$ILivingTargetType getTargetType();
+  public net.minecraft.world.entity.LivingEntity getOriginalAboutToBeSetTarget();
+}
+=== net.neoforged.neoforge.event.level.BlockEvent$EntityPlaceEvent
+Compiled from "BlockEvent.java"
+public class net.neoforged.neoforge.event.level.BlockEvent$EntityPlaceEvent extends net.neoforged.neoforge.event.level.BlockEvent implements net.neoforged.bus.api.ICancellableEvent {
+  public net.neoforged.neoforge.event.level.BlockEvent$EntityPlaceEvent(net.neoforged.neoforge.common.util.BlockSnapshot, net.minecraft.world.level.block.state.BlockState, net.minecraft.world.entity.Entity);
+  public net.minecraft.world.entity.Entity getEntity();
+  public net.neoforged.neoforge.common.util.BlockSnapshot getBlockSnapshot();
+  public net.minecraft.world.level.block.state.BlockState getPlacedBlock();
+  public net.minecraft.world.level.block.state.BlockState getPlacedAgainst();
+}
+=== net.minecraft.world.effect.MobEffectInstance
+Compiled from "MobEffectInstance.java"
+public class net.minecraft.world.effect.MobEffectInstance implements java.lang.Comparable<net.minecraft.world.effect.MobEffectInstance> {
+  public static final int INFINITE_DURATION;
+  public static final int MIN_AMPLIFIER;
+  public static final int MAX_AMPLIFIER;
+  public static final com.mojang.serialization.Codec<net.minecraft.world.effect.MobEffectInstance> CODEC;
+  public static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, net.minecraft.world.effect.MobEffectInstance> STREAM_CODEC;
+  public net.minecraft.world.effect.MobEffectInstance(net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect>);
+  public net.minecraft.world.effect.MobEffectInstance(net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect>, int);
+  public net.minecraft.world.effect.MobEffectInstance(net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect>, int, int);
+  public net.minecraft.world.effect.MobEffectInstance(net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect>, int, int, boolean, boolean);
+  public net.minecraft.world.effect.MobEffectInstance(net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect>, int, int, boolean, boolean, boolean);
+  public net.minecraft.world.effect.MobEffectInstance(net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect>, int, int, boolean, boolean, boolean, net.minecraft.world.effect.MobEffectInstance);
+  public net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffectInstance);
+  public float getBlendFactor(net.minecraft.world.entity.LivingEntity, float);
+  public net.minecraft.core.particles.ParticleOptions getParticleOptions();
+  void setDetailsFrom(net.minecraft.world.effect.MobEffectInstance);
+  public boolean update(net.minecraft.world.effect.MobEffectInstance);
+  public boolean isInfiniteDuration();
+  public boolean endsWithin(int);
+  public int mapDuration(it.unimi.dsi.fastutil.ints.Int2IntFunction);
+  public net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect> getEffect();
+  public int getDuration();
+  public int getAmplifier();
+  public boolean isAmbient();
+  public boolean isVisible();
+  public boolean showIcon();
+  public boolean tick(net.minecraft.world.entity.LivingEntity, java.lang.Runnable);
+  public void onEffectStarted(net.minecraft.world.entity.LivingEntity);
+  public void onMobRemoved(net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.Entity$RemovalReason);
+  public void onMobHurt(net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource, float);
+  public java.lang.String getDescriptionId();
+  public java.lang.String toString();
+  public boolean equals(java.lang.Object);
+  public int hashCode();
+  public net.minecraft.nbt.Tag save();
+  public static net.minecraft.world.effect.MobEffectInstance load(net.minecraft.nbt.CompoundTag);
+  public int compareTo(net.minecraft.world.effect.MobEffectInstance);
+  public void onEffectAdded(net.minecraft.world.entity.LivingEntity);
+  public boolean is(net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect>);
+  public void copyBlendState(net.minecraft.world.effect.MobEffectInstance);
+  public void skipBlending();
+  public java.util.Set<net.neoforged.neoforge.common.EffectCure> getCures();
+  public int compareTo(java.lang.Object);
+  static {};
+}
+=== net.minecraft.world.level.block.CropBlock
+Compiled from "CropBlock.java"
+public class net.minecraft.world.level.block.CropBlock extends net.minecraft.world.level.block.BushBlock implements net.minecraft.world.level.block.BonemealableBlock {
+  public static final com.mojang.serialization.MapCodec<net.minecraft.world.level.block.CropBlock> CODEC;
+  public static final int MAX_AGE;
+  public static final net.minecraft.world.level.block.state.properties.IntegerProperty AGE;
+  public com.mojang.serialization.MapCodec<? extends net.minecraft.world.level.block.CropBlock> codec();
+  public net.minecraft.world.level.block.CropBlock(net.minecraft.world.level.block.state.BlockBehaviour$Properties);
+  protected net.minecraft.world.phys.shapes.VoxelShape getShape(net.minecraft.world.level.block.state.BlockState, net.minecraft.world.level.BlockGetter, net.minecraft.core.BlockPos, net.minecraft.world.phys.shapes.CollisionContext);
+  protected boolean mayPlaceOn(net.minecraft.world.level.block.state.BlockState, net.minecraft.world.level.BlockGetter, net.minecraft.core.BlockPos);
+  protected net.minecraft.world.level.block.state.properties.IntegerProperty getAgeProperty();
+  public int getMaxAge();
+  public int getAge(net.minecraft.world.level.block.state.BlockState);
+  public net.minecraft.world.level.block.state.BlockState getStateForAge(int);
+  public final boolean isMaxAge(net.minecraft.world.level.block.state.BlockState);
+  protected boolean isRandomlyTicking(net.minecraft.world.level.block.state.BlockState);
+  protected void randomTick(net.minecraft.world.level.block.state.BlockState, net.minecraft.server.level.ServerLevel, net.minecraft.core.BlockPos, net.minecraft.util.RandomSource);
+  public void growCrops(net.minecraft.world.level.Level, net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState);
+  protected int getBonemealAgeIncrease(net.minecraft.world.level.Level);
+  protected static float getGrowthSpeed(net.minecraft.world.level.block.state.BlockState, net.minecraft.world.level.BlockGetter, net.minecraft.core.BlockPos);
+  protected boolean canSurvive(net.minecraft.world.level.block.state.BlockState, net.minecraft.world.level.LevelReader, net.minecraft.core.BlockPos);
+  public static boolean hasSufficientLight(net.minecraft.world.level.LevelReader, net.minecraft.core.BlockPos);
+  protected void entityInside(net.minecraft.world.level.block.state.BlockState, net.minecraft.world.level.Level, net.minecraft.core.BlockPos, net.minecraft.world.entity.Entity);
+  protected net.minecraft.world.level.ItemLike getBaseSeedId();
+  public net.minecraft.world.item.ItemStack getCloneItemStack(net.minecraft.world.level.LevelReader, net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState);
+  public boolean isValidBonemealTarget(net.minecraft.world.level.LevelReader, net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState);
+  public boolean isBonemealSuccess(net.minecraft.world.level.Level, net.minecraft.util.RandomSource, net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState);
+  public void performBonemeal(net.minecraft.server.level.ServerLevel, net.minecraft.util.RandomSource, net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState);
+  protected void createBlockStateDefinition(net.minecraft.world.level.block.state.StateDefinition$Builder<net.minecraft.world.level.block.Block, net.minecraft.world.level.block.state.BlockState>);
+  static {};
+}
+=== net.neoforged.neoforge.event.entity.player.PlayerEvent$PlayerRespawnEvent
+Compiled from "PlayerEvent.java"
+public class net.neoforged.neoforge.event.entity.player.PlayerEvent$PlayerRespawnEvent extends net.neoforged.neoforge.event.entity.player.PlayerEvent {
+  public net.neoforged.neoforge.event.entity.player.PlayerEvent$PlayerRespawnEvent(net.minecraft.world.entity.player.Player, boolean);
+  public boolean isEndConquered();
+  public net.minecraft.world.entity.LivingEntity getEntity();
+  public net.minecraft.world.entity.Entity getEntity();
+}
+=== net.neoforged.neoforge.event.entity.living.MobSpawnEvent
+Compiled from "MobSpawnEvent.java"
+public abstract class net.neoforged.neoforge.event.entity.living.MobSpawnEvent extends net.neoforged.neoforge.event.entity.EntityEvent {
+  protected net.neoforged.neoforge.event.entity.living.MobSpawnEvent(net.minecraft.world.entity.Mob, net.minecraft.world.level.ServerLevelAccessor, double, double, double);
+  public net.minecraft.world.entity.Mob getEntity();
+  public net.minecraft.world.level.ServerLevelAccessor getLevel();
+  public double getX();
+  public double getY();
+  public double getZ();
+  public net.minecraft.world.entity.Entity getEntity();
+}

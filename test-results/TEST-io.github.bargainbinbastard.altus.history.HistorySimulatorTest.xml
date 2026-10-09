@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.github.bargainbinbastard.altus.history.HistorySimulatorTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-09T18:48:05.019Z" hostname="runnervmmprz5" time="5.445">
+  <properties/>
+  <testcase name="invariantsHoldAcrossManySeeds()" classname="io.github.bargainbinbastard.altus.history.HistorySimulatorTest" time="5.215"/>
+  <testcase name="matchesPrototypeExactly()" classname="io.github.bargainbinbastard.altus.history.HistorySimulatorTest" time="0.186"/>
+  <testcase name="sameSeedSameHistory()" classname="io.github.bargainbinbastard.altus.history.HistorySimulatorTest" time="0.042"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

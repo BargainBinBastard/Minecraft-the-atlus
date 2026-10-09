@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.github.bargainbinbastard.altus.history.RitesTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-09T18:48:14.380Z" hostname="runnervmmprz5" time="3.139">
+  <properties/>
+  <testcase name="everyEntryIsARiteAndEveryGodHasAGift()" classname="io.github.bargainbinbastard.altus.history.RitesTest" time="3.139"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
