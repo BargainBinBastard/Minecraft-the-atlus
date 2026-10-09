@@ -47,6 +47,22 @@ public final class AltusCommands {
                 .then(Commands.literal("wake").executes(ctx -> wake(ctx.getSource())))
                 .then(Commands.literal("scan").executes(ctx -> scan(ctx.getSource())))
                 .then(Commands.literal("sites").executes(ctx -> sites(ctx.getSource())))
+                .then(Commands.literal("favor").executes(ctx -> {
+                    ServerPlayer sp = ctx.getSource().getPlayerOrException();
+                    ctx.getSource().sendSuccess(() -> Favor.status(sp), false);
+                    return 1;
+                }).then(Commands.argument("god", IntegerArgumentType.integer(0, 1000))
+                        .then(Commands.argument("value", IntegerArgumentType.integer(-500, 1000)).executes(ctx -> {
+                            ServerPlayer sp = ctx.getSource().getPlayerOrException();
+                            int g = IntegerArgumentType.getInteger(ctx, "god");
+                            if (g >= WorldHistory.get(ctx.getSource().getServer()).gods.size()) {
+                                ctx.getSource().sendFailure(Component.literal("There is no god #" + g + "."));
+                                return 0;
+                            }
+                            Favor.set(sp, g, IntegerArgumentType.getInteger(ctx, "value"));
+                            ctx.getSource().sendSuccess(() -> Favor.status(sp), false);
+                            return 1;
+                        }))))
                 .then(Commands.literal("visit").then(Commands.argument("god", IntegerArgumentType.integer(0, 1000))
                         .executes(ctx -> visit(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "god"))))));
     }

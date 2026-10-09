@@ -127,10 +127,16 @@ public final class Sanctum {
             int c = Double.compare(Fragments.FW.getOrDefault(b.type, 1.0), Fragments.FW.getOrDefault(a.type, 1.0));
             return c != 0 ? c : Integer.compare(b.year, a.year);
         });
+        // In its own sanctum a god tells its official version: the deeds it lies about come first.
         List<String> relics = new ArrayList<>();
         for (HistoryEvent e : deeds) {
+            if (relics.size() >= 2) break;
+            if (lieShows(h, e, god)) relics.add("EV:" + e.id + ":" + god + ":" + reveals(h, e, god));
+        }
+        for (HistoryEvent e : deeds) {
             if (relics.size() >= 3) break;
-            relics.add("EV:" + e.id + ":" + god + ":" + reveals(h, e, god));
+            String id = "EV:" + e.id + ":" + god + ":" + reveals(h, e, god);
+            if (!relics.contains(id)) relics.add(id);
         }
 
         // Where a friend's door stands, so every sanctum points somewhere new.

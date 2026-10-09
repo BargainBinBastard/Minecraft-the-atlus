@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import io.github.bargainbinbastard.altus.AltusMod;
 import io.github.bargainbinbastard.altus.lore.BoundItem;
+import io.github.bargainbinbastard.altus.lore.Devotion;
 import io.github.bargainbinbastard.altus.lore.HeldMemories;
 import io.github.bargainbinbastard.altus.lore.Knowledge;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -25,6 +26,9 @@ public final class AltusAttachments {
 
     public static final Supplier<AttachmentType<BoundItem>> BOUND =
             TYPES.register("bound", () -> AttachmentType.serializable(BoundItem::new).copyOnDeath().build());
+
+    public static final Supplier<AttachmentType<Devotion>> DEVOTION =
+            TYPES.register("devotion", () -> AttachmentType.serializable(Devotion::new).copyOnDeath().build());
 
     public static final Supplier<AttachmentType<Knowledge>> KNOWLEDGE =
             TYPES.register("knowledge", () -> AttachmentType.serializable(Knowledge::new).copyOnDeath().build());

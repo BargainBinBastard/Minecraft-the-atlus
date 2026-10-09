@@ -26,6 +26,14 @@ public final class ClientLore {
         heldVersion.incrementAndGet();
     }
 
+    public static volatile io.github.bargainbinbastard.altus.net.RiteListPayload lastRites;
+    public static final AtomicInteger riteVersion = new AtomicInteger();
+
+    public static void acceptRites(io.github.bargainbinbastard.altus.net.RiteListPayload payload) {
+        lastRites = payload;
+        riteVersion.incrementAndGet();
+    }
+
     public static void acceptTome(TomeSyncPayload payload) {
         lastTome = payload;
         tomeVersion.incrementAndGet();

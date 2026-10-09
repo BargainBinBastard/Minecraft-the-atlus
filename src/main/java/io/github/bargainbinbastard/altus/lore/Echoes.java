@@ -94,12 +94,16 @@ public final class Echoes {
             Lore.Testimony t = Lore.render(h, sites, id);
             if (t == null) continue;
             if (Memories.gain(sp, t) == Memories.Gain.ADDED) {
-                say(sp, "The echo of " + h.name(god) + " speaks of " + t.title
+                say(sp, greeting(sp, h, god) + "The echo of " + h.name(god) + " speaks of " + t.title
                         + ". Its meaning slips past you, but you will remember it when you wake.");
                 return;
             }
         }
-        say(sp, "The echo of " + h.name(god) + " has nothing more to tell you.");
+        say(sp, greeting(sp, h, god) + "The echo of " + h.name(god) + " has nothing more to tell you.");
+    }
+
+    private static String greeting(ServerPlayer sp, History h, int god) {
+        return Favor.follows(sp, god) ? "It knows you, " + sp.getGameProfile().getName() + ". " : "";
     }
 
     /**
@@ -118,6 +122,10 @@ public final class Echoes {
             if (Memories.gain(sp, t) == Memories.Gain.ADDED) {
                 sp.displayClientMessage(Component.literal("You hold the truth up against the echo of " + h.name(god)
                         + ". It falters, and confesses.").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC), true);
+                // The liar resents being caught; whoever its lie wronged is grateful.
+                Favor.add(sp, god, -20);
+                History.Lie lie = h.storyOf(ev, god);
+                if (lie != null && lie.targetGod != null && lie.targetGod != god) Favor.add(sp, lie.targetGod, 10);
                 return;
             }
         }

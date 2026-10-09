@@ -52,6 +52,57 @@ public final class Altars {
         say(sp, "You take back the " + s.getHoverName().getString() + ".");
     }
 
+    public static final int OFFERING_CAP = 40;
+
+    /**
+     * Offers what the player holds to a god they know who likes it: their patron if it does, else
+     * the one they stand best with. Each god accepts only so much in a day.
+     */
+    public static boolean offer(ServerPlayer sp, ItemStack held) {
+        if (AltusDimension.isAltus(sp.level())) {
+            say(sp, "The altar is silent here.");
+            return false;
+        }
+        String like = LikeMatch.of(held);
+        io.github.bargainbinbastard.altus.history.History h = WorldHistory.get(sp.server);
+        Knowledge k = Memories.knowledge(sp);
+        Devotion d = Favor.of(sp);
+        int to = -1;
+        boolean insults = false;
+        if (like != null)
+            for (io.github.bargainbinbastard.altus.history.History.God g : h.gods) {
+                if (!g.alive || k.understandingOf(g.id) < 1) continue;
+                boolean likes = g.likes.stream().anyMatch(i -> i.id.equals(like));
+                insults |= g.dislikes.stream().anyMatch(i -> i.id.equals(like));
+                if (!likes) continue;
+                if (to < 0 || g.id == d.patron || (to != d.patron && d.favorOf(g.id) > d.favorOf(to))) to = g.id;
+            }
+        if (to < 0) {
+            say(sp, insults ? "No god you know wants this, and some would be insulted by it." : "No god you know would want this.");
+            return false;
+        }
+        long day = RiteService.day(sp);
+        if (d.offeringDay != day) {
+            d.offeringDay = day;
+            d.offeredToday.clear();
+        }
+        int left = OFFERING_CAP - d.offeredToday.getOrDefault(to, 0);
+        if (left <= 0) {
+            say(sp, io.github.bargainbinbastard.altus.history.Text.cap(h.name(to)) + " has had its fill of offerings today.");
+            return false;
+        }
+        int n = Math.min(held.getCount(), left);
+        String what = held.getHoverName().getString();
+        if (!sp.getAbilities().instabuild) held.shrink(n);
+        d.offeredToday.merge(to, n, Integer::sum);
+        Favor.add(sp, to, n);
+        sp.displayClientMessage(Component.literal("You offer " + n + " " + what + " to " + h.name(to) + ". (favor "
+                + Favor.favor(sp, to) + ")").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.ITALIC), true);
+        if (sp.level() instanceof net.minecraft.server.level.ServerLevel sl)
+            sl.sendParticles(net.minecraft.core.particles.ParticleTypes.ENCHANT, sp.getX(), sp.getY() + 1.5, sp.getZ(), 20, 0.4, 0.4, 0.4, 0.4);
+        return true;
+    }
+
     public static boolean isCarried(ItemStack s) {
         return s.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).contains(CARRIED);
     }

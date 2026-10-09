@@ -13,6 +13,8 @@ import io.github.bargainbinbastard.altus.history.Text;
 import io.github.bargainbinbastard.altus.lore.Altars;
 import io.github.bargainbinbastard.altus.lore.AltusWorld;
 import io.github.bargainbinbastard.altus.lore.BoundItem;
+import io.github.bargainbinbastard.altus.lore.Devotion;
+import io.github.bargainbinbastard.altus.lore.Favor;
 import io.github.bargainbinbastard.altus.lore.Memories;
 import io.github.bargainbinbastard.altus.lore.WorldHistory;
 import net.minecraft.ChatFormatting;
@@ -49,14 +51,35 @@ public final class Dreams {
         if (s.lastDreamDay == day) return false;
         BlockPos bed = sp.getSleepingPos().orElse(sp.blockPosition());
         History h = WorldHistory.get(sp.server);
+        Devotion dv = Favor.of(sp);
+        if (dv.callFocus >= 0 && dv.callFocus < h.gods.size() && h.god(dv.callFocus).alive) {
+            int called = dv.callFocus;
+            dv.callFocus = -1;
+            s.lastDreamDay = day;
+            sp.stopSleepInBed(false, true);
+            begin(sp, called, dreamTicks(sp), bed.getX() + 0.5, bed.getY() + 0.6, bed.getZ() + 0.5,
+                    Component.literal("You answer the call of " + h.name(called) + ", and dream.").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC));
+            return true;
+        }
         Map<String, Integer> counts = SleepScan.count(level, bed, AltusConfig.SCAN_RADIUS.get());
         FocusPicker.Focus focus = FocusPicker.pick(h, counts, AltusConfig.SCAN_THRESHOLD.get());
         if (!focus.dreams()) return false;
         s.lastDreamDay = day;
         sp.stopSleepInBed(false, true);
-        begin(sp, focus.kind == FocusPicker.Kind.GOD ? focus.god : -1, AltusConfig.DREAM_SECONDS.get() * 20,
+        begin(sp, focus.kind == FocusPicker.Kind.GOD ? focus.god : -1, dreamTicks(sp),
                 bed.getX() + 0.5, bed.getY() + 0.6, bed.getZ() + 0.5, intro(h, focus, counts));
         return true;
+    }
+
+    /** How long a dream from sleep lasts: longer once, after the rite of the Long Dream. */
+    static int dreamTicks(ServerPlayer sp) {
+        int t = AltusConfig.DREAM_SECONDS.get() * 20;
+        Devotion d = Favor.of(sp);
+        if (d.longDream) {
+            d.longDream = false;
+            t = t * 3 / 2;
+        }
+        return t;
     }
 
     /** Starts a dream. The inventory is stashed before the player moves, so a crash can't lose it. */
@@ -165,6 +188,7 @@ public final class Dreams {
             sp.displayClientMessage(Component.literal("The thing you carried did not come back with you.")
                     .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), false);
         s.carrying = false;
+        Favor.of(sp).unseal = -1;
         s.active = false;
         s.ticksLeft = 0;
         sp.teleportTo(home, x, y, z, sp.getYRot(), sp.getXRot());

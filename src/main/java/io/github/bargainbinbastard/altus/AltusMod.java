@@ -81,6 +81,7 @@ public class AltusMod {
         modEventBus.addListener(AltusNetwork::register);
         modContainer.registerConfig(ModConfig.Type.SERVER, AltusConfig.SPEC);
         DreamEvents.register();
+        io.github.bargainbinbastard.altus.lore.DevotionEvents.register();
         NeoForge.EVENT_BUS.addListener(AltusMod::onRegisterCommands);
         NeoForge.EVENT_BUS.addListener(AltusMod::onServerStarted);
         NeoForge.EVENT_BUS.addListener(AltusMod::onServerStopped);
@@ -175,8 +176,114 @@ public class AltusMod {
         boolean guardians = smokeGuardians(server, p);
         boolean ruin = smokeRuin(server, p);
         boolean depth = smokeDepth(server, p);
+        boolean devotion = smokeDevotion(server, p);
         server.getPlayerList().remove(p);
-        return roundTrip && death && sleep && memories && stage && carried && guardians && ruin && depth;
+        return roundTrip && death && sleep && memories && stage && carried && guardians && ruin && depth && devotion;
+    }
+
+    private static ItemStack stackFor(String like, int n) {
+        for (net.minecraft.world.item.Item it : net.minecraft.core.registries.BuiltInRegistries.ITEM)
+            if (like.equals(io.github.bargainbinbastard.altus.lore.LikeMatch.of(new ItemStack(it)))) return new ItemStack(it, n);
+        return ItemStack.EMPTY;
+    }
+
+    /** Offerings, tiers and gifts, taboos, guardians sparing followers, rites, and a rite on a lie misfiring. */
+    private static boolean smokeDevotion(MinecraftServer server, ServerPlayer p) {
+        History h = WorldHistory.get(server);
+        Sites sites = WorldHistory.sites(server);
+        if (Dreams.session(p).active) Dreams.end(p, "command");
+        io.github.bargainbinbastard.altus.lore.Devotion d = io.github.bargainbinbastard.altus.lore.Favor.of(p);
+        d.favor.clear();
+        d.patron = -1;
+        d.riteDay.clear();
+        d.offeredToday.clear();
+        Knowledge k = Memories.knowledge(p);
+        k.written.clear();
+        k.understanding.clear();
+        Memories.held(p).list.clear();
+        p.getInventory().clearContent();
+        p.removeAllEffects();
+
+        // A false entry in some archive, and the god who tells it: the rest of the test centres on that god.
+        String lie = null;
+        for (Sites.Site s : sites.all) {
+            if (s.occupant < 0 || !h.god(s.occupant).alive) continue;
+            for (String id : io.github.bargainbinbastard.altus.history.Sanctum.plan(h, sites, s.occupant).reliquaries)
+                if (lie == null && io.github.bargainbinbastard.altus.history.Rites.isFalse(h, id)) lie = id;
+        }
+        if (lie == null) {
+            LOGGER.info("SMOKE: devotion: no archive in this world holds a lie");
+            return false;
+        }
+        History.God g = h.god(Integer.parseInt(lie.split(":")[2]));
+        String like = io.github.bargainbinbastard.altus.history.Rites.offeringLike(g);
+        ItemStack gift = stackFor(like, 1);
+
+        boolean refused = !Altars.offer(p, gift.copy());
+        k.understanding.put(g.id, 1);
+        ItemStack five = stackFor(like, 5);
+        boolean offered = Altars.offer(p, five) && five.isEmpty() && io.github.bargainbinbastard.altus.lore.Favor.favor(p, g.id) == 5;
+
+        io.github.bargainbinbastard.altus.lore.Favor.set(p, g.id, 30);
+        boolean follower = io.github.bargainbinbastard.altus.lore.Favor.tier(p) == 1 && d.patron == g.id;
+        net.minecraft.world.entity.Mob guard = net.minecraft.world.entity.EntityType.ZOMBIE.create(server.overworld());
+        guard.addTag(Guardians.TAG);
+        guard.addTag(Guardians.GOD_TAG + g.id);
+        boolean spared = Guardians.spares(guard, p);
+        io.github.bargainbinbastard.altus.lore.Favor.set(p, g.id, 150);
+        String giftId = io.github.bargainbinbastard.altus.history.Rites.giftOf(g);
+        boolean disciple = io.github.bargainbinbastard.altus.lore.Favor.tier(p) == 2
+                && p.hasEffect(io.github.bargainbinbastard.altus.lore.Favor.effectFor(giftId));
+
+        String hated = null;
+        for (io.github.bargainbinbastard.altus.history.Item it : g.dislikes) if (it.cat.equals("block")) hated = it.id;
+        boolean taboo = true;
+        if (hated != null) {
+            net.minecraft.world.level.block.state.BlockState hs = null;
+            for (net.minecraft.world.level.block.Block b : net.minecraft.core.registries.BuiltInRegistries.BLOCK)
+                if (hs == null && hated.equals(io.github.bargainbinbastard.altus.lore.LikeMatch.of(b.defaultBlockState()))) hs = b.defaultBlockState();
+            io.github.bargainbinbastard.altus.lore.DevotionEvents.placed(p, hs);
+            taboo = io.github.bargainbinbastard.altus.lore.Favor.favor(p, g.id) == 147;
+        }
+
+        // A true entry as a rite, at an altar.
+        BlockPos altar = p.blockPosition().offset(2, 0, 0);
+        server.overworld().setBlock(altar, AltusRegistry.ALTAR.get().defaultBlockState(), 3);
+        p.getInventory().setItem(0, new ItemStack(AltusRegistry.TOME.get()));
+        String truth = Lore.woodsId(0, g.id);
+        Memories.gain(p, Lore.render(h, sites, truth));
+        TomeService.write(p, 0, 0, truth, List.of(""));
+        Memories.gain(p, Lore.render(h, sites, lie));
+        TomeService.write(p, 0, 0, lie, List.of(TomeService.contents(p.getInventory().getItem(0)).pages().get(0)));
+        List<io.github.bargainbinbastard.altus.lore.TomeRecord> recs = TomeService.contents(p.getInventory().getItem(0)).records();
+        String trueEntry = null, lieEntry = null;
+        for (var r : recs) {
+            if (r.testimonyId().equals(truth)) trueEntry = r.entryId();
+            if (r.testimonyId().equals(lie)) lieEntry = r.entryId();
+        }
+        int views = io.github.bargainbinbastard.altus.lore.RiteService.views(p, p.getInventory().getItem(0)).size();
+        for (String l : io.github.bargainbinbastard.altus.lore.RiteService.offerings(h, truth)) p.getInventory().add(stackFor(l, 1));
+        io.github.bargainbinbastard.altus.history.Rites.Effect effect = io.github.bargainbinbastard.altus.history.Rites.effectOf(h, sites, truth);
+        boolean performed = trueEntry != null && io.github.bargainbinbastard.altus.lore.RiteService.perform(p, 0, trueEntry);
+        int left = 0;
+        for (int i = 1; i < p.getInventory().items.size(); i++) left += p.getInventory().items.get(i).getCount();
+        boolean onceADay = !io.github.bargainbinbastard.altus.lore.RiteService.perform(p, 0, trueEntry);
+
+        // The lie as a rite: it misfires, and the gods it names think less of you.
+        for (String l : io.github.bargainbinbastard.altus.lore.RiteService.offerings(h, lie)) p.getInventory().add(stackFor(l, 1));
+        int before = io.github.bargainbinbastard.altus.lore.Favor.favor(p, g.id);
+        boolean misfired = lieEntry != null && io.github.bargainbinbastard.altus.lore.RiteService.perform(p, 0, lieEntry)
+                && p.hasEffect(net.minecraft.world.effect.MobEffects.WEAKNESS)
+                && io.github.bargainbinbastard.altus.lore.Favor.favor(p, g.id) == before - 8;
+
+        server.overworld().removeBlock(altar, false);
+        d.favor.clear();
+        io.github.bargainbinbastard.altus.lore.Favor.set(p, g.id, 0);
+        boolean giftGone = !p.hasEffect(io.github.bargainbinbastard.altus.lore.Favor.effectFor(giftId)) || giftId.equals("luck") && false;
+        LOGGER.info("SMOKE: devotion to {} (offers {}, gift {}): refused={} offered={} follower={} spared={} disciple={} taboo={} views={} "
+                        + "rite {} performed={} offeringsUsed={} onceADay={} misfired={} giftGone={}",
+                g.name, like, giftId, refused, offered, follower, spared, disciple, taboo, views, effect, performed, left == 0, onceADay, misfired, giftGone);
+        return refused && offered && follower && spared && disciple && taboo && views == 2 && performed && left == 0 && onceADay && misfired && giftGone;
     }
 
     /** Echoes speak, the inner door asks for deep knowledge, a liar confesses, and the Archivist has hints. */

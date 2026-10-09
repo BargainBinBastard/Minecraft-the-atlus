@@ -29,7 +29,10 @@ public class TomeItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (level.isClientSide) ClientHooks.openTome(hand);
-        else if (player instanceof ServerPlayer sp) Memories.sync(sp);
+        else if (player instanceof ServerPlayer sp) {
+            Memories.sync(sp);
+            RiteService.sync(sp, hand == InteractionHand.MAIN_HAND ? sp.getInventory().selected : TomeService.OFFHAND_SLOT);
+        }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 }

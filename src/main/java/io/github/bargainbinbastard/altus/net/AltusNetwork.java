@@ -22,5 +22,10 @@ public final class AltusNetwork {
         r.playToServer(TomeWritePayload.TYPE, TomeWritePayload.STREAM_CODEC, (p, ctx) -> ctx.enqueueWork(() -> {
             if (ctx.player() instanceof ServerPlayer sp) TomeService.write(sp, p.slot(), p.page(), p.testimonyId(), p.pages());
         }));
+        r.playToClient(RiteListPayload.TYPE, RiteListPayload.STREAM_CODEC,
+                (p, ctx) -> ctx.enqueueWork(() -> ClientLore.acceptRites(p)));
+        r.playToServer(RitePerformPayload.TYPE, RitePerformPayload.STREAM_CODEC, (p, ctx) -> ctx.enqueueWork(() -> {
+            if (ctx.player() instanceof ServerPlayer sp) io.github.bargainbinbastard.altus.lore.RiteService.perform(sp, p.slot(), p.entryId());
+        }));
     }
 }

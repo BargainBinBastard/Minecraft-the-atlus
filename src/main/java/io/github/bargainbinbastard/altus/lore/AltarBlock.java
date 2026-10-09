@@ -16,7 +16,8 @@ import net.minecraft.world.phys.BlockHitResult;
 
 /**
  * An altar in the waking world. Use it holding something to leave one of it there for your next
- * dream; use it empty-handed to take it back.
+ * dream; use it empty-handed to take it back. Crouch to offer what you hold to a god instead, or,
+ * empty-handed, to learn where you stand with the gods. Rites from a Tome are performed nearby.
  */
 public class AltarBlock extends Block {
     public static final MapCodec<AltarBlock> CODEC = simpleCodec(AltarBlock::new);
@@ -34,13 +35,20 @@ public class AltarBlock extends Block {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
             InteractionHand hand, BlockHitResult hit) {
         if (stack.isEmpty()) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        if (!level.isClientSide && player instanceof ServerPlayer sp) Altars.bind(sp, stack);
+        if (stack.getItem() instanceof TomeItem) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (!level.isClientSide && player instanceof ServerPlayer sp) {
+            if (player.isShiftKeyDown()) Altars.offer(sp, stack);
+            else Altars.bind(sp, stack);
+        }
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        if (!level.isClientSide && player instanceof ServerPlayer sp) Altars.reclaim(sp);
+        if (!level.isClientSide && player instanceof ServerPlayer sp) {
+            if (player.isShiftKeyDown()) sp.displayClientMessage(Favor.status(sp), false);
+            else Altars.reclaim(sp);
+        }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 }

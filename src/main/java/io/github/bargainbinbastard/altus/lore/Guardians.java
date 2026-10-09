@@ -24,6 +24,7 @@ public final class Guardians {
     private Guardians() {}
 
     public static final String TAG = "altus_guardian";
+    public static final String GOD_TAG = "altus_guardian_of_";
     public static final int WAKE_RANGE = 14;
 
     public static EntityType<? extends Mob> typeFor(History.God g) {
@@ -54,7 +55,7 @@ public final class Guardians {
             History.God g = h.god(e.getValue());
             List<Mob> near = altus.getEntitiesOfClass(Mob.class, new AABB(stone).inflate(WAKE_RANGE + 4), m -> m.getTags().contains(TAG));
             if (near.size() >= capFor(g)) continue;
-            spawn(altus, stone, typeFor(g));
+            spawn(altus, stone, typeFor(g), g.id);
         }
     }
 
@@ -65,7 +66,7 @@ public final class Guardians {
     }
 
     /** Calls one guardian beside a stone. Returns it, or null if there was no room. */
-    public static Mob spawn(ServerLevel l, BlockPos stone, EntityType<? extends Mob> type) {
+    public static Mob spawn(ServerLevel l, BlockPos stone, EntityType<? extends Mob> type, int god) {
         for (int i = 0; i < 12; i++) {
             BlockPos p = stone.offset(l.random.nextInt(7) - 3, l.random.nextInt(3) - 1, l.random.nextInt(7) - 3);
             if (!l.getBlockState(p).isAir() || !l.getBlockState(p.above()).isAir()) continue;
@@ -76,6 +77,7 @@ public final class Guardians {
             EventHooks.finalizeMobSpawn(mob, l, l.getCurrentDifficultyAt(p), MobSpawnType.SPAWNER, null);
             mob.setPersistenceRequired();
             mob.addTag(TAG);
+            mob.addTag(GOD_TAG + god);
             mob.restrictTo(stone, 10);
             l.addFreshEntity(mob);
             l.levelEvent(LevelEvent.PARTICLES_MOBBLOCK_SPAWN, p, 0);
@@ -86,5 +88,24 @@ public final class Guardians {
 
     public static boolean isGuardian(Entity e) {
         return e.getTags().contains(TAG);
+    }
+
+    /** The god a guardian serves, or -1. */
+    public static int godOf(Entity e) {
+        for (String t : e.getTags())
+            if (t.startsWith(GOD_TAG)) {
+                try {
+                    return Integer.parseInt(t.substring(GOD_TAG.length()));
+                } catch (NumberFormatException ignored) {
+                    return -1;
+                }
+            }
+        return -1;
+    }
+
+    /** A god's guardians let its followers pass. */
+    public static boolean spares(Entity guardian, ServerPlayer sp) {
+        int g = godOf(guardian);
+        return g >= 0 && Favor.follows(sp, g);
     }
 }

@@ -198,6 +198,30 @@ public final class AltusWorld {
         return ECHO_WORDS.getOrDefault(god, List.of());
     }
 
+    /** Every piece of sanctum lore: {id, god, place} where place is gallery, archive or inner chamber. */
+    public static List<String[]> loreSpots() {
+        List<String[]> out = new java.util.ArrayList<>();
+        for (Map.Entry<BlockPos, String> e : MURALS.entrySet())
+            out.add(new String[] {e.getValue(), Integer.toString(MURAL_KEEPER.get(e.getKey())), "gallery"});
+        for (Map.Entry<BlockPos, String> e : RELICS.entrySet()) {
+            int g = RELIC_KEEPER.get(e.getKey());
+            boolean inner = e.getKey().getZ() > pocketOrigin(g).getZ() + INNER_DOOR_Z;
+            out.add(new String[] {e.getValue(), Integer.toString(g), inner ? "inner chamber" : "archive"});
+        }
+        out.sort((a, b) -> a[0].compareTo(b[0]));
+        return out;
+    }
+
+    /**
+     * How well a player counts as knowing a god at its doors and reliquaries: what they have
+     * written, or as much as the inner door asks if an Unseal rite has opened its way for this dream.
+     */
+    public static int understanding(ServerPlayer sp, int god) {
+        int u = Memories.knowledge(sp).understandingOf(god);
+        Devotion d = Favor.of(sp);
+        return d.unseal == god ? Math.max(u, INNER_GATE) : u;
+    }
+
     /** Where the Archivist stands, in the House's study. */
     public static BlockPos archivist() {
         return archivist;
@@ -443,7 +467,8 @@ public final class AltusWorld {
 
     /** Where a dreamer arrives: at a god's door if they have written down where it is, otherwise the Clearing. */
     public static BlockPos arrival(ServerPlayer sp, int focusGod, ServerLevel altus) {
-        if (focusGod >= 0 && Memories.knowledge(sp).written.contains("LOC:" + focusGod)) {
+        boolean disciple = focusGod >= 0 && Favor.of(sp).patron == focusGod && Favor.tier(sp) >= 2;
+        if (focusGod >= 0 && (disciple || Memories.knowledge(sp).written.contains("LOC:" + focusGod))) {
             BlockPos a = SITE_ARRIVAL.get(focusGod);
             if (a != null) {
                 altus.getChunk(a);
@@ -463,7 +488,7 @@ public final class AltusWorld {
         History h = WorldHistory.get(sp.server);
         switch (d.kind()) {
             case ENTER -> {
-                if (Memories.knowledge(sp).understandingOf(d.god()) < 1) {
+                if (understanding(sp, d.god()) < 1) {
                     say(sp, "The door is shut to you. You do not know whose door this is.");
                     return;
                 }
@@ -483,7 +508,7 @@ public final class AltusWorld {
                     sp.teleportTo(altus, o.getX() + 5.5, o.getY() + 1, o.getZ() + INNER_DOOR_Z - 2 + 0.5, 180f, 0f);
                     return;
                 }
-                if (Memories.knowledge(sp).understandingOf(d.god()) < INNER_GATE) {
+                if (understanding(sp, d.god()) < INNER_GATE) {
                     say(sp, "This door opens only for one who knows " + h.name(d.god()) + " deeply. Write more of it.");
                     return;
                 }
@@ -504,7 +529,7 @@ public final class AltusWorld {
         io.github.bargainbinbastard.altus.history.Lore.Testimony t =
                 io.github.bargainbinbastard.altus.history.Lore.render(WorldHistory.get(sp.server), WorldHistory.sites(sp.server), id);
         int needed = t == null ? 2 : requiredUnderstanding(t.level);
-        if (Memories.knowledge(sp).understandingOf(keeper) < needed) {
+        if (understanding(sp, keeper) < needed) {
             say(sp, needed > INNER_GATE ? "This reliquary holds something its keeper guards above all else. You would need to know it far better."
                     : needed > 2 ? "The reliquary is sealed tight. You would need to know its keeper far better."
                     : "The reliquary will not open. You do not know its keeper well enough.");
