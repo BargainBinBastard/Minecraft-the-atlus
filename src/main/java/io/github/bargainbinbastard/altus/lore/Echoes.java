@@ -145,8 +145,8 @@ public final class Echoes {
             if (!h.god(g).alive)
                 out.add(cap(name) + " is dead. What is left of its sanctum stands at " + s.label + ", and its corpse remembers who killed it.");
             else if (!k.written.contains("LOC:" + g))
-                out.add("The door of " + name + " stands on the Mountain, in a frame of "
-                        + Palettes.of(h.god(g)).accent().getBlock().getName().getString().toLowerCase() + ". Learn where, and you will wake beside it.");
+                out.add("The door of " + name + " stands on the Mountain, set in a wall of "
+                        + Palettes.of(h.god(g)).wall().getBlock().getName().getString().toLowerCase() + ". Learn where, and you will wake beside it.");
             if (u < 2) out.add(cap(name) + "'s reliquaries open for those who have written two things about it.");
             else if (u < AltusWorld.INNER_GATE)
                 out.add(cap(name) + " keeps its secrets behind an inner door, which opens once you have written "

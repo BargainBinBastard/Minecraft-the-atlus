@@ -8,9 +8,11 @@ Altus to recover fragments of that history, and the gods take notice.
 
 ## Status
 
-**Slice 5: stakes.** Every world generates its history from its seed. Players dream their way into
-the Altus, find lore and write it in Tomes, climb the Mountain to the gods' doors and sanctums, and
-now face their guardians, can carry one thing into a dream, and can enter the ruins of dead gods.
+**Slice 6: depth.** Every world generates its history from its seed. Players dream their way into
+the Altus, find lore and write it in Tomes, climb the Mountain to the gods' doors and sanctums, face
+their guardians, and enter the ruins of dead gods. Now the gods' echoes speak, inner sanctums hold
+their secrets and the truth behind their lies, liars can be confronted, and the Archivist gives
+hints.
 
 ### Dreaming
 
@@ -60,11 +62,29 @@ the god's **sanctum**, built from its liked blocks:
 - an **archive** of **Reliquaries** (level 3 lore), which open only if you have written at least two
   things about the god: the god's own account of what it has done, lies included, and where
   another god's door stands;
-- a sealed inner door, for later.
+- an **echo** of the god in the gallery: right-click it and it tells its own account of its
+  weightiest deed, motives and all, and what it thinks of its bitterest enemy;
+- an **inner chamber** behind a door that opens once you have written four things about the god.
+  Its reliquaries hold the god's kept secrets and the truth behind each lie it tells (level 4).
+  Its weightiest secrets (level 5) open only once you have written six things about it.
 
 A dead god's door opens onto what is left of its sanctum: cracked, overgrown and mostly dark. Its
 first reliquary holds the corpse's own memory of its death, which names its killers even if the
-killing was a secret. Lore that deep (level 4) needs three things written about its keeper.
+killing was a secret. Lore that deep (level 4) needs four things written about its keeper.
+
+### Catching a liar
+
+A god's archive and echo tell its own version of events, and some of those versions are lies. If
+your Tomes hold a god's account of an event along with something that contradicts it (another
+god's truthful account, or the truth from the liar's own inner chamber), crouch and right-click the
+liar's echo to confront it. It confesses, and the confession is a new memory to write down.
+
+### The Archivist
+
+In the House, by the bookshelves inside the front door, stands the Archivist. Speak to it for a
+hint about what to do next, based on what you have written: where a known god's door might be, how
+much more you need to know to open its reliquaries or inner door, which ruin remembers a murder,
+and whether two of your writings disagree.
 
 ### Guardians and the Altar
 
@@ -74,7 +94,9 @@ When a dreamer comes near, a stone calls up the god's guardians: the hostile cre
 gods are better guarded, up to four per stone. The House is safe. Dying in the Altus only wakes
 you.
 
-Since you arrive with nothing, you may want to bring a weapon. Craft an **Altar** (a candle on top,
+You arrive with nothing but the armor you are wearing (the server setting `carryArmor` can turn
+that off). It comes back on when you wake, worn by whatever happened to it. You may want to bring
+a weapon too. Craft an **Altar** (a candle on top,
 an ender pearl in the middle between two stone bricks, and three stone bricks along the bottom).
 Use it while holding something to leave one of it there; the next time you dream, it comes with
 you. It cannot be dropped in the Altus, and when you wake it returns to your inventory, worn by
@@ -88,8 +110,7 @@ about 25.
 world that already visited the Altus in an earlier version, delete the world's
 `dimensions/altus/altus` folder (or start a new world).
 
-Echoes, the sealed inner sanctums, the House's vaults and study, and favor with the gods come in
-the next slices.
+Favor with the gods, altars and rituals, and devotion come in the next slice.
 
 ### Operator commands
 
@@ -108,7 +129,7 @@ These need permission level 2, because they spoil the mystery.
 ### Settings
 
 `<world>/serverconfig/altus-server.toml`: `dreamSeconds` (default 600), `scanRadius` (8),
-`scanThreshold` (4) and `fadeMinutes` (45).
+`scanThreshold` (4), `fadeMinutes` (45) and `carryArmor` (true).
 
 ## Getting the jar
 
@@ -139,7 +160,10 @@ You need JDK 21. Run `./gradlew build`; the jar lands in `build/libs/`.
   item left on an altar goes into the dream alone, can't be lost there, and comes back worn, while
   things picked up in the dream vanish; a Warden Stone calls its god's liked creature up to the
   god's limit; and a ruin's reliquaries open only for those who know its keeper well enough. The
-  smoke world uses seed 14, which has a ruin whose corpse remembers a secret killing.
+  smoke world uses seed 14, which has a ruin whose corpse remembers a secret killing; worn armor
+  goes in and comes back on; an echo appears once and speaks; the inner door refuses at three
+  writings and opens at four; caught with the truth, a liar's echo confesses; and the Archivist
+  appears and has hints.
 - Publishes the build log, test results and the smoke-test history to the `ci-logs` branch.
 
 ## Layout
